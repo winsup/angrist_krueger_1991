@@ -1,0 +1,2 @@
+I replicate all 8 Tables in \cite{angrist1991} using STATA and provide a summary and critical review of the aforementioned paper -- Does Compulsory School Attendence Affect Schooling and Earning? --
+in the first and second section. The STATA codes and Log files could be found at .

@@ -1,0 +1,31 @@
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\caption{TABLE V}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+                         &\multicolumn{1}{c}{(1) OLS}&\multicolumn{1}{c}{(2) TSLS}&\multicolumn{1}{c}{(3) OLS}&\multicolumn{1}{c}{(4) TSLS}&\multicolumn{1}{c}{(5) OLS}&\multicolumn{1}{c}{(6) TSLS}&\multicolumn{1}{c}{(7) OLS}&\multicolumn{1}{c}{(8) TSLS}\\
+\hline
+Years of education       &      0.0802\sym{***}&      0.0769\sym{***}&      0.0802\sym{***}&       0.131\sym{***}&      0.0701\sym{***}&      0.0669\sym{***}&      0.0701\sym{***}&       0.101\sym{**} \\
+                         &  (0.000355)         &    (0.0150)         &  (0.000355)         &    (0.0334)         &  (0.000355)         &    (0.0151)         &  (0.000355)         &    (0.0334)         \\
+[1em]
+Race(1 = black)          &                     &                     &                     &                     &      -0.298\sym{***}&      -0.306\sym{***}&      -0.298\sym{***}&      -0.227\sym{**} \\
+                         &                     &                     &                     &                     &   (0.00434)         &    (0.0353)         &   (0.00434)         &    (0.0776)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.134\sym{***}&      -0.136\sym{***}&      -0.134\sym{***}&      -0.116\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00256)         &   (0.00924)         &   (0.00256)         &    (0.0198)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.293\sym{***}&       0.294\sym{***}&       0.293\sym{***}&       0.280\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00374)         &   (0.00719)         &   (0.00374)         &    (0.0141)         \\
+[1em]
+Age                      &                     &                     &       0.145\sym{*}  &       0.141\sym{*}  &                     &                     &       0.116         &       0.117         \\
+                         &                     &                     &    (0.0676)         &    (0.0704)         &                     &                     &    (0.0652)         &    (0.0661)         \\
+[1em]
+Age-squared              &                     &                     &    -0.00154\sym{*}  &    -0.00136         &                     &                     &    -0.00125         &    -0.00118         \\
+                         &                     &                     &  (0.000748)         &  (0.000787)         &                     &                     &  (0.000721)         &  (0.000736)         \\
+\hline
+Observations             &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\end{table}

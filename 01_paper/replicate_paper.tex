@@ -1,0 +1,461 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\title{Microeconometrics:  Replication Paper}
+\author{Win Supanwanid}
+\date{April 2020}
+\usepackage{amssymb} % Square item
+\usepackage{xcolor} % color eq
+\usepackage{booktabs}
+\usepackage{appendix}
+\usepackage{lscape}
+\usepackage{listings}
+\usepackage[round, semicolon, authoryear]{natbib}
+\usepackage{graphicx}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{amsmath}      % for \tag and \eqref macros
+\usepackage{scalerel,stackengine} % https://tex.stackexchange.com/questions/100574/really-wide-hat-symbol)
+\stackMath
+\newcommand\reallywidehat[1]{%
+\savestack{\tmpbox}{\stretchto{%
+  \scaleto{%
+    \scalerel*[\widthof{\ensuremath{#1}}]{\kern-.6pt\bigwedge\kern-.6pt}%
+    {\rule[-\textheight/2]{1ex}{\textheight}}%WIDTH-LIMITED BIG WEDGE
+  }{\textheight}% 
+}{0.5ex}}%
+\stackon[1pt]{#1}{\tmpbox}%
+}
+\parskip 1ex % https://tex.stackexchange.com/questions/100574/really-wide-hat-symbol)
+
+\begin{document}
+\renewcommand{\abstractname}{\vspace{-\baselineskip}} % remove abstract header
+\maketitle
+
+\begin{abstract}
+
+I replicate all 8 Tables in \cite{angrist1991} using STATA and provide a summary and critical review of the aforementioned paper -- Does Compulsory School Attendance Affect Schooling and Earning? --
+in the first and second section. The STATA codes and Log files could be found at .
+
+\end{abstract}
+
+% \tableofcontents
+%\clearpage 
+
+\section{Summary}
+
+\subsection{Objectives}
+
+The objective of \cite{angrist1991} is to state that seasonal pattern of educational attainment is related to the compulsory school attendance law of each state
+and then study the effect of compulsory schooling laws on earning by using quarter-of-birth as an instrument for years of education.
+
+
+
+\subsection{Data}
+
+ \cite{angrist1991} analyzed the data from the 1960, 1970, 1980 census of males born in the United States. I, however, found only the 1970 and 1980 census. 
+The data have 27 variables explaining the personal characteristics of 30-40 and 40-50 years old men born in 1920-1929, 1930-1939, and 1940-1949. The example of those variables are age, years of education, region of residence, year-of-birth, quaarter-of-birth, race, marital status, living in the center of city (SMSA), weekly earnings and so forth.
+
+The data of men born 1920-1929 are selected from the 1 percent sample of the 1970 census with the sample size of 247,199. The data of men born 1930-1939 , however, are selected from the 5 percent sample of the 1980 census with the sample size of 329,509. The data of men born 1940-1949 are similarly selected from the 5 percent sample of the 1980 census with the sample size of 486,926.
+
+\subsection{Model}
+
+Several equations are used to produce Table I - III. The crux of this paper, however, are Table IV - VIII which adopted the following model (same notation as in the paper).
+
+\begin{eqnarray}
+ \label{main1}
+  E_i &=& X_i \textcolor{magenta}{\pi} + \displaystyle\sum_{c} Y_{ic} \textcolor{magenta}{\delta _c} + \displaystyle\sum_{c} \displaystyle\sum_{j} Y_{ic}Q_{ij}\textcolor{magenta}{\theta _{jc}}+ \epsilon_i \\
+  \label{main2}
+  ln W_i &=&  X_i \textcolor{magenta}{\beta} + \displaystyle\sum_{c} Y_{ic}\textcolor{magenta}{\xi _c} + \textcolor{red}{\rho} E_i + \mu _i 
+\end{eqnarray}
+
+\begin{itemize}
+\item $E_i$ : Education of the $i^{th}$ individual 
+\item $X_i$ : Vector of independent variabies 
+\item $Y_{ic}$ : Dummy variables of year-of-birth $(c=1, 2,..., 10)$
+\item $Q_{ij}$ : Dummy variables of quarter-of-birth $(j=1, 2, 3)$
+\item $W_i$ : Weekly wage
+\item[$\blacksquare$] $\rho$ : Return to education
+\item[$\blacksquare$] $\pi, \delta _c, \theta _{jc}, \beta, \xi _c$ : Coeficients
+\end{itemize}
+
+Table IV - VI estimate the coefficient using the interaction of quarter-of-birth and year-of-birth as the intrument variables.
+Table VII adds state-of-birth as a covariate and intrument variable to the model (\ref{main1}) and (\ref{main2}); Table VIII, however, considers the model only for the black men.
+
+\subsection{Results}
+First, they examine the seasonal pattern in educational attainment. From Table I, the F-statistics are highly statistically significant indicating the strong relationship between quarter-of-birth and educational outcome variables.
+
+Second, they show that seasonal pattern of educational attainment is related to the compulsory school attendance law of each state through difference-in-differences analysis. From Table II, it is shown from the 1944 cohort that enrollment rate is increased by 4 percent for states with compulsory schooling law that require a minimum age of 17 or 18 years old. The effect, however, decreases for the 1954 and 1964 cohort to 2 and 0.5 percent. 
+
+Third, they estimate the return to education preliminarily by using Wald estimate. For the 1970 census, Wald estimate shows that one year increases in education leads to an increase of 7.15 percent in weekly wage; the OLS estimate -- not statistically different from Wald's -- shows 8.01 percent of return to education. For the 1980 census, Wald estimate shows that one year increases in education leads to an increase of 10.20 percent in weekly wage; the OLS estimate -- also not statistically different from Wald's -- shows 7.09 percent of return to education. 
+
+Fourth, they estimate the return to education by using quarter-of-birth as an intrument variable. The estimates for 4 specifications of TSLS and OLS are statistically indistinguishable with return to education for the 1920-1929, 1930-1939, and 1940-1949 cohort of 7.01 percent to 13.10 percent, 6.00 percent to 8.91 percent and 3.93 percent to 9.48 percent.
+
+Fifth, by introducing state-of-birth, they estimate a more efficient TSLS reducing the standard error by approximately 40 percent. The return to education, however, increases for the TSLS estimate, while decreases for the OLS's leading to a significant gap between the two estimators. They ascribe this result to the high school completion effect.
+
+Lastly, they estimate the return to education for black men to be around 3.91 percent to 6.72 percent which is significantly lower than for white man. Part of the reason is because of the inferior quality education that black men born 1930-1939 were provided.
+
+\subsection{Policy Recommendations}
+Their studies suggest that compulsory school attendance laws have positive effect in driving students to acquire more education. This, however, doesn't mean that compulsory school attendance laws always provide favorable prospects. They recommend that more study is needed on the externalities of these laws.
+
+\section{Critical Review}
+
+\subsection{Contributions}
+
+This research studies the effect of compulsory schooling laws on education and earnings. Their unusual experiment is conducted though the seasonal pattern arose in educational attainment.
+From this discovery, they contribute to the literature by estimating the impact of compulsory schooling laws on earning by using quarter-of-birth as an instrument variable.
+
+Few researches are done concerning the relationship between compulsory schooling laws and other socioeconomic variables. The authors, however, use an unusually natural fact to examine the effect of compulsory schooling laws on education and earnings. Children born in different quarters enter school at different ages; the compulsory school attendance laws, however, require children to study until they reach 16 to 18 years old. This law obliges children born in last quarter to study far longer than their friends born in first quarter. Furthermore, quarter-of-birth is exogeneous to other personal characteristics other than schooling age and thus bring about an apt instrument variable for years of education.
+
+They proceed to estimate the return to education by accounting the effect of compulsory schooling law and conclude that there is a negligible bias between their TSLS estimate and the traditional estimate of OLS.
+
+They further explore the interactions between state-of-birth and quarter-of-birth leading to a more efficient approximation of return to education and end their paper with the estimate of return to education for black workers.
+
+\subsection{Limitations}
+
+This paper from 1991, appoximately 30 years ago, may not be relevant to the current society. The social perception of education for men born almost centuries ago, actually in 1920-1949, will clearly be different from our generation. Most of the students in the $21^{st}$ century may value education high enough so that it renders the linkage between season of birth and education unfounded. 
+
+Policy Implications will also be limited to countries that adopt compulsory schooling laws by age. In countries such as Thailand, the compulsory schooling law requires every student to study until Grade 9. 
+This is clearly different from the United States'; thus, we can't determine the effect of Compulsory Schooling law on wage through quarter-of-birth in Thailand since child born in the first quarter can't dropout until his completion of junior high school study.
+
+From Figure III -- for men born in 1950-1959 -- apart from the downward trend of years of completed education, the seasonal pattern of education shows a different story compare to Figure I and II for men born in 1930-1949. Children born in the last quarter have fewer years of education compare to those born in the first quarter; This finding clearly contradicts the results they provided and the paper 
+doesn't perform further experiment for men born in 1950-1959. They only provided a one sentence explanation that the controversy is due to the Vietnam war and the younger men incomplete schooling.
+
+The paper's limitation is further stated by the author that their results doesn't show that compulsory schooling law is entirely favorable. Although they statistically show that compulsory schooling laws drive some students to study, additional researches on externality of these laws are needed. On the positive side, we may have  a reduce in crime rate from schooling attendance; Refractory students -- in the absent of compulsory schooling laws will dropout -- may inhibit the study of other students.
+
+\subsection{Data}
+
+This paper used various data sets from the Public Use Census Data; Together they bring about a large enough sample size which makes the statistical results valid under the Central Limit Theorem.
+
+The paper's minor drawback is the vague description of some variables. SMSA -- with the only explanation as ``center city'' -- may cause misunderstandings for non-U.S. readers. It is abbreviated from standard metropolitan statistical area which is coined by the U.S. Office of Management and Budget to be a region having at least one urbanized area with population exceeding 50,000.
+
+``Black men'' is also an ambiguous term. If, by genetic mutation, I born black while my parents are white, will I be a black men? If my entire family are black but I luckily(?) born white, can I call myself a white man? This paper doesn't clearly state it's classification method of black people. Different criteria regarding who is black are applied for different societies and they even changes across time. 
+It is important to understand this context since the research's interpretation for skin-based classification is entirely different compared to socially based systems of racial classification.
+
+
+
+\subsection{Model}
+
+\subsubsection{Selection of Independent Variables}
+
+Not stated explicitly in the paper, the Mincer earnings function is adopted as a guideline for selecting the independent variables; this is obvious due to the Age-squared component. Apart from schooling and experience (proxied by Age),  \cite{angrist1991} also includes personal characteristics such as  race, SMSA, marital status, region of residence which are entirely appropriate as regressors for log of weekly earning. 
+
+The interaction of quarter-of-birth and year-of-birth are ingeniously added as instrument variables. The interactions are well-suited since they satisfy the two main requirements for using IVs: the instruments must have a strong first stage,  and the instruments must satisfy exclusion restriction.
+
+Quarter-of-birth is strongly correlated to years of education as shown in the first section of \cite{angrist1991}, so the interactions have a strong first stage. For the instruments to satisfy 
+exclusion restriction, the interaction of quarter-of-birth and year-of-birth must be uncorrelated to the residual $\mu _i$ in 1.3 Model. In ``III. Other  Possible Effects of Season of Birth'', they verify this requirement by providing indirect evidences from the literature and estimate the income of college graduates by season of birth. No effects of quarter-of-birth are found in the dependent variable; hence, 
+the instruments satisfy the exclusion restriction requirement.
+
+\subsubsection{Possible Econometric Problems}
+
+As mentioned in the previous subsection, the instrument variables are appropriate since they satisfy the two main requirements for using IVs. 
+
+One of the possible problems is that the 1,500 exclusion restrictions of the interactions of state-of-birth-by-quarter-of-birth-by-year-of-birth should be added as the intrument variables for years of education to account for the cross-state seasonal by year variation; however, as mention in footnote 18, estimation that incorporates such intruments is computationally demanding for the 90s.
+
+Another possible problem is the use of linear probability model in Table I for the Outcome Variable ``High school graduate''. In footnote 7, the paper states that linear probability model is suitable due to the mutually exclusiveness of quarter-of-birth dummies. The problem is that linear probability model has two main drawbacks. First, predicted probabilities are not bounded between zero and one. Second, the error term is not homoskedastic. Although the first drawback is irrelevant in this case, having heteroskedasticity is problematic for inference tasks.
+
+For models in Table IV-VII, we may have heteroskedasticity in years of education since students with more years of education are expected to have more variation in wages (the upper bound increases rapidly). Spatial and temporal autocorrelation are not expected to occur for obvious reasons; Model misspecification is also not expected since their specification is suitable and corresponds to the literature.
+
+\subsubsection{Remedial Measures}
+The 1,500 exclusion restrictions of the interactions of state-of-birth-by-quarter-of-birth-by-year-of-birth could be added as the intrument variables in this era since Moore's Law apparently work out well.
+In Table I, the standard errors could be provided in the robust form to cope with heteroskedasticity from the linear probability model.
+Since heteroskedasticity is expected for models in Table IV-VII, robust s.e. should also be provided; this problem may turn out to not happen due to the shrinkage from logarithm of weekly wage.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\clearpage 
+\appendix
+\appendixpage
+\addappheadtotoc
+\section{Tables}
+\subsection{Table I}
+
+\begin{table}[h!]
+\centering 
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+                                                                                    & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{3}{c}{Quarter-of-birth effect}                                                                                                                                                      & \multicolumn{1}{l}{}                                         \\ \cmidrule(lr){4-6}
+\multicolumn{1}{c}{Outcome variable}                                                & Birth cohort         & Mean                 & I                                                              & II                                                             & III                                                            & F-test  {[}P-value{]}                                        \\ \midrule
+Total years of education$^1$                                                            & 1930-1939            & 12.79222             & \begin{tabular}[c]{@{}c@{}}-.1242856\\ (.0166581)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0859973\\ (.0167512)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0148872\\ (.0159604)\end{tabular} & \begin{tabular}[c]{@{}c@{}}25.12\\ {[}0.0000{]}\end{tabular} \\
+                                                                                    & 1940-1949            & 13.56001             & \begin{tabular}[c]{@{}c@{}}-.0854568\\ (.0125193)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0352745\\ (.0125985)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0188388\\ (.012602)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}17.36\\ {[}0.0000{]}\end{tabular} \\
+High school graduate$^2$                                                                   & 1930-1939            & .774068              & \begin{tabular}[c]{@{}c@{}}-.0191356\\ (.0021296)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0198344\\ (.0021415)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0038982\\ (.0020404)\end{tabular} & \begin{tabular}[c]{@{}c@{}}46.60\\ {[}0.0000{]}\end{tabular} \\
+                                                                                    & 1940-1949            & .8636907             & \begin{tabular}[c]{@{}c@{}}-.0145416\\ (.0014337)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0121225\\ (.0014428)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-.0019522\\ (.0014432)\end{tabular} & \begin{tabular}[c]{@{}c@{}}51.26\\ {[}0.0000{]}\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}Years of educ. for \\ high school graduates$^3$   \end{tabular} & 1930-1939            & 14.00601             & \begin{tabular}[c]{@{}c@{}}-.0296008\\ (.0142548)\end{tabular} & \begin{tabular}[c]{@{}c@{}}.0050956\\ (.0143257)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0165048\\ (.0136098)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}3.79\\ {[}0.0099{]}\end{tabular}  \\
+                                                                                    & 1940-1949            & 14.28134             & \begin{tabular}[c]{@{}c@{}}-.0093476\\ (.0110349)\end{tabular} & \begin{tabular}[c]{@{}c@{}}.0200636\\ (.0110922)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0079357\\ (.0110816)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}2.58\\ {[}0.0515{]}\end{tabular}  \\
+College graduates$^4$                                                                   & 1930-1939            & .2356244             & \begin{tabular}[c]{@{}c@{}}-.005028\\ (.0021646)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0027638\\ (.0021767)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0018581\\ (.0020739)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}5.00\\ {[}0.0018{]}\end{tabular}  \\
+                                                                                    & 1940-1949            & .2995881             & \begin{tabular}[c]{@{}c@{}}-.0027701\\ (.0019175)\end{tabular} & \begin{tabular}[c]{@{}c@{}}.0044954\\ (.0019297)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}-.0000155\\ (.0019302)\end{tabular} & \begin{tabular}[c]{@{}c@{}}5.01\\ {[}0.0018{]}\end{tabular}  \\
+Completed master's degree$^5$                                                           & 1930-1939            & .0898285             & \begin{tabular}[c]{@{}c@{}}-.0010254\\ (.0014583)\end{tabular} & \begin{tabular}[c]{@{}c@{}}.0019429\\ (.0014665)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}-.0009199\\ (.0013972)\end{tabular} & \begin{tabular}[c]{@{}c@{}}1.72\\ {[}0.1615{]}\end{tabular}  \\
+                                                                                    & 1940-1949            & .1101511             & \begin{tabular}[c]{@{}c@{}}.0000612\\ (.0013121)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0038261\\ (.0013204)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0010261\\ (.0013207)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}3.76\\ {[}0.0103{]}\end{tabular}  \\
+Completed doctoral degree$^6$                                                           & 1930-1939            & .0349964             & \begin{tabular}[c]{@{}c@{}}.0015652\\ (.0009373)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0024837\\ (.0009426)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}.0004057\\ (.0008981)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}2.88\\ (0.0343)\end{tabular}      \\
+                                                                                    & 1940-1949            & .0360273             & \begin{tabular}[c]{@{}c@{}}-.0017901\\ (.0007809)\end{tabular} & \begin{tabular}[c]{@{}c@{}}.0009889\\ (.0007858)\end{tabular}  & \begin{tabular}[c]{@{}c@{}}-.0005075\\ (.0007861)\end{tabular} & \begin{tabular}[c]{@{}c@{}}4.48\\ {[}0.0038{]}\end{tabular}  \\ \bottomrule
+\end{tabular}
+\caption[caption]{The Effect of Quarter of Birth on Various Educational Outcome Variables \\\hspace{\textwidth} 
+$^1$ From Table I.do line 117, 118, 120, 122  \\\hspace{\textwidth} 
+$^2$ From Table I.do line 132, 133, 200, 202  \\\hspace{\textwidth} 
+$^3$ From Table I.do line 135, 136, 139, 141  \\\hspace{\textwidth} 
+$^4$ From Table I.do line 213, 214, 274, 276  \\\hspace{\textwidth} 
+$^5$ From Table I.do line 290, 291, 350, 352  \\\hspace{\textwidth} 
+$^6$ From Table I.do line 367, 368, 427, 429  
+}
+\label{tab:my-table}
+\end{table}
+
+
+\clearpage 
+\subsection{Table II}
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[h!]
+\centering 
+\begin{tabular}{@{}lccc@{}}
+\toprule
+                                                                                & \multicolumn{2}{c}{Type of state law}                                                                                                                 & \multicolumn{1}{l}{}                                        \\ \cmidrule(lr){2-3}
+\multicolumn{1}{c}{Date of Birth}                                               & \begin{tabular}[c]{@{}c@{}}School-leaving\\ age: 16\\ (1)\end{tabular} & \begin{tabular}[c]{@{}c@{}}School-leaving\\ age: 17 or 18\\ (2)\end{tabular} & \begin{tabular}[c]{@{}c@{}}Column\\ (1) - (2)\end{tabular}  \\ \midrule
+                                                                                & \multicolumn{2}{l}{Percent enrolled April 1, 1960}                                                                                                    & \multicolumn{1}{l}{}                                        \\ \cmidrule(lr){2-3}
+\begin{tabular}[c]{@{}l@{}}1. Jan 1-Mar 31, 1994\\ (age 16)\end{tabular}        & \begin{tabular}[c]{@{}c@{}}84.89115$^1$\\ (0.38272)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}85.7213$^2$\\ (0.77054)\end{tabular}                  & \begin{tabular}[c]{@{}c@{}}-0.8301\\ (0.86035)\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}2. Apr 1-Dec 31, 1994\\ (age 15)\end{tabular}        & \begin{tabular}[c]{@{}c@{}}85.7225$^3$\\ (0.21789)\end{tabular}            & \begin{tabular}[c]{@{}c@{}}85.99152$^4$\\ (0.44417)\end{tabular}                 & \begin{tabular}[c]{@{}c@{}}-0.2690\\ (0.49473)\end{tabular} \\
+\begin{tabular}[c]{@{}l@{}}3. Within-state diff.\\ (row 1 - row 2)\end{tabular} & \begin{tabular}[c]{@{}c@{}}-0.83135$^1$\\ (0.44044)\end{tabular}           & \begin{tabular}[c]{@{}c@{}}-0.27022$^2$\\ (0.88931)\end{tabular}                 & \begin{tabular}[c]{@{}c@{}}-0.5611\\ (0.9924)\end{tabular}  \\ \bottomrule
+\end{tabular}
+\caption[caption]{Percentage of Age Group Enrolled in School By Birthday and Legal Dropout Age\\\hspace{\textwidth} 
+$^1$ From Table II.do line 61  \\\hspace{\textwidth} 
+$^2$ From Table II.do line 69 \\\hspace{\textwidth} 
+$^3$ From Table II.do line 60  \\\hspace{\textwidth} 
+$^4$ From Table II.do line 68
+}
+\label{tab:my-table}
+\end{table}
+
+The result of this table will not be the same as in the paper since the author doesn't provide data for this session. I only used the available data to approximate the result of this table.
+Results in the last column were manually calculated e.g.  $-0.5611 = (-0.8301) - (-0.2690)$
+
+%$ \sqrt{0.38272^2+0.77054^2}  \approx 0.86035$,
+
+
+\clearpage 
+\subsection{Table III}
+
+\begin{table}[h!]
+\centering 
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\multicolumn{4}{l}{PANEL A: WALD ESTIMATES FOR 1970 CENSUS - MEN BORN 1920-1929}                                                                                                                                                                                                                      \\ \midrule
+                                 & \begin{tabular}[c]{@{}c@{}}(1)\\ Born in \\ 1st quarter \\ of year\end{tabular} & \begin{tabular}[c]{@{}c@{}}(2)\\ Born in 2nd, \\ 3rd, or 4th\\  quarter of year\end{tabular} & \begin{tabular}[c]{@{}c@{}}(3)\\ Difference\\ (std. error)\\ (1)-(2)\end{tabular} \\ \midrule
+ln (wkly. wage)$^1$                  & 5.148471                                                                        & 5.15745                                                                                      & \begin{tabular}[c]{@{}c@{}}-.0089789\\ (.0030117)\end{tabular}                    \\
+Education$^2$                        & 11.3996                                                                         & 11.52515                                                                                     & \begin{tabular}[c]{@{}c@{}}-.1255553\\ (.0155391)\end{tabular}                    \\
+Wald est. of return to education$^3$ &                                                                                 &                                                                                              & \begin{tabular}[c]{@{}c@{}}.0715133\\ (.0218682)\end{tabular}                     \\
+OLS return to education$^4$          &                                                                                 &                                                                                              & \begin{tabular}[c]{@{}c@{}}.0801112\\ (.0003549)\end{tabular}                     \\ \midrule
+\multicolumn{4}{l}{PANEL B: WALD ESTIMATES FOR 1980 CENSUS - MEN BORN 1930-1939}                                                                                                                                                                                                                      \\ \midrule
+                                 & \begin{tabular}[c]{@{}c@{}}(1)\\ Born in \\ 1st quarter \\ of year\end{tabular} & \begin{tabular}[c]{@{}c@{}}(2)\\ Born in 2nd,\\  3rd, or 4th \\ quarter of year\end{tabular} & \begin{tabular}[c]{@{}c@{}}(3)\\ Difference\\ (std. error)\\ (1)-(2)\end{tabular} \\ \midrule
+ln (wkly. wage)$^5$                  & 5.891596                                                                        & 5.902695                                                                                     & \begin{tabular}[c]{@{}c@{}}-.0110989\\ (.0027388)\end{tabular}                    \\
+Education$^6$                        & 12.68807                                                                        & 12.79688                                                                                     & \begin{tabular}[c]{@{}c@{}}-.1088179\\ (.0132376)\end{tabular}                    \\
+Wald est. of return to education$^7$ &                                                                                 &                                                                                              & \begin{tabular}[c]{@{}c@{}}.101995\\ (.0239489)\end{tabular}                      \\
+OLS return to education$^8$          &                                                                                 &                                                                                              & \begin{tabular}[c]{@{}c@{}}.070851\\ (.0003386)\end{tabular}                      \\ \bottomrule
+\end{tabular}
+\caption[caption]{Wald Estimates\\\hspace{\textwidth} 
+$^1$ From Table III.do line 52, 53, 57  \\\hspace{\textwidth} 
+$^2$ From Table III.do line 54, 55, 58  \\\hspace{\textwidth} 
+$^3$ From Table III.do line 61  \\\hspace{\textwidth} 
+$^4$ From Table III.do line 63  \\\hspace{\textwidth} 
+$^5$ From Table III.do line 66, 67, 71  \\\hspace{\textwidth} 
+$^6$ From Table III.do line 68, 69, 72  \\\hspace{\textwidth} 
+$^7$ From Table III.do line 75  \\\hspace{\textwidth} 
+$^8$ From Table III.do line 77  \\\hspace{\textwidth} 
+}
+\label{tab:my-table}
+\end{table}
+
+
+\clearpage 
+\begin{landscape}
+\subsection{Table IV}
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+Independent Variables   &\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(1)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(2)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(3)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(4)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(5)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(6)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(7)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(8)\\ TSLS\end{tabular}}\\
+\hline
+Years of education       &      0.0802\sym{***}&      0.0769\sym{***}&      0.0802\sym{***}&       0.131\sym{***}&      0.0701\sym{***}&      0.0669\sym{***}&      0.0701\sym{***}&       0.101\sym{**} \\
+                         &  (0.000355)         &    (0.0150)         &  (0.000355)         &    (0.0334)         &  (0.000355)         &    (0.0151)         &  (0.000355)         &    (0.0334)         \\
+[1em]
+Race(1 = black)          &                     &                     &                     &                     &      -0.298\sym{***}&      -0.306\sym{***}&      -0.298\sym{***}&      -0.227\sym{**} \\
+                         &                     &                     &                     &                     &   (0.00434)         &    (0.0353)         &   (0.00434)         &    (0.0776)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.134\sym{***}&      -0.136\sym{***}&      -0.134\sym{***}&      -0.116\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00256)         &   (0.00924)         &   (0.00256)         &    (0.0198)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.293\sym{***}&       0.294\sym{***}&       0.293\sym{***}&       0.280\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00374)         &   (0.00719)         &   (0.00374)         &    (0.0141)         \\
+[1em]
+Age                      &                     &                     &       0.145\sym{*}  &       0.141\sym{*}  &                     &                     &       0.116         &       0.117         \\
+                         &                     &                     &    (0.0676)         &    (0.0704)         &                     &                     &    (0.0652)         &    (0.0661)         \\
+[1em]
+Age-squared              &                     &                     &    -0.00154\sym{*}  &    -0.00136         &                     &                     &    -0.00125         &    -0.00118         \\
+                         &                     &                     &  (0.000748)         &  (0.000787)         &                     &                     &  (0.000721)         &  (0.000736)         \\
+\hline
+Observations             &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         &      247199         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\caption[caption]{OLS and TSLS Estimates of the Return to Education for Men Born 1920-1929: 1970 Census \\\hspace{\textwidth}  Yes-No Dummies are not kept in the shown figure.}
+\end{table}
+\end{landscape}
+
+\clearpage 
+\begin{landscape}
+\subsection{Table V}
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+Independent Variables   &\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(1)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(2)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(3)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(4)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(5)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(6)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(7)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(8)\\ TSLS\end{tabular}}\\
+\hline
+Years of education       &      0.0711\sym{***}&      0.0891\sym{***}&      0.0711\sym{***}&      0.0760\sym{**} &      0.0632\sym{***}&      0.0806\sym{***}&      0.0632\sym{***}&      0.0600\sym{*}  \\
+                         &  (0.000339)         &    (0.0161)         &  (0.000339)         &    (0.0290)         &  (0.000339)         &    (0.0164)         &  (0.000339)         &    (0.0290)         \\
+[1em]
+Race(1 = black)          &                     &                     &                     &                     &      -0.257\sym{***}&      -0.230\sym{***}&      -0.257\sym{***}&      -0.263\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00404)         &    (0.0261)         &   (0.00404)         &    (0.0458)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.176\sym{***}&      -0.158\sym{***}&      -0.176\sym{***}&      -0.180\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00287)         &    (0.0174)         &   (0.00287)         &    (0.0305)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.248\sym{***}&       0.244\sym{***}&       0.248\sym{***}&       0.249\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00317)         &   (0.00487)         &   (0.00317)         &   (0.00726)         \\
+[1em]
+Age                      &                     &                     &     -0.0772         &     -0.0801         &                     &                     &     -0.0760         &     -0.0741         \\
+                         &                     &                     &    (0.0621)         &    (0.0645)         &                     &                     &    (0.0604)         &    (0.0626)         \\
+[1em]
+Age-squared              &                     &                     &    0.000787         &    0.000831         &                     &                     &    0.000770         &    0.000743         \\
+                         &                     &                     &  (0.000688)         &  (0.000734)         &                     &                     &  (0.000669)         &  (0.000712)         \\
+\hline
+Observations             &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\caption[caption]{OLS and TSLS Estimates of the Return to Education for Men Born 1930-1939: 1980 Census \\\hspace{\textwidth}  Yes-No Dummies are not kept in the shown figure.}
+\end{table}
+\end{landscape}
+
+
+
+\clearpage 
+\begin{landscape}
+\subsection{Table VI}
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+Independent Variables   &\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(1)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(2)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(3)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(4)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(5)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(6)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(7)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(8)\\ TSLS\end{tabular}}\\
+\hline
+Years of education       &      0.0573\sym{***}&      0.0553\sym{***}&      0.0573\sym{***}&      0.0948\sym{***}&      0.0520\sym{***}&      0.0393\sym{**} &      0.0521\sym{***}&      0.0779\sym{**} \\
+                         &  (0.000298)         &    (0.0138)         &  (0.000298)         &    (0.0223)         &  (0.000297)         &    (0.0145)         &  (0.000297)         &    (0.0239)         \\
+[1em]
+Race(1 = black)          &                     &                     &                     &                     &      -0.211\sym{***}&      -0.227\sym{***}&      -0.211\sym{***}&      -0.179\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00322)         &    (0.0183)         &   (0.00322)         &    (0.0299)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.142\sym{***}&      -0.154\sym{***}&      -0.142\sym{***}&      -0.118\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00229)         &    (0.0135)         &   (0.00229)         &    (0.0220)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.245\sym{***}&       0.244\sym{***}&       0.244\sym{***}&       0.245\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00220)         &   (0.00223)         &   (0.00220)         &   (0.00229)         \\
+[1em]
+Age                      &                     &                     &       0.180\sym{***}&       0.133\sym{**} &                     &                     &       0.152\sym{***}&       0.121\sym{*}  \\
+                         &                     &                     &    (0.0389)         &    (0.0486)         &                     &                     &    (0.0379)         &    (0.0474)         \\
+[1em]
+Age-squared              &                     &                     &    -0.00234\sym{***}&    -0.00158\sym{*}  &                     &                     &    -0.00195\sym{***}&    -0.00146\sym{*}  \\
+                         &                     &                     &  (0.000559)         &  (0.000725)         &                     &                     &  (0.000545)         &  (0.000709)         \\
+\hline
+Observations             &      486926         &      486926         &      486926         &      486926         &      486926         &      486926         &      486926         &      486926         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\caption[caption]{OLS and TSLS Estimates of the Return to Education for Men Born 1940-1949: 1980 Census \\\hspace{\textwidth}  Yes-No Dummies are not kept in the shown figure.}
+\end{table}
+\end{landscape}
+
+
+
+\clearpage 
+\begin{landscape}
+\subsection{Table VII}
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+Independent Variables   &\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(1)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(2)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(3)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(4)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(5)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(6)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(7)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(8)\\ TSLS\end{tabular}}\\
+\hline
+Years of education       &      0.0673\sym{***}&      0.0928\sym{***}&      0.0673\sym{***}&      0.0907\sym{***}&      0.0628\sym{***}&      0.0831\sym{***}&      0.0628\sym{***}&      0.0811\sym{***}\\
+                         &  (0.000346)         &   (0.00930)         &  (0.000346)         &    (0.0107)         &  (0.000344)         &   (0.00949)         &  (0.000344)         &    (0.0109)         \\
+[1em]
+Race(1 = black)          &                     &                     &                     &                     &      -0.255\sym{***}&      -0.233\sym{***}&      -0.255\sym{***}&      -0.235\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00435)         &    (0.0109)         &   (0.00435)         &    (0.0122)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.171\sym{***}&      -0.151\sym{***}&      -0.170\sym{***}&      -0.153\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00289)         &   (0.00948)         &   (0.00289)         &    (0.0107)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.249\sym{***}&       0.244\sym{***}&       0.249\sym{***}&       0.244\sym{***}\\
+                         &                     &                     &                     &                     &   (0.00316)         &   (0.00399)         &   (0.00316)         &   (0.00420)         \\
+[1em]
+Age                      &                     &                     &     -0.0757         &     -0.0880         &                     &                     &     -0.0778         &     -0.0876         \\
+                         &                     &                     &    (0.0617)         &    (0.0624)         &                     &                     &    (0.0603)         &    (0.0609)         \\
+[1em]
+Age-squared              &                     &                     &    0.000752         &    0.000942         &                     &                     &    0.000789         &    0.000938         \\
+                         &                     &                     &  (0.000684)         &  (0.000694)         &                     &                     &  (0.000669)         &  (0.000677)         \\
+\hline
+Observations             &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         &      329509         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\caption[caption]{OLS and TSLS Estimates of the Return to Education for Men Born 1930-1939: 1980 Census \\\hspace{\textwidth}  Yes-No Dummies are not kept in the shown figure.}
+\end{table}
+\end{landscape}
+
+
+
+
+\clearpage 
+\begin{landscape}
+\subsection{Table VIII}
+
+\begin{table}[htbp]\centering
+\def\sym#1{\ifmmode^{#1}\else\(^{#1}\)\fi}
+\begin{tabular}{l*{8}{c}}
+\hline\hline
+Independent Variables   &\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(1)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(2)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(3)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(4)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(5)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(6)\\ TSLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(7)\\ OLS\end{tabular}}&\multicolumn{1}{c}{\begin{tabular}[c]{@{}l@{}}(8)\\ TSLS\end{tabular}}\\
+\hline
+Years of education       &      0.0672\sym{***}&      0.0635\sym{***}&      0.0671\sym{***}&      0.0567\sym{**} &      0.0576\sym{***}&      0.0461\sym{*}  &      0.0576\sym{***}&      0.0393\sym{*}  \\
+                         &   (0.00134)         &    (0.0185)         &   (0.00134)         &    (0.0199)         &   (0.00135)         &    (0.0187)         &   (0.00135)         &    (0.0199)         \\
+[1em]
+SMSA (1 = center city)   &                     &                     &                     &                     &      -0.189\sym{***}&      -0.205\sym{***}&      -0.188\sym{***}&      -0.215\sym{***}\\
+                         &                     &                     &                     &                     &    (0.0142)         &    (0.0307)         &    (0.0142)         &    (0.0324)         \\
+[1em]
+Married (1 = married)    &                     &                     &                     &                     &       0.222\sym{***}&       0.227\sym{***}&       0.222\sym{***}&       0.231\sym{***}\\
+                         &                     &                     &                     &                     &    (0.0100)         &    (0.0136)         &    (0.0100)         &    (0.0140)         \\
+[1em]
+Age                      &                     &                     &      -0.310         &      -0.326         &                     &                     &      -0.298         &      -0.323         \\
+                         &                     &                     &     (0.254)         &     (0.256)         &                     &                     &     (0.247)         &     (0.249)         \\
+[1em]
+Age-squared              &                     &                     &     0.00333         &     0.00347         &                     &                     &     0.00323         &     0.00346         \\
+                         &                     &                     &   (0.00282)         &   (0.00283)         &                     &                     &   (0.00275)         &   (0.00276)         \\
+\hline
+Observations             &       26913         &       26913         &       26913         &       26913         &       26913         &       26913         &       26913         &       26913         \\
+\hline\hline
+\multicolumn{9}{l}{\footnotesize Standard errors in parentheses}\\
+\multicolumn{9}{l}{\footnotesize \sym{*} \(p<0.05\), \sym{**} \(p<0.01\), \sym{***} \(p<0.001\)}\\
+\end{tabular}
+\caption[caption]{OLS and TSLS Estimates of the Return to Education for Black Men Born 1930-1939: 1980 Census \\\hspace{\textwidth}  Yes-No Dummies are not kept in the shown figure.}
+\end{table}
+\end{landscape}
+
+
+
+
+\end{document}
+

@@ -1,0 +1,217 @@
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  C:\Users\Win\OneDrive - Chulalongkorn University\Chula\junior2\Microecono\reproduce_project\02_logfile\Table_II.log
+  log type:  text
+ opened on:   8 Apr 2020, 22:46:37
+
+. 
+. use "C:\Users\Win\OneDrive - Chulalongkorn University\Chula\junior2\Microecono\reproduce_project\raw_data.dta"
+
+. rename v1 AGE
+
+. rename v2 AGEQ
+
+. rename v4 EDUC
+
+. rename v5 ENOCENT
+
+. rename v6 ESOCENT
+
+. rename v9 LWKLYWGE
+
+. rename v10 MARRIED
+
+. rename v11 MIDATL
+
+. rename v12 MT
+
+. rename v13 NEWENG
+
+. rename v16 CENSUS
+
+. rename v17 SOB
+
+. rename v18 QOB
+
+. rename v19 RACE
+
+. rename v20 SMSA
+
+. rename v21 SOATL
+
+. rename v24 WNOCENT
+
+. rename v25 WSOCENT
+
+. rename v27 YOB
+
+. 
+. **********  YOB dummies **********
+. replace YOB=YOB-1900 if YOB >=1900
+(247,199 real changes made)
+
+. 
+. foreach i of numlist 0/9 {
+  2. gen YR`i'=0
+  3. replace YR`i'=1 if YOB==20+`i' | YOB==30+`i' | YOB==40+`i' 
+  4. }
+(95,545 real changes made)
+(93,948 real changes made)
+(101,493 real changes made)
+(101,445 real changes made)
+(101,851 real changes made)
+(102,153 real changes made)
+(111,229 real changes made)
+(120,407 real changes made)
+(117,529 real changes made)
+(118,034 real changes made)
+
+. **********  QOB dummies ***********
+. foreach i of numlist 1/4 {
+  2. gen QTR`i'=0
+  3. replace QTR`i'=1 if QOB==`i'
+  4. }
+(262,019 real changes made)
+(255,733 real changes made)
+(280,749 real changes made)
+(265,133 real changes made)
+
+. **********  QOB*YOB dummies ********
+. foreach j of numlist 1/3 {
+  2. foreach i of numlist 0/9 {
+  3. gen QTR`j'YR`i'=QTR`j'*YR`i'
+  4. }
+  5. }
+
+. **********  Select Particular Men Born ********
+. gen COHORT=2029
+
+. replace COHORT=3039 if YOB<=39 & YOB >=30
+(329,509 real changes made)
+
+. replace COHORT=4049 if YOB<=49 & YOB >=40
+(486,926 real changes made)
+
+. replace AGEQ=AGEQ-1900 if CENSUS==80
+(816,435 real changes made)
+
+. gen AGEQSQ= AGEQ*AGEQ
+
+. 
+. ********************
+. merge m:1 SOB using "C:\Users\Win\OneDrive - Chulalongkorn University\Chula\junior2\Microecono\reproduce_project\appendix2_table.dta"
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         4,330
+        from master                     4,330  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                         1,059,304  (_merge==3)
+    -----------------------------------------
+
+. 
+. ** First Column: 16
+. scalar yob_table2 = 44
+
+. // drop dt2
+. 
+. drop dt2
+variable dt2 not found
+r(111);
+
+end of do-file
+
+r(111);
+
+. do "C:\Users\Win\AppData\Local\Temp\STD4e34_000000.tmp"
+
+. gen dt2 = 0
+
+. replace dt2=1 if YOB==yob_table2 &at_age1960==16 & EDUC>=12
+(29,534 real changes made)
+
+. reg dt2 QTR1 if YOB==yob_table2  & at_age1960==16 // .857225   .0021789
+
+      Source |       SS           df       MS      Number of obs   =    34,535
+-------------+----------------------------------   F(1, 34533)     =      3.56
+       Model |  .441191003         1  .441191003   Prob > F        =    0.0591
+    Residual |  4276.36593    34,533  .123834186   R-squared       =    0.0001
+-------------+----------------------------------   Adj R-squared   =    0.0001
+       Total |  4276.80712    34,534  .123843375   Root MSE        =     .3519
+
+------------------------------------------------------------------------------
+         dt2 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        QTR1 |  -.0083135   .0044044    -1.89   0.059    -.0169464    .0003193
+       _cons |    .857225   .0021789   393.42   0.000     .8529543    .8614958
+------------------------------------------------------------------------------
+
+. reg dt2 QTR2 QTR3 QTR4 if YOB==yob_table2  & at_age1960==16 // .8489115   .0038272
+
+      Source |       SS           df       MS      Number of obs   =    34,535
+-------------+----------------------------------   F(3, 34531)     =      5.25
+       Model |  1.94828415         3  .649428051   Prob > F        =    0.0013
+    Residual |  4274.85884    34,531  .123797713   R-squared       =    0.0005
+-------------+----------------------------------   Adj R-squared   =    0.0004
+       Total |  4276.80712    34,534  .123843375   Root MSE        =    .35185
+
+------------------------------------------------------------------------------
+         dt2 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        QTR2 |  -.0016094   .0054584    -0.29   0.768    -.0123081    .0090893
+        QTR3 |   .0086207   .0053049     1.63   0.104     -.001777    .0190184
+        QTR4 |   .0172744   .0053683     3.22   0.001     .0067524    .0277963
+       _cons |   .8489115   .0038272   221.81   0.000     .8414101    .8564129
+------------------------------------------------------------------------------
+
+. 
+. ** Second Column: 17 or 18
+. 
+. drop dt2
+
+. gen dt2 = 0
+
+. replace dt2=1 if YOB==yob_table2 &(at_age1960==17 | at_age1960==18) & EDUC>=12
+(7,020 real changes made)
+
+. reg dt2 QTR1 if YOB==yob_table2  &(at_age1960==17 | at_age1960==18) // .8599152   .0044417
+
+      Source |       SS           df       MS      Number of obs   =     8,170
+-------------+----------------------------------   F(1, 8168)      =      0.09
+       Model |    .0111695         1    .0111695   Prob > F        =    0.7612
+    Residual |  988.116125     8,168   .12097406   R-squared       =    0.0000
+-------------+----------------------------------   Adj R-squared   =   -0.0001
+       Total |  988.127295     8,169  .120960619   Root MSE        =    .34781
+
+------------------------------------------------------------------------------
+         dt2 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        QTR1 |  -.0027022   .0088931    -0.30   0.761     -.020135    .0147305
+       _cons |   .8599152   .0044417   193.60   0.000     .8512084     .868622
+------------------------------------------------------------------------------
+
+. reg dt2 QTR2 QTR3 QTR4 if YOB==yob_table2  &(at_age1960==17 | at_age1960==18) // .857213   .0077054 
+
+      Source |       SS           df       MS      Number of obs   =     8,170
+-------------+----------------------------------   F(3, 8166)      =      0.05
+       Model |  .019018124         3  .006339375   Prob > F        =    0.9842
+    Residual |  988.108277     8,166  .121002728   R-squared       =    0.0000
+-------------+----------------------------------   Adj R-squared   =   -0.0003
+       Total |  988.127295     8,169  .120960619   Root MSE        =    .34785
+
+------------------------------------------------------------------------------
+         dt2 |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+        QTR2 |    .004239   .0110107     0.38   0.700    -.0173448    .0258228
+        QTR3 |   .0024773   .0107775     0.23   0.818    -.0186494    .0236041
+        QTR4 |   .0014668   .0108878     0.13   0.893     -.019876    .0228095
+       _cons |    .857213   .0077054   111.25   0.000     .8421084    .8723175
+------------------------------------------------------------------------------
+
+. log close
+      name:  <unnamed>
+       log:  C:\Users\Win\OneDrive - Chulalongkorn University\Chula\junior2\Microecono\reproduce_project\02_logfile\Table_II.log
+  log type:  text
+ closed on:   8 Apr 2020, 22:48:01
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
