@@ -1,0 +1,92 @@
+texdoc init stata_log.tex, replace
+/*tex
+\documentclass{article}
+\usepackage{stata}
+\usepackage[paper=a4paper]{geometry}
+\title{Replication Paper - Log Files}
+\author{Win Supanwanid}
+\date{May 2020}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newgeometry{top=1in,bottom=1in,right=0.5in,left=0.5in}
+\section{Log Files}
+tex*/
+
+/*tex
+\subsection*{Table I}
+tex*/
+
+texdoc stlog table1, nodo
+do "Table I"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table II}
+tex*/
+
+texdoc stlog table2, nodo
+do "Table II"
+texdoc stlog close
+
+
+/*tex
+\clearpage
+\subsection*{Table III}
+tex*/
+
+texdoc stlog table3, nodo
+do "Table III"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table IV}
+tex*/
+
+texdoc stlog table4, nodo
+do "Table IV"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table V}
+tex*/
+
+texdoc stlog table5, nodo
+do "Table V"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table VI}
+tex*/
+
+texdoc stlog table6, nodo
+do "Table VI"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table VII}
+tex*/
+
+texdoc stlog table7, nodo
+do "Table VII"
+texdoc stlog close
+
+/*tex
+\clearpage
+\subsection*{Table VIII}
+tex*/
+
+texdoc stlog table8, nodo
+do "Table VIII"
+texdoc stlog close
+
+/*tex
+\end{document}
+tex*/

@@ -1,0 +1,47 @@
+\documentclass{article}
+\usepackage{stata}
+\usepackage[paper=a4paper]{geometry}
+\usepackage[hidelinks]{hyperref} % for link
+\title{Replication Paper - Log Files}
+\author{Win Supanwanid}
+\date{May 2020}
+
+\begin{document}
+\renewcommand{\abstractname}{\vspace{-\baselineskip}} % remove abstract header
+\maketitle
+
+\begin{abstract}
+
+ This is the pdf version of log files used in the process of replicating the paper -- Does Compulsory School Attendance Affect Schooling and Earning.
+The full STATA codes and Log files could be found at \url{www.github.com/winsup/angrist_krueger_1991}.
+
+\end{abstract}
+
+\tableofcontents
+
+\newgeometry{top=1in,bottom=1in,right=0.5in,left=0.5in}
+\section{Log Files}
+\subsection{Table I}
+\begin{stlog}\input{table1.log.tex}\end{stlog}
+\clearpage
+\subsection{Table II}
+\begin{stlog}\input{table2.log.tex}\end{stlog}
+\clearpage
+\subsection{Table III}
+\begin{stlog}\input{table3.log.tex}\end{stlog}
+\clearpage
+\subsection{Table IV}
+\begin{stlog}\input{table4.log.tex}\end{stlog}
+\clearpage
+\subsection{Table V}
+\begin{stlog}\input{table5.log.tex}\end{stlog}
+\clearpage
+\subsection{Table VI}
+\begin{stlog}\input{table6.log.tex}\end{stlog}
+\clearpage
+\subsection{Table VII}
+\begin{stlog}\input{table7.log.tex}\end{stlog}
+\clearpage
+\subsection{Table VIII}
+\begin{stlog}\input{table8.log.tex}\end{stlog}
+\end{document}

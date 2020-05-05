@@ -1,0 +1,1108 @@
+. 
+. do "Table VIII"
+{\smallskip}
+. clear
+{\smallskip}
+. /* log using "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\02_logfile\\Table_VIII.log", replace  */
+. 
+. use "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\raw_data.dta"
+{\smallskip}
+. rename v1 AGE
+{\smallskip}
+. rename v2 AGEQ
+{\smallskip}
+. rename v4 EDUC
+{\smallskip}
+. rename v5 ENOCENT
+{\smallskip}
+. rename v6 ESOCENT
+{\smallskip}
+. rename v9 LWKLYWGE
+{\smallskip}
+. rename v10 MARRIED
+{\smallskip}
+. rename v11 MIDATL
+{\smallskip}
+. rename v12 MT
+{\smallskip}
+. rename v13 NEWENG
+{\smallskip}
+. rename v16 CENSUS
+{\smallskip}
+. rename v17 SOB
+{\smallskip}
+. rename v18 QOB
+{\smallskip}
+. rename v19 RACE
+{\smallskip}
+. rename v20 SMSA
+{\smallskip}
+. rename v21 SOATL
+{\smallskip}
+. rename v24 WNOCENT
+{\smallskip}
+. rename v25 WSOCENT
+{\smallskip}
+. rename v27 YOB
+{\smallskip}
+. 
+. **********  YOB dummies **********
+. replace YOB=YOB-1900 if YOB >=1900
+(247,199 real changes made)
+{\smallskip}
+. 
+. foreach i of numlist 0/9 {\lbr}
+  2. gen YR`i'=0
+  3. replace YR`i'=1 if YOB==20+`i' | YOB==30+`i' | YOB==40+`i' 
+  4. {\rbr}
+(95,545 real changes made)
+(93,948 real changes made)
+(101,493 real changes made)
+(101,445 real changes made)
+(101,851 real changes made)
+(102,153 real changes made)
+(111,229 real changes made)
+(120,407 real changes made)
+(117,529 real changes made)
+(118,034 real changes made)
+{\smallskip}
+. **********  QOB dummies ***********
+. foreach i of numlist 1/4 {\lbr}
+  2. gen QTR`i'=0
+  3. replace QTR`i'=1 if QOB==`i'
+  4. {\rbr}
+(262,019 real changes made)
+(255,733 real changes made)
+(280,749 real changes made)
+(265,133 real changes made)
+{\smallskip}
+. **********  QOB*YOB dummies ********
+. foreach j of numlist 1/3 {\lbr}
+  2. foreach i of numlist 0/9 {\lbr}
+  3. gen QTR`j'YR`i'=QTR`j'*YR`i'
+  4. {\rbr}
+  5. {\rbr}
+{\smallskip}
+. **********  Select Particular Men Born ********
+. gen COHORT=2029
+{\smallskip}
+. replace COHORT=3039 if YOB<=39 \& YOB >=30
+(329,509 real changes made)
+{\smallskip}
+. replace COHORT=4049 if YOB<=49 \& YOB >=40
+(486,926 real changes made)
+{\smallskip}
+. replace AGEQ=AGEQ-1900 if CENSUS==80
+(816,435 real changes made)
+{\smallskip}
+. gen AGEQSQ= AGEQ*AGEQ
+{\smallskip}
+. *************************************
+. keep if COHORT>3000 \& COHORT <3040 \& RACE==1
+(1,036,721 observations deleted)
+{\smallskip}
+. *************************************
+. tabulate SOB, generate(state)
+{\smallskip}
+        SOB {\VBAR}      Freq.     Percent        Cum.
+\HLI{12}{\PLUS}\HLI{35}
+          1 {\VBAR}      2,418        8.98        8.98
+          2 {\VBAR}          8        0.03        9.01
+          4 {\VBAR}         25        0.09        9.11
+          5 {\VBAR}      1,045        3.88       12.99
+          6 {\VBAR}        222        0.82       13.81
+          8 {\VBAR}         12        0.04       13.86
+          9 {\VBAR}         86        0.32       14.18
+         10 {\VBAR}         65        0.24       14.42
+         11 {\VBAR}        325        1.21       15.63
+         12 {\VBAR}        872        3.24       18.87
+         13 {\VBAR}      2,363        8.78       27.65
+         16 {\VBAR}          6        0.02       27.67
+         17 {\VBAR}        598        2.22       29.89
+         18 {\VBAR}        224        0.83       30.72
+         19 {\VBAR}         40        0.15       30.87
+         20 {\VBAR}        117        0.43       31.31
+         21 {\VBAR}        376        1.40       32.71
+         22 {\VBAR}      1,761        6.54       39.25
+         23 {\VBAR}          5        0.02       39.27
+         24 {\VBAR}        620        2.30       41.57
+         25 {\VBAR}         93        0.35       41.92
+         26 {\VBAR}        374        1.39       43.31
+         27 {\VBAR}         21        0.08       43.38
+         28 {\VBAR}      2,485        9.23       52.62
+         29 {\VBAR}        456        1.69       54.31
+         30 {\VBAR}          5        0.02       54.33
+         31 {\VBAR}         36        0.13       54.46
+         32 {\VBAR}          2        0.01       54.47
+         33 {\VBAR}          4        0.01       54.49
+         34 {\VBAR}        428        1.59       56.08
+         35 {\VBAR}          7        0.03       56.10
+         36 {\VBAR}        912        3.39       59.49
+         37 {\VBAR}      2,387        8.87       68.36
+         38 {\VBAR}          7        0.03       68.39
+         39 {\VBAR}        667        2.48       70.87
+         40 {\VBAR}        368        1.37       72.23
+         41 {\VBAR}          6        0.02       72.26
+         42 {\VBAR}        911        3.38       75.64
+         44 {\VBAR}         28        0.10       75.74
+         45 {\VBAR}      1,960        7.28       83.03
+         46 {\VBAR}          5        0.02       83.05
+         47 {\VBAR}        983        3.65       86.70
+         48 {\VBAR}      1,696        6.30       93.00
+         49 {\VBAR}          5        0.02       93.02
+         50 {\VBAR}          4        0.01       93.03
+         51 {\VBAR}      1,519        5.64       98.68
+         53 {\VBAR}         38        0.14       98.82
+         54 {\VBAR}        266        0.99       99.81
+         55 {\VBAR}         49        0.18       99.99
+         56 {\VBAR}          3        0.01      100.00
+\HLI{12}{\PLUS}\HLI{35}
+      Total {\VBAR}     26,913      100.00
+{\smallskip}
+. 
+. foreach j of numlist 1/3 {\lbr}
+  2. foreach i of numlist 1/50 {\lbr}
+  3. gen QTR`j'state`i'=QTR`j'*state`i'
+  4. {\rbr}
+  5. {\rbr}
+{\smallskip}
+. **********  Start Regression ********
+. eststo clear
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC  YR0-YR8 state1-state50
+note: state50 omitted because of collinearity
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =    26,913
+\HLI{13}{\PLUS}\HLI{34}   F(59, 26853)    =     52.84
+       Model {\VBAR}  1692.59641        59  28.6880748   Prob > F        =    0.0000
+    Residual {\VBAR}  14579.9933    26,853  .542955844   R-squared       =    0.1040
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1020
+       Total {\VBAR}  16272.5897    26,912  .604659248   Root MSE        =    .73686
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0671712   .0013424    50.04   0.000       .06454    .0698025
+         YR0 {\VBAR}   .0165525   .0198565     0.83   0.405    -.0223672    .0554722
+         YR1 {\VBAR}   .0277306   .0206417     1.34   0.179    -.0127282    .0681894
+         YR2 {\VBAR}    .042755   .0194714     2.20   0.028     .0045901      .08092
+         YR3 {\VBAR}   .0317721   .0197488     1.61   0.108    -.0069367    .0704808
+         YR4 {\VBAR}   .0470725   .0195048     2.41   0.016     .0088422    .0853029
+         YR5 {\VBAR}  -.0112328   .0190954    -0.59   0.556    -.0486607    .0261952
+         YR6 {\VBAR}   .0262213   .0193994     1.35   0.176    -.0118026    .0642451
+         YR7 {\VBAR}  -.0167387   .0193093    -0.87   0.386     -.054586    .0211085
+         YR8 {\VBAR}  -.0021854   .0190922    -0.11   0.909     -.039607    .0352363
+      state1 {\VBAR}  -.4017756   .4257601    -0.94   0.345    -1.236288    .4327365
+      state2 {\VBAR}  -.2377713   .4989442    -0.48   0.634    -1.215728    .7401853
+      state3 {\VBAR}  -.2295004   .4502741    -0.51   0.610    -1.112061    .6530604
+      state4 {\VBAR}  -.3249727   .4261055    -0.76   0.446    -1.160162    .5102164
+      state5 {\VBAR}  -.3771752   .4283495    -0.88   0.379    -1.216763    .4624123
+      state6 {\VBAR}  -.6392151   .4757211    -1.34   0.179    -1.571653    .2932232
+      state7 {\VBAR}  -.3916008   .4328419    -0.90   0.366    -1.239994     .456792
+      state8 {\VBAR}   -.466764   .4351954    -1.07   0.283     -1.31977    .3862418
+      state9 {\VBAR}  -.2399371   .4274441    -0.56   0.575     -1.07775    .5978757
+     state10 {\VBAR}  -.4257412   .4262217    -1.00   0.318    -1.261158    .4096757
+     state11 {\VBAR}  -.4294161   .4257754    -1.01   0.313    -1.263958     .405126
+     state12 {\VBAR}  -.3206786   .5211369    -0.62   0.538    -1.342134    .7007771
+     state13 {\VBAR}  -.2475854   .4265503    -0.58   0.562    -1.083646    .5884755
+     state14 {\VBAR}  -.3215452    .428323    -0.75   0.453    -1.161081    .5179903
+     state15 {\VBAR}  -.3841023   .4411425    -0.87   0.384    -1.248765    .4805602
+     state16 {\VBAR}    -.29197   .4309036    -0.68   0.498    -1.136564    .5526235
+     state17 {\VBAR}  -.3430779   .4271875    -0.80   0.422    -1.180388    .4942318
+     state18 {\VBAR}  -.3590783   .4258575    -0.84   0.399    -1.193781    .4756247
+     state19 {\VBAR}  -.6249879   .5381488    -1.16   0.246    -1.679788    .4298118
+     state20 {\VBAR}  -.4116546   .4265193    -0.97   0.334    -1.247655    .4243455
+     state21 {\VBAR}  -.2376632   .4322927    -0.55   0.582    -1.084979    .6096531
+     state22 {\VBAR}  -.1912966   .4271877    -0.45   0.654    -1.028607    .6460136
+     state23 {\VBAR}  -.3295736   .4548695    -0.72   0.469    -1.221142    .5619945
+     state24 {\VBAR}  -.3610444   .4257647    -0.85   0.396    -1.195565    .4734766
+     state25 {\VBAR}  -.3465261   .4268869    -0.81   0.417    -1.183247    .4901946
+     state26 {\VBAR}  -.0206788    .538178    -0.04   0.969    -1.075536    1.034178
+     state27 {\VBAR}  -.6157618   .4428702    -1.39   0.164    -1.483811     .252287
+     state28 {\VBAR}  -.1826565   .6727844    -0.27   0.786    -1.501349    1.136036
+     state29 {\VBAR}   .0315124     .56286     0.06   0.955    -1.071723    1.134747
+     state30 {\VBAR}  -.3819126    .426979    -0.89   0.371    -1.218814    .4549886
+     state31 {\VBAR}  -.2463047   .5085287    -0.48   0.628    -1.243048    .7504382
+     state32 {\VBAR}  -.3457928   .4261794    -0.81   0.417    -1.181127    .4895412
+     state33 {\VBAR}  -.4896499    .425764    -1.15   0.250     -1.32417    .3448698
+     state34 {\VBAR}  -.2430058   .5085747    -0.48   0.633    -1.239839    .7538273
+     state35 {\VBAR}   -.265378    .426442    -0.62   0.534    -1.101227    .5704706
+     state36 {\VBAR}  -.4131196   .4272147    -0.97   0.334    -1.250483    .4242435
+     state37 {\VBAR}  -.3860073   .5210919    -0.74   0.459    -1.407375      .63536
+     state38 {\VBAR}  -.3273122   .4261828    -0.77   0.442    -1.162653    .5080284
+     state39 {\VBAR}  -.2790084   .4477257    -0.62   0.533    -1.156574    .5985574
+     state40 {\VBAR}  -.4867285     .42583    -1.14   0.253    -1.321378    .3479205
+     state41 {\VBAR}  -.2153589   .5381768    -0.40   0.689    -1.270214    .8394959
+     state42 {\VBAR}  -.3600819   .4261401    -0.84   0.398    -1.195339     .475175
+     state43 {\VBAR}  -.4200597   .4258636    -0.99   0.324    -1.254775    .4146552
+     state44 {\VBAR}    -.31643   .5382195    -0.59   0.557    -1.371368    .7385084
+     state45 {\VBAR}  -.5627624   .5628285    -1.00   0.317    -1.665936     .540411
+     state46 {\VBAR}  -.4061848   .4259226    -0.95   0.340    -1.241015    .4286457
+     state47 {\VBAR}  -.5178686   .4419431    -1.17   0.241      -1.3841     .348363
+     state48 {\VBAR}  -.3508256   .4278777    -0.82   0.412    -1.189488    .4878371
+     state49 {\VBAR}  -.2630474    .438331    -0.60   0.548    -1.122199    .5961042
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   5.153805   .4261462    12.09   0.000     4.318536    5.989073
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model1
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 state1-state50 (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8 QTR1state1-QTR3state50)
+note: state50 omitted because of collinearity
+note: QTR1state28 omitted because of collinearity
+note: QTR1state29 omitted because of collinearity
+note: QTR1state37 omitted because of collinearity
+note: QTR1state45 omitted because of collinearity
+note: QTR1state49 omitted because of collinearity
+note: QTR1state50 omitted because of collinearity
+note: QTR2state12 omitted because of collinearity
+note: QTR2state26 omitted because of collinearity
+note: QTR2state28 omitted because of collinearity
+note: QTR2state29 omitted because of collinearity
+note: QTR2state44 omitted because of collinearity
+note: QTR2state49 omitted because of collinearity
+note: QTR2state50 omitted because of collinearity
+note: QTR3state28 omitted because of collinearity
+note: QTR3state41 omitted because of collinearity
+note: QTR3state45 omitted because of collinearity
+note: QTR3state50 omitted because of collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =     26,913
+                                                  Wald chi2(59)   =     626.75
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1038
+                                                  Root MSE        =     .73614
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0634791   .0184661     3.44   0.001     .0272863    .0996719
+         YR0 {\VBAR}   .0124872   .0283677     0.44   0.660    -.0431125    .0680868
+         YR1 {\VBAR}   .0247665   .0253746     0.98   0.329    -.0249668    .0744997
+         YR2 {\VBAR}   .0401184   .0234812     1.71   0.088    -.0059039    .0861408
+         YR3 {\VBAR}   .0294706   .0228267     1.29   0.197    -.0152689    .0742101
+         YR4 {\VBAR}   .0452356   .0215327     2.10   0.036     .0030322    .0874389
+         YR5 {\VBAR}  -.0126427   .0203318    -0.62   0.534    -.0524923     .027207
+         YR6 {\VBAR}   .0250337   .0202656     1.24   0.217    -.0146862    .0647536
+         YR7 {\VBAR}  -.0173167   .0195047    -0.89   0.375    -.0555452    .0209119
+         YR8 {\VBAR}  -.0023213   .0190856    -0.12   0.903    -.0397284    .0350858
+      state1 {\VBAR}  -.4128204   .4288983    -0.96   0.336    -1.253446    .4278049
+      state2 {\VBAR}  -.2493261   .5017791    -0.50   0.619    -1.232795     .734143
+      state3 {\VBAR}  -.2337149   .4503262    -0.52   0.604    -1.116338    .6489083
+      state4 {\VBAR}  -.3356299   .4289967    -0.78   0.434    -1.176448    .5051882
+      state5 {\VBAR}  -.3801381   .4281872    -0.89   0.375     -1.21937    .4590934
+      state6 {\VBAR}  -.6425275   .4755446    -1.35   0.177    -1.574578    .2895229
+      state7 {\VBAR}  -.3958784   .4329462    -0.91   0.361    -1.244437    .4526805
+      state8 {\VBAR}  -.4766544   .4375614    -1.09   0.276    -1.334259    .3809502
+      state9 {\VBAR}  -.2448513   .4277305    -0.57   0.567    -1.083188    .5934851
+     state10 {\VBAR}  -.4345737   .4280796    -1.02   0.310    -1.273594    .4044469
+     state11 {\VBAR}  -.4428243   .4305866    -1.03   0.304    -1.286758    .4011099
+     state12 {\VBAR}  -.3283446   .5220315    -0.63   0.529    -1.351507    .6948183
+     state13 {\VBAR}  -.2530548    .427007    -0.59   0.553    -1.089973    .5838636
+     state14 {\VBAR}  -.3264415    .428602    -0.76   0.446    -1.166486     .513603
+     state15 {\VBAR}  -.3872009   .4409835    -0.88   0.380    -1.251513     .477111
+     state16 {\VBAR}  -.2972035   .4312744    -0.69   0.491    -1.142486    .5480788
+     state17 {\VBAR}  -.3520348   .4291034    -0.82   0.412    -1.193062    .4889925
+     state18 {\VBAR}   -.370116   .4289903    -0.86   0.388    -1.210922    .4706895
+     state19 {\VBAR}  -.6282488   .5378703    -1.17   0.243    -1.682455    .4259575
+     state20 {\VBAR}  -.4210948   .4286976    -0.98   0.326    -1.261327    .4191371
+     state21 {\VBAR}  -.2429018   .4326612    -0.56   0.575    -1.090902    .6050985
+     state22 {\VBAR}  -.1963319   .4275098    -0.46   0.646    -1.034236    .6415719
+     state23 {\VBAR}  -.3326723    .454689    -0.73   0.464    -1.223846    .5585017
+     state24 {\VBAR}  -.3749434   .4309631    -0.87   0.384    -1.219616    .4697287
+     state25 {\VBAR}  -.3530574   .4277135    -0.83   0.409     -1.19136    .4852456
+     state26 {\VBAR}  -.0257599   .5382506    -0.05   0.962    -1.080712    1.029192
+     state27 {\VBAR}  -.6219254   .4435055    -1.40   0.161     -1.49118    .2473294
+     state28 {\VBAR}  -.1770432   .6727117    -0.26   0.792    -1.495534    1.141447
+     state29 {\VBAR}   .0363635   .5628318     0.06   0.948    -1.066767    1.139494
+     state30 {\VBAR}  -.3886319   .4278776    -0.91   0.364    -1.227257    .4499928
+     state31 {\VBAR}   -.251496   .5086926    -0.49   0.621    -1.248515    .7455233
+     state32 {\VBAR}  -.3508186   .4265015    -0.82   0.411    -1.186746    .4851089
+     state33 {\VBAR}  -.5011895   .4292263    -1.17   0.243    -1.342458    .3400785
+     state34 {\VBAR}  -.2446734   .5081471    -0.48   0.630    -1.240624    .7512766
+     state35 {\VBAR}  -.2712768   .4270412    -0.64   0.525    -1.108262    .5657087
+     state36 {\VBAR}  -.4182242   .4275572    -0.98   0.328    -1.256221    .4197725
+     state37 {\VBAR}  -.3901304   .5209901    -0.75   0.454    -1.411252    .6309914
+     state38 {\VBAR}  -.3323959   .4265219    -0.78   0.436    -1.168364    .5035717
+     state39 {\VBAR}  -.2865784   .4488804    -0.64   0.523    -1.166368     .593211
+     state40 {\VBAR}   -.500292   .4307614    -1.16   0.245    -1.344569    .3439848
+     state41 {\VBAR}  -.2217976   .5386108    -0.41   0.680    -1.277455    .8338601
+     state42 {\VBAR}  -.3690252   .4280557    -0.86   0.389    -1.207999    .4699486
+     state43 {\VBAR}  -.4270739   .4268848    -1.00   0.317    -1.263753    .4096049
+     state44 {\VBAR}  -.3244722   .5391893    -0.60   0.547    -1.381264    .7323195
+     state45 {\VBAR}  -.5689766   .5631337    -1.01   0.312    -1.672698    .5347453
+     state46 {\VBAR}  -.4179863   .4295603    -0.97   0.331    -1.259909    .4239364
+     state47 {\VBAR}  -.5181145    .441514    -1.17   0.241    -1.383466    .3472371
+     state48 {\VBAR}  -.3567146   .4284689    -0.83   0.405    -1.196498    .4830689
+     state49 {\VBAR}  -.2698716   .4392248    -0.61   0.539    -1.130736    .5909933
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   5.206925   .5014559    10.38   0.000     4.224089     6.18976
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 state1 state2 state3
+               state4 state5 state6 state7 state8 state9 state10 state11
+               state12 state13 state14 state15 state16 state17 state18
+               state19 state20 state21 state22 state23 state24 state25
+               state26 state27 state28 state29 state30 state31 state32
+               state33 state34 state35 state36 state37 state38 state39
+               state40 state41 state42 state43 state44 state45 state46
+               state47 state48 state49 QTR1YR0 QTR1YR1 QTR1YR2 QTR1YR3
+               QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7 QTR1YR8 QTR1YR9 QTR2YR0
+               QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4 QTR2YR5 QTR2YR6 QTR2YR7
+               QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1 QTR3YR2 QTR3YR3 QTR3YR4
+               QTR3YR5 QTR3YR6 QTR3YR7 QTR3YR8 QTR3YR9 QTR1state1 QTR1state2
+               QTR1state3 QTR1state4 QTR1state5 QTR1state6 QTR1state7
+               QTR1state8 QTR1state9 QTR1state10 QTR1state11 QTR1state12
+               QTR1state13 QTR1state14 QTR1state15 QTR1state16 QTR1state17
+               QTR1state18 QTR1state19 QTR1state20 QTR1state21 QTR1state22
+               QTR1state23 QTR1state24 QTR1state25 QTR1state26 QTR1state27
+               QTR1state30 QTR1state31 QTR1state32 QTR1state33 QTR1state34
+               QTR1state35 QTR1state36 QTR1state38 QTR1state39 QTR1state40
+               QTR1state41 QTR1state42 QTR1state43 QTR1state44 QTR1state46
+               QTR1state47 QTR1state48 QTR2state1 QTR2state2 QTR2state3
+               QTR2state4 QTR2state5 QTR2state6 QTR2state7 QTR2state8
+               QTR2state9 QTR2state10 QTR2state11 QTR2state13 QTR2state14
+               QTR2state15 QTR2state16 QTR2state17 QTR2state18 QTR2state19
+               QTR2state20 QTR2state21 QTR2state22 QTR2state23 QTR2state24
+               QTR2state25 QTR2state27 QTR2state30 QTR2state31 QTR2state32
+               QTR2state33 QTR2state34 QTR2state35 QTR2state36 QTR2state37
+               QTR2state38 QTR2state39 QTR2state40 QTR2state41 QTR2state42
+               QTR2state43 QTR2state45 QTR2state46 QTR2state47 QTR2state48
+               QTR3state1 QTR3state2 QTR3state3 QTR3state4 QTR3state5
+               QTR3state6 QTR3state7 QTR3state8 QTR3state9 QTR3state10
+               QTR3state11 QTR3state12 QTR3state13 QTR3state14 QTR3state15
+               QTR3state16 QTR3state17 QTR3state18 QTR3state19 QTR3state20
+               QTR3state21 QTR3state22 QTR3state23 QTR3state24 QTR3state25
+               QTR3state26 QTR3state27 QTR3state29 QTR3state30 QTR3state31
+               QTR3state32 QTR3state33 QTR3state34 QTR3state35 QTR3state36
+               QTR3state37 QTR3state38 QTR3state39 QTR3state40 QTR3state42
+               QTR3state43 QTR3state44 QTR3state46 QTR3state47 QTR3state48
+               QTR3state49
+{\smallskip}
+. eststo model2
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC YR0-YR8 AGEQ AGEQSQ state1-state50
+note: state50 omitted because of collinearity
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =    26,913
+\HLI{13}{\PLUS}\HLI{34}   F(61, 26851)    =     51.13
+       Model {\VBAR}  1693.60039        61  27.7639409   Prob > F        =    0.0000
+    Residual {\VBAR}  14578.9893    26,851  .542958895   R-squared       =    0.1041
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1020
+       Total {\VBAR}  16272.5897    26,912  .604659248   Root MSE        =    .73686
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0671376   .0013429    49.99   0.000     .0645054    .0697698
+         YR0 {\VBAR}   .1025203   .1473334     0.70   0.487    -.1862609    .3913014
+         YR1 {\VBAR}   .1310293   .1315667     1.00   0.319    -.1268484    .3889069
+         YR2 {\VBAR}   .1563565   .1191114     1.31   0.189     -.077108     .389821
+         YR3 {\VBAR}    .149161   .1082373     1.38   0.168    -.0629898    .3613118
+         YR4 {\VBAR}   .1616163   .0975046     1.66   0.097    -.0294978    .3527303
+         YR5 {\VBAR}    .093644   .0850346     1.10   0.271    -.0730283    .2603163
+         YR6 {\VBAR}    .115137   .0707145     1.63   0.103    -.0234671    .2537411
+         YR7 {\VBAR}   .0490787   .0529829     0.93   0.354    -.0547706     .152928
+         YR8 {\VBAR}   .0337596    .032778     1.03   0.303    -.0304869    .0980061
+        AGEQ {\VBAR}  -.3098555   .2538355    -1.22   0.222    -.8073864    .1876754
+      AGEQSQ {\VBAR}   .0033271   .0028194     1.18   0.238     -.002199    .0088532
+      state1 {\VBAR}  -.3980529   .4257756    -0.93   0.350    -1.232595    .4364896
+      state2 {\VBAR}  -.2344015   .4989846    -0.47   0.639    -1.212438    .7436345
+      state3 {\VBAR}  -.2273057    .450292    -0.50   0.614    -1.109902    .6552902
+      state4 {\VBAR}  -.3214654   .4261205    -0.75   0.451    -1.156684    .5137531
+      state5 {\VBAR}  -.3736022   .4283635    -0.87   0.383    -1.213217    .4660127
+      state6 {\VBAR}  -.6361923   .4757293    -1.34   0.181    -1.568647    .2962621
+      state7 {\VBAR}  -.3870675   .4328628    -0.89   0.371    -1.235501    .4613663
+      state8 {\VBAR}  -.4638712   .4352084    -1.07   0.286    -1.316902      .38916
+      state9 {\VBAR}  -.2361937   .4274589    -0.55   0.581    -1.074036    .6016482
+     state10 {\VBAR}  -.4219744   .4262375    -0.99   0.322    -1.257422    .4134734
+     state11 {\VBAR}  -.4257865    .425791    -1.00   0.317    -1.260359    .4087862
+     state12 {\VBAR}  -.3213743   .5211485    -0.62   0.537    -1.342853     .700104
+     state13 {\VBAR}  -.2443425   .4265633    -0.57   0.567    -1.080429    .5917439
+     state14 {\VBAR}  -.3173996   .4283438    -0.74   0.459    -1.156976    .5221767
+     state15 {\VBAR}  -.3811697   .4411555    -0.86   0.388    -1.245858    .4835183
+     state16 {\VBAR}  -.2881706   .4309206    -0.67   0.504    -1.132797    .5564563
+     state17 {\VBAR}  -.3388926   .4272074    -0.79   0.428    -1.176242    .4984563
+     state18 {\VBAR}  -.3555126   .4258717    -0.83   0.404    -1.190243    .4792182
+     state19 {\VBAR}  -.6200226   .5381717    -1.15   0.249    -1.674867    .4348222
+     state20 {\VBAR}  -.4079817   .4265366    -0.96   0.339    -1.244016    .4280524
+     state21 {\VBAR}  -.2336627   .4323085    -0.54   0.589     -1.08101    .6136845
+     state22 {\VBAR}  -.1873272   .4272053    -0.44   0.661    -1.024672    .6500175
+     state23 {\VBAR}  -.3247761   .4548989    -0.71   0.475    -1.216402    .5668497
+     state24 {\VBAR}  -.3574806   .4257797    -0.84   0.401    -1.192031    .4770699
+     state25 {\VBAR}  -.3427546   .4269057    -0.80   0.422    -1.179512     .494003
+     state26 {\VBAR}  -.0158626   .5381958    -0.03   0.976    -1.070754    1.039029
+     state27 {\VBAR}  -.6127812   .4428824    -1.38   0.166    -1.480854    .2552915
+     state28 {\VBAR}  -.1737512   .6728546    -0.26   0.796    -1.492581    1.145079
+     state29 {\VBAR}   .0328341   .5628682     0.06   0.953    -1.070417    1.136085
+     state30 {\VBAR}  -.3783334   .4269965    -0.89   0.376    -1.215269    .4586021
+     state31 {\VBAR}  -.2393246   .5085657    -0.47   0.638     -1.23614    .7574907
+     state32 {\VBAR}  -.3423812   .4261932    -0.80   0.422    -1.177742    .4929798
+     state33 {\VBAR}  -.4860898   .4257784    -1.14   0.254    -1.320638    .3484583
+     state34 {\VBAR}  -.2425348    .508578    -0.48   0.633    -1.239374    .7543048
+     state35 {\VBAR}   -.261912   .4264568    -0.61   0.539     -1.09779    .5739657
+     state36 {\VBAR}  -.4093888   .4272306    -0.96   0.338    -1.246783    .4280056
+     state37 {\VBAR}  -.3809929   .5211084    -0.73   0.465    -1.402393    .6404068
+     state38 {\VBAR}  -.3236637    .426198    -0.76   0.448    -1.159034    .5117066
+     state39 {\VBAR}   -.274063   .4477476    -0.61   0.540    -1.151672    .6035457
+     state40 {\VBAR}  -.4829989   .4258447    -1.13   0.257    -1.317677    .3516791
+     state41 {\VBAR}  -.2147974   .5381932    -0.40   0.690    -1.269684    .8400894
+     state42 {\VBAR}  -.3562224    .426157    -0.84   0.403    -1.191513    .4790676
+     state43 {\VBAR}  -.4164101     .42588    -0.98   0.328    -1.251157    .4183369
+     state44 {\VBAR}  -.3136464   .5382253    -0.58   0.560    -1.368596    .7413033
+     state45 {\VBAR}  -.5650543   .5628327    -1.00   0.315    -1.668236    .5381272
+     state46 {\VBAR}  -.4024188   .4259393    -0.94   0.345    -1.237282    .4324445
+     state47 {\VBAR}  -.5108508   .4419842    -1.16   0.248    -1.377163    .3554614
+     state48 {\VBAR}  -.3468328   .4278944    -0.81   0.418    -1.185528    .4918627
+     state49 {\VBAR}  -.2594186   .4383557    -0.59   0.554    -1.118619    .5997816
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   12.24718   5.690485     2.15   0.031     1.093533    23.40083
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model3
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 AGEQ AGEQSQ state1-state50 (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8 QTR1state1-QTR3state50)
+note: state50 omitted because of collinearity
+note: QTR1state28 omitted because of collinearity
+note: QTR1state29 omitted because of collinearity
+note: QTR1state37 omitted because of collinearity
+note: QTR1state45 omitted because of collinearity
+note: QTR1state49 omitted because of collinearity
+note: QTR1state50 omitted because of collinearity
+note: QTR2state12 omitted because of collinearity
+note: QTR2state26 omitted because of collinearity
+note: QTR2state28 omitted because of collinearity
+note: QTR2state29 omitted because of collinearity
+note: QTR2state44 omitted because of collinearity
+note: QTR2state49 omitted because of collinearity
+note: QTR2state50 omitted because of collinearity
+note: QTR3state28 omitted because of collinearity
+note: QTR3state41 omitted because of collinearity
+note: QTR3state45 omitted because of collinearity
+note: QTR3state50 omitted because of collinearity
+note: QTR3YR7 dropped due to collinearity
+note: QTR3YR9 dropped due to collinearity
+note: QTR3state49 dropped due to collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =     26,913
+                                                  Wald chi2(61)   =     628.02
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1021
+                                                  Root MSE        =     .73684
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0566985   .0199186     2.85   0.004     .0176588    .0957382
+         YR0 {\VBAR}   .1199328    .151012     0.79   0.427    -.1760452    .4159108
+         YR1 {\VBAR}   .1494307   .1361473     1.10   0.272    -.1174132    .4162745
+         YR2 {\VBAR}   .1733328   .1234154     1.40   0.160     -.068557    .4152225
+         YR3 {\VBAR}   .1644052   .1120583     1.47   0.142     -.055225    .3840354
+         YR4 {\VBAR}   .1752848   .1009152     1.74   0.082    -.0225053     .373075
+         YR5 {\VBAR}   .1052733   .0878678     1.20   0.231    -.0669443     .277491
+         YR6 {\VBAR}   .1239604   .0726806     1.71   0.088     -.018491    .2664118
+         YR7 {\VBAR}     .05582   .0545139     1.02   0.306    -.0510254    .1626653
+         YR8 {\VBAR}    .037664   .0336094     1.12   0.262    -.0282093    .1035373
+        AGEQ {\VBAR}  -.3256157   .2555919    -1.27   0.203    -.8265666    .1753352
+      AGEQSQ {\VBAR}   .0034661   .0028316     1.22   0.221    -.0020838    .0090161
+      state1 {\VBAR}  -.4285394   .4297007    -1.00   0.319    -1.270737    .4136585
+      state2 {\VBAR}  -.2658281    .502544    -0.53   0.597    -1.250796    .7191401
+      state3 {\VBAR}  -.2384514   .4507785    -0.53   0.597    -1.121961    .6450582
+      state4 {\VBAR}  -.3508647    .429768    -0.82   0.414    -1.193195    .4914651
+      state5 {\VBAR}  -.3812932   .4286011    -0.89   0.374    -1.221336    .4587496
+      state6 {\VBAR}  -.6450433   .4760137    -1.36   0.175    -1.578013    .2879264
+      state7 {\VBAR}   -.398308   .4333788    -0.92   0.358    -1.247715    .4510988
+      state8 {\VBAR}  -.4911503   .4382832    -1.12   0.262     -1.35017     .367869
+      state9 {\VBAR}  -.2493808    .428183    -0.58   0.560    -1.088604    .5898424
+     state10 {\VBAR}   -.446205   .4287139    -1.04   0.298    -1.286469    .3940587
+     state11 {\VBAR}  -.4629443   .4316148    -1.07   0.283    -1.308894    .3830051
+     state12 {\VBAR}   -.342623   .5227009    -0.66   0.512    -1.367098     .681852
+     state13 {\VBAR}  -.2591386   .4274798    -0.61   0.544    -1.096984    .5787065
+     state14 {\VBAR}  -.3303843   .4290439    -0.77   0.441    -1.171295    .5105264
+     state15 {\VBAR}  -.3892544    .441411    -0.88   0.378    -1.254404    .4758953
+     state16 {\VBAR}  -.3021938   .4317341    -0.70   0.484    -1.148377    .5439896
+     state17 {\VBAR}  -.3633715   .4297292    -0.85   0.398    -1.205625    .4788823
+     state18 {\VBAR}  -.3860128   .4297994    -0.90   0.369    -1.228404    .4563786
+     state19 {\VBAR}  -.6282413   .5383834    -1.17   0.243    -1.683453    .4269707
+     state20 {\VBAR}  -.4338829   .4293649    -1.01   0.312    -1.275423    .4076568
+     state21 {\VBAR}  -.2477418   .4331259    -0.57   0.567    -1.096653    .6011694
+     state22 {\VBAR}  -.2007831   .4279601    -0.47   0.639     -1.03957    .6380033
+     state23 {\VBAR}  -.3324789   .4551219    -0.73   0.465    -1.224501    .5595437
+     state24 {\VBAR}  -.3960398   .4320489    -0.92   0.359     -1.24284    .4507605
+     state25 {\VBAR}  -.3604014   .4282131    -0.84   0.400    -1.199684    .4788808
+     state26 {\VBAR}  -.0293756   .5387945    -0.05   0.957    -1.085393    1.026642
+     state27 {\VBAR}  -.6295478   .4440182    -1.42   0.156    -1.499808    .2407118
+     state28 {\VBAR}  -.1580095    .673502    -0.23   0.815    -1.478049     1.16203
+     state29 {\VBAR}   .0462921   .5634346     0.08   0.935    -1.058019    1.150604
+     state30 {\VBAR}  -.3965415   .4283887    -0.93   0.355    -1.236168     .443085
+     state31 {\VBAR}  -.2527855    .509196    -0.50   0.620    -1.250791    .7452203
+     state32 {\VBAR}  -.3559043   .4269576    -0.83   0.405    -1.192726    .4809172
+     state33 {\VBAR}   -.518001   .4300782    -1.20   0.228    -1.360939    .3249368
+     state34 {\VBAR}   -.246994    .508634    -0.49   0.627    -1.243898    .7499104
+     state35 {\VBAR}  -.2778713   .4275252    -0.65   0.516    -1.115805    .5600628
+     state36 {\VBAR}  -.4230784   .4280123    -0.99   0.323    -1.261967    .4158102
+     state37 {\VBAR}   -.392331   .5215399    -0.75   0.452    -1.414531    .6298685
+     state38 {\VBAR}   -.337316   .4269772    -0.79   0.430    -1.174176     .499544
+     state39 {\VBAR}  -.2945852   .4494358    -0.66   0.512    -1.175463    .5862927
+     state40 {\VBAR}  -.5206248   .4318147    -1.21   0.228    -1.366966    .3257164
+     state41 {\VBAR}  -.2323306   .5392115    -0.43   0.667    -1.289166    .8245046
+     state42 {\VBAR}  -.3807353    .428692    -0.89   0.374    -1.220956    .4594857
+     state43 {\VBAR}  -.4354824   .4274125    -1.02   0.308    -1.273196    .4022307
+     state44 {\VBAR}  -.3361765   .5399159    -0.62   0.534    -1.394392    .7220391
+     state45 {\VBAR}  -.5828291   .5638325    -1.03   0.301    -1.687921    .5222624
+     state46 {\VBAR}  -.4350097   .4304221    -1.01   0.312    -1.278622     .408602
+     state47 {\VBAR}  -.5103629   .4419723    -1.15   0.248    -1.376613    .3558869
+     state48 {\VBAR}  -.3627252   .4289502    -0.85   0.398    -1.203452    .4780017
+     state49 {\VBAR}  -.2777632   .4397319    -0.63   0.528    -1.139622    .5840954
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   12.80735   5.789359     2.21   0.027     1.460412    24.15428
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 AGEQ AGEQSQ state1 state2
+               state3 state4 state5 state6 state7 state8 state9 state10
+               state11 state12 state13 state14 state15 state16 state17
+               state18 state19 state20 state21 state22 state23 state24
+               state25 state26 state27 state28 state29 state30 state31
+               state32 state33 state34 state35 state36 state37 state38
+               state39 state40 state41 state42 state43 state44 state45
+               state46 state47 state48 state49 QTR1YR0 QTR1YR1 QTR1YR2
+               QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7 QTR1YR8 QTR1YR9
+               QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4 QTR2YR5 QTR2YR6
+               QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1 QTR3YR2 QTR3YR3
+               QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR8 QTR1state1 QTR1state2
+               QTR1state3 QTR1state4 QTR1state5 QTR1state6 QTR1state7
+               QTR1state8 QTR1state9 QTR1state10 QTR1state11 QTR1state12
+               QTR1state13 QTR1state14 QTR1state15 QTR1state16 QTR1state17
+               QTR1state18 QTR1state19 QTR1state20 QTR1state21 QTR1state22
+               QTR1state23 QTR1state24 QTR1state25 QTR1state26 QTR1state27
+               QTR1state30 QTR1state31 QTR1state32 QTR1state33 QTR1state34
+               QTR1state35 QTR1state36 QTR1state38 QTR1state39 QTR1state40
+               QTR1state41 QTR1state42 QTR1state43 QTR1state44 QTR1state46
+               QTR1state47 QTR1state48 QTR2state1 QTR2state2 QTR2state3
+               QTR2state4 QTR2state5 QTR2state6 QTR2state7 QTR2state8
+               QTR2state9 QTR2state10 QTR2state11 QTR2state13 QTR2state14
+               QTR2state15 QTR2state16 QTR2state17 QTR2state18 QTR2state19
+               QTR2state20 QTR2state21 QTR2state22 QTR2state23 QTR2state24
+               QTR2state25 QTR2state27 QTR2state30 QTR2state31 QTR2state32
+               QTR2state33 QTR2state34 QTR2state35 QTR2state36 QTR2state37
+               QTR2state38 QTR2state39 QTR2state40 QTR2state41 QTR2state42
+               QTR2state43 QTR2state45 QTR2state46 QTR2state47 QTR2state48
+               QTR3state1 QTR3state2 QTR3state3 QTR3state4 QTR3state5
+               QTR3state6 QTR3state7 QTR3state8 QTR3state9 QTR3state10
+               QTR3state11 QTR3state12 QTR3state13 QTR3state14 QTR3state15
+               QTR3state16 QTR3state17 QTR3state18 QTR3state19 QTR3state20
+               QTR3state21 QTR3state22 QTR3state23 QTR3state24 QTR3state25
+               QTR3state26 QTR3state27 QTR3state29 QTR3state30 QTR3state31
+               QTR3state32 QTR3state33 QTR3state34 QTR3state35 QTR3state36
+               QTR3state37 QTR3state38 QTR3state39 QTR3state40 QTR3state42
+               QTR3state43 QTR3state44 QTR3state46 QTR3state47 QTR3state48
+{\smallskip}
+. eststo model4
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT YR0-YR8  state1-state50
+note: state50 omitted because of collinearity
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =    26,913
+\HLI{13}{\PLUS}\HLI{34}   F(69, 26843)    =     68.64
+       Model {\VBAR}  2440.63357        69   35.371501   Prob > F        =    0.0000
+    Residual {\VBAR}  13831.9561    26,843  .515290993   R-squared       =    0.1500
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1478
+       Total {\VBAR}  16272.5897    26,912  .604659248   Root MSE        =    .71784
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0575879   .0013462    42.78   0.000     .0549494    .0602265
+     MARRIED {\VBAR}   .2215606   .0100371    22.07   0.000     .2018874    .2412339
+        SMSA {\VBAR}   -.188513    .014205   -13.27   0.000    -.2163555   -.1606706
+      NEWENG {\VBAR}  -.0914194   .0400377    -2.28   0.022    -.1698954   -.0129434
+      MIDATL {\VBAR}  -.0847978   .0219145    -3.87   0.000    -.1277513   -.0418442
+     ENOCENT {\VBAR}   .0804805   .0196001     4.11   0.000     .0420633    .1188978
+     WNOCENT {\VBAR}  -.0889527    .030535    -2.91   0.004    -.1488029   -.0291026
+       SOATL {\VBAR}  -.2123914   .0209811   -10.12   0.000    -.2535154   -.1712674
+     ESOCENT {\VBAR}  -.3087484   .0240506   -12.84   0.000    -.3558889    -.261608
+     WSOCENT {\VBAR}  -.1916138   .0214712    -8.92   0.000    -.2336984   -.1495292
+          MT {\VBAR}  -.0669271   .0404594    -1.65   0.098    -.1462297    .0123755
+         YR0 {\VBAR}   .0072737   .0193483     0.38   0.707      -.03065    .0451974
+         YR1 {\VBAR}   .0237533   .0201133     1.18   0.238    -.0156699    .0631765
+         YR2 {\VBAR}   .0238459   .0189778     1.26   0.209    -.0133516    .0610433
+         YR3 {\VBAR}   .0217786   .0192432     1.13   0.258     -.015939    .0594962
+         YR4 {\VBAR}   .0351954   .0190056     1.85   0.064    -.0020566    .0724474
+         YR5 {\VBAR}  -.0185394   .0186076    -1.00   0.319    -.0550112    .0179323
+         YR6 {\VBAR}   .0213676   .0189035     1.13   0.258    -.0156844    .0584195
+         YR7 {\VBAR}  -.0174294   .0188152    -0.93   0.354    -.0543081    .0194494
+         YR8 {\VBAR}   -.001769   .0186045    -0.10   0.924    -.0382348    .0346968
+      state1 {\VBAR}  -.3889516   .4150451    -0.94   0.349    -1.202462    .4245586
+      state2 {\VBAR}  -.3110963   .4861364    -0.64   0.522    -1.263949    .6417565
+      state3 {\VBAR}   -.282107   .4386906    -0.64   0.520    -1.141964    .5777497
+      state4 {\VBAR}  -.3780921   .4153493    -0.91   0.363    -1.192198    .4360142
+      state5 {\VBAR}  -.4696719   .4175616    -1.12   0.261    -1.288114    .3487706
+      state6 {\VBAR}  -.6660707   .4636338    -1.44   0.151    -1.574817    .2426758
+      state7 {\VBAR}  -.4092047   .4226096    -0.97   0.333    -1.237542    .4191323
+      state8 {\VBAR}  -.3617275   .4242388    -0.85   0.394    -1.193258    .4698028
+      state9 {\VBAR}    -.15335   .4167028    -0.37   0.713    -.9701092    .6634093
+     state10 {\VBAR}  -.3747271   .4154827    -0.90   0.367    -1.189095    .4396406
+     state11 {\VBAR}  -.4075705   .4150355    -0.98   0.326    -1.221062    .4059209
+     state12 {\VBAR}  -.3132433   .5077699    -0.62   0.537    -1.308499    .6820123
+     state13 {\VBAR}  -.4004124   .4158594    -0.96   0.336    -1.215519    .4146937
+     state14 {\VBAR}  -.4739532   .4176151    -1.13   0.256    -1.292501    .3445942
+     state15 {\VBAR}  -.3642296   .4301227    -0.85   0.397    -1.207293    .4788335
+     state16 {\VBAR}  -.3225912   .4201385    -0.77   0.443    -1.146085    .5009023
+     state17 {\VBAR}  -.3047875   .4165085    -0.73   0.464    -1.121166     .511591
+     state18 {\VBAR}  -.3572391   .4151912    -0.86   0.390    -1.171036    .4565574
+     state19 {\VBAR}  -.6212714   .5246447    -1.18   0.236    -1.649602    .4070597
+     state20 {\VBAR}   -.325452   .4157961    -0.78   0.434    -1.140434    .4895302
+     state21 {\VBAR}  -.2432006   .4218905    -0.58   0.564    -1.070128    .5837269
+     state22 {\VBAR}   -.346178   .4164875    -0.83   0.406    -1.162515    .4701593
+     state23 {\VBAR}  -.3281256   .4434702    -0.74   0.459     -1.19735    .5410991
+     state24 {\VBAR}  -.3797503   .4150708    -0.91   0.360    -1.193311    .4338103
+     state25 {\VBAR}  -.3865665   .4163521    -0.93   0.353    -1.202639    .4295055
+     state26 {\VBAR}  -.0502568   .5243649    -0.10   0.924    -1.078039    .9775258
+     state27 {\VBAR}  -.6526191   .4317157    -1.51   0.131    -1.498804    .1935663
+     state28 {\VBAR}  -.3721761   .6555973    -0.57   0.570    -1.657181    .9128289
+     state29 {\VBAR}  -.1001711    .548598    -0.18   0.855    -1.175452    .9751097
+     state30 {\VBAR}  -.4028809   .4163348    -0.97   0.333    -1.218919    .4131572
+     state31 {\VBAR}  -.2531483   .4954842    -0.51   0.609    -1.224323    .7180266
+     state32 {\VBAR}   -.357821   .4155403    -0.86   0.389    -1.172302    .4566597
+     state33 {\VBAR}  -.4232894   .4150514    -1.02   0.308    -1.236812    .3902331
+     state34 {\VBAR}  -.3697945   .4956692    -0.75   0.456    -1.341332    .6017431
+     state35 {\VBAR}  -.4091964   .4157498    -0.98   0.325    -1.224088     .405695
+     state36 {\VBAR}  -.4209857   .4164155    -1.01   0.312    -1.237182    .3952106
+     state37 {\VBAR}  -.5399841   .5078871    -1.06   0.288    -1.535469    .4555011
+     state38 {\VBAR}  -.3457257   .4155264    -0.83   0.405    -1.160179    .4687278
+     state39 {\VBAR}  -.3284707   .4370836    -0.75   0.452    -1.185177     .528236
+     state40 {\VBAR}  -.4460442   .4151174    -1.07   0.283    -1.259696    .3676077
+     state41 {\VBAR}  -.2254486   .5244863    -0.43   0.667    -1.253469     .802572
+     state42 {\VBAR}  -.3363844   .4154581    -0.81   0.418    -1.150704    .4779351
+     state43 {\VBAR}  -.4027725   .4152008    -0.97   0.332    -1.216588    .4110428
+     state44 {\VBAR}  -.2006026    .524506    -0.38   0.702    -1.228662    .8274567
+     state45 {\VBAR}  -.6291755   .5486274    -1.15   0.251    -1.704514    .4461629
+     state46 {\VBAR}  -.3417026   .4152045    -0.82   0.411    -1.155525      .47212
+     state47 {\VBAR}  -.4755618   .4307253    -1.10   0.270    -1.319806    .3686823
+     state48 {\VBAR}   -.397552   .4170647    -0.95   0.340    -1.215021    .4199166
+     state49 {\VBAR}  -.3689256   .4272551    -0.86   0.388    -1.206368    .4685168
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   5.239367   .4155948    12.61   0.000      4.42478    6.053955
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model5
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT  state1-state50 (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8 QTR1state1-QTR3s
+> tate50)
+note: state50 omitted because of collinearity
+note: QTR1state28 omitted because of collinearity
+note: QTR1state29 omitted because of collinearity
+note: QTR1state37 omitted because of collinearity
+note: QTR1state45 omitted because of collinearity
+note: QTR1state49 omitted because of collinearity
+note: QTR1state50 omitted because of collinearity
+note: QTR2state12 omitted because of collinearity
+note: QTR2state26 omitted because of collinearity
+note: QTR2state28 omitted because of collinearity
+note: QTR2state29 omitted because of collinearity
+note: QTR2state44 omitted because of collinearity
+note: QTR2state49 omitted because of collinearity
+note: QTR2state50 omitted because of collinearity
+note: QTR3state28 omitted because of collinearity
+note: QTR3state41 omitted because of collinearity
+note: QTR3state45 omitted because of collinearity
+note: QTR3state50 omitted because of collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =     26,913
+                                                  Wald chi2(69)   =    2912.18
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1477
+                                                  Root MSE        =     .71787
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0461095   .0186767     2.47   0.014     .0095037    .0827152
+         YR0 {\VBAR}  -.0049558   .0277182    -0.18   0.858    -.0592826    .0493709
+         YR1 {\VBAR}   .0149464   .0246752     0.61   0.545     -.033416    .0633089
+         YR2 {\VBAR}   .0153188   .0234882     0.65   0.514    -.0307172    .0613548
+         YR3 {\VBAR}   .0146079   .0224891     0.65   0.516    -.0294699    .0586857
+         YR4 {\VBAR}   .0291705   .0213741     1.36   0.172    -.0127219     .071063
+         YR5 {\VBAR}  -.0229882     .01996    -1.15   0.249     -.062109    .0161327
+         YR6 {\VBAR}   .0173868   .0199779     0.87   0.384    -.0217691    .0565427
+         YR7 {\VBAR}  -.0191343   .0190185    -1.01   0.314    -.0564098    .0181412
+         YR8 {\VBAR}  -.0022082   .0186191    -0.12   0.906    -.0387009    .0342845
+     MARRIED {\VBAR}   .2272091   .0135935    16.71   0.000     .2005663     .253852
+        SMSA {\VBAR}  -.2053092   .0307378    -6.68   0.000    -.2655542   -.1450642
+      NEWENG {\VBAR}  -.1065496   .0469692    -2.27   0.023    -.1986075   -.0144917
+      MIDATL {\VBAR}  -.1020977   .0356165    -2.87   0.004    -.1719048   -.0322905
+     ENOCENT {\VBAR}   .0652634    .031529     2.07   0.038     .0034676    .1270591
+     WNOCENT {\VBAR}  -.1018416   .0370135    -2.75   0.006    -.1743867   -.0292964
+       SOATL {\VBAR}  -.2347051    .041852    -5.61   0.000    -.3167335   -.1526766
+     ESOCENT {\VBAR}  -.3322815   .0451339    -7.36   0.000    -.4207422   -.2438207
+     WSOCENT {\VBAR}  -.2105833   .0375339    -5.61   0.000    -.2841483   -.1370183
+          MT {\VBAR}  -.0745893   .0423292    -1.76   0.078     -.157553    .0083743
+      state1 {\VBAR}  -.4134344   .4169634    -0.99   0.321    -1.230668    .4037988
+      state2 {\VBAR}  -.3524549   .4907723    -0.72   0.473    -1.314351    .6094412
+      state3 {\VBAR}  -.2979117   .4394618    -0.68   0.498    -1.159241    .5634177
+      state4 {\VBAR}   -.405692   .4177782    -0.97   0.332    -1.224522    .4131382
+      state5 {\VBAR}  -.4866905   .4184949    -1.16   0.245    -1.306926    .3335444
+      state6 {\VBAR}  -.6775596   .4640318    -1.46   0.144    -1.587045     .231926
+      state7 {\VBAR}  -.4177603   .4228589    -0.99   0.323    -1.246548    .4110278
+      state8 {\VBAR}  -.3769975   .4249833    -0.89   0.375    -1.209949    .4559545
+      state9 {\VBAR}  -.1571939   .4167704    -0.38   0.706    -.9740488    .6596611
+     state10 {\VBAR}  -.3912307   .4163659    -0.94   0.347    -1.207293    .4248314
+     state11 {\VBAR}  -.4381732   .4180172    -1.05   0.295    -1.257472    .3811255
+     state12 {\VBAR}  -.3271718   .5082983    -0.64   0.520    -1.323418    .6690746
+     state13 {\VBAR}  -.4131577   .4163943    -0.99   0.321    -1.229276    .4029601
+     state14 {\VBAR}  -.4843385    .417976    -1.16   0.247    -1.303556    .3348794
+     state15 {\VBAR}  -.3669232   .4301665    -0.85   0.394    -1.210034    .4761878
+     state16 {\VBAR}  -.3367111    .420784    -0.80   0.424    -1.161433    .4880104
+     state17 {\VBAR}  -.3221233   .4174785    -0.77   0.440    -1.140366    .4961195
+     state18 {\VBAR}  -.3853632   .4177132    -0.92   0.356    -1.204066    .4333395
+     state19 {\VBAR}  -.6280909   .5247878    -1.20   0.231    -1.656656    .4004743
+     state20 {\VBAR}  -.3420337   .4166868    -0.82   0.412    -1.158725    .4746575
+     state21 {\VBAR}  -.2541875   .4222883    -0.60   0.547    -1.081857    .5734824
+     state22 {\VBAR}  -.3576037    .416921    -0.86   0.391    -1.174754    .4595464
+     state23 {\VBAR}  -.3354108     .44365    -0.76   0.450    -1.204949    .5341273
+     state24 {\VBAR}  -.4132318    .418633    -0.99   0.324    -1.233737    .4072737
+     state25 {\VBAR}  -.4029856   .4172248    -0.97   0.334    -1.220731      .41476
+     state26 {\VBAR}    -.05981   .5246204    -0.11   0.909    -1.088047     .968427
+     state27 {\VBAR}  -.6706386   .4327266    -1.55   0.121    -1.518767    .1774901
+     state28 {\VBAR}   -.359027   .6559774    -0.55   0.584    -1.644719    .9266651
+     state29 {\VBAR}  -.0850627   .5491732    -0.15   0.877    -1.161422     .991297
+     state30 {\VBAR}  -.4168381   .4169714    -1.00   0.317    -1.234087    .4004108
+     state31 {\VBAR}  -.2695691   .4962252    -0.54   0.587    -1.242153    .7030143
+     state32 {\VBAR}  -.3664306    .415796    -0.88   0.378    -1.181376    .4485145
+     state33 {\VBAR}  -.4456667   .4166579    -1.07   0.285    -1.262301    .3709677
+     state34 {\VBAR}  -.3742833   .4957477    -0.75   0.450    -1.345931    .5973643
+     state35 {\VBAR}  -.4227557   .4163526    -1.02   0.310    -1.238792    .3932804
+     state36 {\VBAR}  -.4340935   .4169794    -1.04   0.298    -1.251358    .3831712
+     state37 {\VBAR}  -.5612635   .5090853    -1.10   0.270    -1.559052    .4365252
+     state38 {\VBAR}  -.3545719   .4157952    -0.85   0.394    -1.169516    .4603718
+     state39 {\VBAR}  -.3475392   .4381996    -0.79   0.428    -1.206395    .5113163
+     state40 {\VBAR}  -.4758119   .4179397    -1.14   0.255    -1.294959    .3433349
+     state41 {\VBAR}  -.2414892   .5251582    -0.46   0.646     -1.27078     .787802
+     state42 {\VBAR}  -.3545129   .4165193    -0.85   0.395    -1.170876    .4618499
+     state43 {\VBAR}  -.4195464    .416113    -1.01   0.313    -1.235113    .3960202
+     state44 {\VBAR}  -.2154277   .5250839    -0.41   0.682    -1.244573    .8137178
+     state45 {\VBAR}  -.6423698   .5490726    -1.17   0.242    -1.718532    .4337928
+     state46 {\VBAR}  -.3652192   .4169756    -0.88   0.381    -1.182476     .452038
+     state47 {\VBAR}  -.4703873   .4308288    -1.09   0.275    -1.314796    .3740216
+     state48 {\VBAR}  -.4081485     .41744    -0.98   0.328    -1.226316    .4100189
+     state49 {\VBAR}  -.3860189   .4281761    -0.90   0.367    -1.225229    .4531909
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   5.410733   .5000798    10.82   0.000     4.430595    6.390872
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 MARRIED SMSA NEWENG
+               MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT state1 state2
+               state3 state4 state5 state6 state7 state8 state9 state10
+               state11 state12 state13 state14 state15 state16 state17
+               state18 state19 state20 state21 state22 state23 state24
+               state25 state26 state27 state28 state29 state30 state31
+               state32 state33 state34 state35 state36 state37 state38
+               state39 state40 state41 state42 state43 state44 state45
+               state46 state47 state48 state49 QTR1YR0 QTR1YR1 QTR1YR2
+               QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7 QTR1YR8 QTR1YR9
+               QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4 QTR2YR5 QTR2YR6
+               QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1 QTR3YR2 QTR3YR3
+               QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR7 QTR3YR8 QTR3YR9 QTR1state1
+               QTR1state2 QTR1state3 QTR1state4 QTR1state5 QTR1state6
+               QTR1state7 QTR1state8 QTR1state9 QTR1state10 QTR1state11
+               QTR1state12 QTR1state13 QTR1state14 QTR1state15 QTR1state16
+               QTR1state17 QTR1state18 QTR1state19 QTR1state20 QTR1state21
+               QTR1state22 QTR1state23 QTR1state24 QTR1state25 QTR1state26
+               QTR1state27 QTR1state30 QTR1state31 QTR1state32 QTR1state33
+               QTR1state34 QTR1state35 QTR1state36 QTR1state38 QTR1state39
+               QTR1state40 QTR1state41 QTR1state42 QTR1state43 QTR1state44
+               QTR1state46 QTR1state47 QTR1state48 QTR2state1 QTR2state2
+               QTR2state3 QTR2state4 QTR2state5 QTR2state6 QTR2state7
+               QTR2state8 QTR2state9 QTR2state10 QTR2state11 QTR2state13
+               QTR2state14 QTR2state15 QTR2state16 QTR2state17 QTR2state18
+               QTR2state19 QTR2state20 QTR2state21 QTR2state22 QTR2state23
+               QTR2state24 QTR2state25 QTR2state27 QTR2state30 QTR2state31
+               QTR2state32 QTR2state33 QTR2state34 QTR2state35 QTR2state36
+               QTR2state37 QTR2state38 QTR2state39 QTR2state40 QTR2state41
+               QTR2state42 QTR2state43 QTR2state45 QTR2state46 QTR2state47
+               QTR2state48 QTR3state1 QTR3state2 QTR3state3 QTR3state4
+               QTR3state5 QTR3state6 QTR3state7 QTR3state8 QTR3state9
+               QTR3state10 QTR3state11 QTR3state12 QTR3state13 QTR3state14
+               QTR3state15 QTR3state16 QTR3state17 QTR3state18 QTR3state19
+               QTR3state20 QTR3state21 QTR3state22 QTR3state23 QTR3state24
+               QTR3state25 QTR3state26 QTR3state27 QTR3state29 QTR3state30
+               QTR3state31 QTR3state32 QTR3state33 QTR3state34 QTR3state35
+               QTR3state36 QTR3state37 QTR3state38 QTR3state39 QTR3state40
+               QTR3state42 QTR3state43 QTR3state44 QTR3state46 QTR3state47
+               QTR3state48 QTR3state49
+{\smallskip}
+. eststo model6
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT YR0-YR8 AGEQ AGEQSQ state1-state50
+note: state50 omitted because of collinearity
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =    26,913
+\HLI{13}{\PLUS}\HLI{34}   F(71, 26841)    =     66.73
+       Model {\VBAR}  2441.46685        71  34.3868571   Prob > F        =    0.0000
+    Residual {\VBAR}  13831.1228    26,841  .515298344   R-squared       =    0.1500
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1478
+       Total {\VBAR}  16272.5897    26,912  .604659248   Root MSE        =    .71784
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0575626   .0013466    42.75   0.000     .0549232     .060202
+     MARRIED {\VBAR}   .2216178   .0100373    22.08   0.000     .2019442    .2412914
+        SMSA {\VBAR}  -.1884381   .0142052   -13.27   0.000     -.216281   -.1605952
+      NEWENG {\VBAR}  -.0915124   .0400381    -2.29   0.022    -.1699891   -.0130357
+      MIDATL {\VBAR}  -.0849027   .0219149    -3.87   0.000     -.127857   -.0419483
+     ENOCENT {\VBAR}   .0803558   .0196005     4.10   0.000     .0419377    .1187738
+     WNOCENT {\VBAR}  -.0890545   .0305357    -2.92   0.004    -.1489061   -.0292029
+       SOATL {\VBAR}  -.2124567   .0209823   -10.13   0.000     -.253583   -.1713304
+     ESOCENT {\VBAR}  -.3088246   .0240509   -12.84   0.000    -.3559657   -.2616835
+     WSOCENT {\VBAR}  -.1914707   .0214725    -8.92   0.000    -.2335579   -.1493834
+          MT {\VBAR}  -.0664481   .0404618    -1.64   0.101    -.1457554    .0128592
+         YR0 {\VBAR}   .0640149   .1435599     0.45   0.656      -.21737    .3453997
+         YR1 {\VBAR}   .1003188   .1282002     0.78   0.434    -.1509602    .3515978
+         YR2 {\VBAR}   .1133448   .1160647     0.98   0.329     -.114148    .3408377
+         YR3 {\VBAR}   .1179507   .1054689     1.12   0.263    -.0887738    .3246753
+         YR4 {\VBAR}   .1315268     .09501     1.38   0.166    -.0546978    .3177515
+         YR5 {\VBAR}   .0714063   .0828575     0.86   0.389    -.0909987    .2338114
+         YR6 {\VBAR}   .0987429   .0689043     1.43   0.152    -.0363131    .2337988
+         YR7 {\VBAR}   .0405223   .0516268     0.78   0.433    -.0606689    .1417135
+         YR8 {\VBAR}   .0301835   .0319412     0.94   0.345    -.0324229    .0927899
+        AGEQ {\VBAR}  -.2977883   .2473113    -1.20   0.229    -.7825313    .1869548
+      AGEQSQ {\VBAR}   .0032293   .0027469     1.18   0.240    -.0021547    .0086134
+      state1 {\VBAR}  -.3857318   .4150636    -0.93   0.353    -1.199278    .4278146
+      state2 {\VBAR}  -.3089579   .4861787    -0.64   0.525    -1.261894    .6439778
+      state3 {\VBAR}  -.2807234   .4387103    -0.64   0.522    -1.140619    .5791717
+      state4 {\VBAR}  -.3751606   .4153665    -0.90   0.366    -1.189301    .4389794
+      state5 {\VBAR}  -.4666317   .4175782    -1.12   0.264    -1.285107    .3518434
+      state6 {\VBAR}  -.6636987   .4636432    -1.43   0.152    -1.572464    .2450662
+      state7 {\VBAR}  -.4052924   .4226335    -0.96   0.338    -1.233676    .4230914
+      state8 {\VBAR}   -.359322   .4242537    -0.85   0.397    -1.190881    .4722374
+      state9 {\VBAR}  -.1500848   .4167196    -0.36   0.719    -.9668771    .6667075
+     state10 {\VBAR}   -.371472   .4155005    -0.89   0.371    -1.185875    .4429308
+     state11 {\VBAR}  -.4044519   .4150534    -0.97   0.330    -1.217978    .4090745
+     state12 {\VBAR}  -.3142945   .5077833    -0.62   0.536    -1.309576    .6809873
+     state13 {\VBAR}  -.3975848   .4158753    -0.96   0.339    -1.212722    .4175526
+     state14 {\VBAR}  -.4704018   .4176392    -1.13   0.260    -1.288996    .3481928
+     state15 {\VBAR}  -.3617938   .4301378    -0.84   0.400    -1.204887    .4812988
+     state16 {\VBAR}  -.3193901   .4201576    -0.76   0.447    -1.142921    .5041409
+     state17 {\VBAR}  -.3012003   .4165319    -0.72   0.470    -1.117625     .515224
+     state18 {\VBAR}  -.3542973   .4152071    -0.85   0.393    -1.168125    .4595303
+     state19 {\VBAR}   -.617097   .5246709    -1.18   0.240     -1.64548    .4112855
+     state20 {\VBAR}  -.3223423   .4158153    -0.78   0.438    -1.137362    .4926775
+     state21 {\VBAR}  -.2396898   .4219093    -0.57   0.570    -1.066654    .5872745
+     state22 {\VBAR}   -.342726   .4165083    -0.82   0.411    -1.159104     .473652
+     state23 {\VBAR}  -.3242137   .4435017    -0.73   0.465      -1.1935    .5450729
+     state24 {\VBAR}  -.3766898   .4150889    -0.91   0.364    -1.190286    .4369061
+     state25 {\VBAR}  -.3833913   .4163733    -0.92   0.357    -1.199505    .4327222
+     state26 {\VBAR}  -.0461766   .5243849    -0.09   0.930    -1.073998    .9816452
+     state27 {\VBAR}  -.6501056   .4317302    -1.51   0.132    -1.496319    .1961083
+     state28 {\VBAR}  -.3628359   .6556689    -0.55   0.580    -1.647981    .9223096
+     state29 {\VBAR}  -.0983695   .5486084    -0.18   0.858    -1.173671    .9769317
+     state30 {\VBAR}  -.3998373   .4163551    -0.96   0.337    -1.215915    .4162404
+     state31 {\VBAR}  -.2472485   .4955235    -0.50   0.618      -1.2185    .7240034
+     state32 {\VBAR}  -.3548473   .4155567    -0.85   0.393     -1.16936    .4596657
+     state33 {\VBAR}  -.4202191    .415068    -1.01   0.311    -1.233774    .3933358
+     state34 {\VBAR}  -.3693758    .495675    -0.75   0.456    -1.340925    .6021731
+     state35 {\VBAR}  -.4061957   .4157677    -0.98   0.329    -1.221122    .4087307
+     state36 {\VBAR}  -.4179084   .4164333    -1.00   0.316    -1.234139    .3983226
+     state37 {\VBAR}  -.5350737    .507906    -1.05   0.292    -1.530596    .4604486
+     state38 {\VBAR}  -.3425538   .4155443    -0.82   0.410    -1.157042    .4719347
+     state39 {\VBAR}  -.3241516   .4371086    -0.74   0.458    -1.180907    .5326042
+     state40 {\VBAR}  -.4427965   .4151345    -1.07   0.286    -1.256482    .3708888
+     state41 {\VBAR}  -.2253862   .5245049    -0.43   0.667    -1.253443    .8026708
+     state42 {\VBAR}  -.3330576   .4154781    -0.80   0.423    -1.147417    .4813013
+     state43 {\VBAR}  -.3998306   .4152186    -0.96   0.336    -1.213681    .4140195
+     state44 {\VBAR}  -.1981682   .5245134    -0.38   0.706    -1.226242    .8299056
+     state45 {\VBAR}  -.6310592   .5486333    -1.15   0.250    -1.706409    .4442908
+     state46 {\VBAR}  -.3384862   .4152233    -0.82   0.415    -1.152346    .4753733
+     state47 {\VBAR}  -.4695123   .4307687    -1.09   0.276    -1.313841    .3748169
+     state48 {\VBAR}   -.394085    .417084    -0.94   0.345    -1.211592    .4234215
+     state49 {\VBAR}  -.3660174   .4272826    -0.86   0.392    -1.203514    .4714788
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   12.00428   5.544168     2.17   0.030     1.137417    22.87114
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model7
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT AGEQ AGEQSQ state1-state50 (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8 QTR1s
+> tate1-QTR3state50)
+note: state50 omitted because of collinearity
+note: QTR1state28 omitted because of collinearity
+note: QTR1state29 omitted because of collinearity
+note: QTR1state37 omitted because of collinearity
+note: QTR1state45 omitted because of collinearity
+note: QTR1state49 omitted because of collinearity
+note: QTR1state50 omitted because of collinearity
+note: QTR2state12 omitted because of collinearity
+note: QTR2state26 omitted because of collinearity
+note: QTR2state28 omitted because of collinearity
+note: QTR2state29 omitted because of collinearity
+note: QTR2state44 omitted because of collinearity
+note: QTR2state49 omitted because of collinearity
+note: QTR2state50 omitted because of collinearity
+note: QTR3state28 omitted because of collinearity
+note: QTR3state41 omitted because of collinearity
+note: QTR3state45 omitted because of collinearity
+note: QTR3state50 omitted because of collinearity
+note: QTR3YR7 dropped due to collinearity
+note: QTR3YR9 dropped due to collinearity
+note: QTR3state49 dropped due to collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =     26,913
+                                                  Wald chi2(71)   =    2902.48
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1442
+                                                  Root MSE        =     .71934
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0392871   .0199203     1.97   0.049      .000244    .0783303
+         YR0 {\VBAR}   .0897649   .1465588     0.61   0.540    -.1974852    .3770149
+         YR1 {\VBAR}    .128278   .1320164     0.97   0.331    -.1304693    .3870254
+         YR2 {\VBAR}   .1381325   .1193895     1.16   0.247    -.0958666    .3721317
+         YR3 {\VBAR}   .1407476   .1085574     1.30   0.195    -.0720209    .3535162
+         YR4 {\VBAR}   .1516488   .0976903     1.55   0.121    -.0398206    .3431182
+         YR5 {\VBAR}   .0889579   .0851957     1.04   0.296    -.0780226    .2559383
+         YR6 {\VBAR}   .1116465   .0704592     1.58   0.113    -.0264509     .249744
+         YR7 {\VBAR}   .0510542   .0529869     0.96   0.335    -.0527982    .1549066
+         YR8 {\VBAR}   .0362759   .0326862     1.11   0.267    -.0277879    .1003396
+     MARRIED {\VBAR}   .2306119   .0140299    16.44   0.000     .2031139    .2581099
+        SMSA {\VBAR}  -.2151576   .0323568    -6.65   0.000    -.2785759   -.1517394
+      NEWENG {\VBAR}  -.1155958   .0479132    -2.41   0.016     -.209504   -.0216876
+      MIDATL {\VBAR}  -.1124278   .0371252    -3.03   0.002    -.1851918   -.0396637
+     ENOCENT {\VBAR}   .0561253   .0328654     1.71   0.088    -.0082898    .1205403
+     WNOCENT {\VBAR}  -.1095352   .0378469    -2.89   0.004    -.1837138   -.0353565
+       SOATL {\VBAR}  -.2479178   .0439234    -5.64   0.000     -.334006   -.1618296
+     ESOCENT {\VBAR}  -.3462975   .0473451    -7.31   0.000    -.4390922   -.2535028
+     WSOCENT {\VBAR}  -.2215789     .03918    -5.66   0.000    -.2983704   -.1447875
+          MT {\VBAR}   -.078519   .0426181    -1.84   0.065    -.1620489     .005011
+        AGEQ {\VBAR}  -.3233654   .2493797    -1.30   0.195    -.8121407    .1654099
+      AGEQSQ {\VBAR}   .0034571   .0027637     1.25   0.211    -.0019597    .0088739
+      state1 {\VBAR}  -.4234978   .4179506    -1.01   0.311    -1.242666    .3956704
+      state2 {\VBAR}   -.372843   .4921197    -0.76   0.449     -1.33738    .5916939
+      state3 {\VBAR}  -.3046748   .4403947    -0.69   0.489    -1.167832    .5584829
+      state4 {\VBAR}  -.4179297   .4188219    -1.00   0.318    -1.238806    .4029463
+      state5 {\VBAR}  -.4925911   .4193989    -1.17   0.240    -1.314598    .3294156
+      state6 {\VBAR}  -.6812073   .4649986    -1.46   0.143    -1.592588    .2301732
+      state7 {\VBAR}  -.4175222   .4237223    -0.99   0.324    -1.248003    .4129581
+      state8 {\VBAR}  -.3825589   .4258874    -0.90   0.369    -1.217283    .4521651
+      state9 {\VBAR}  -.1550873   .4176227    -0.37   0.710    -.9736128    .6634382
+     state10 {\VBAR}    -.39657   .4172593    -0.95   0.342    -1.214383    .4212432
+     state11 {\VBAR}  -.4519778   .4191166    -1.08   0.281    -1.273431    .3694756
+     state12 {\VBAR}  -.3358082   .5093782    -0.66   0.510    -1.334171    .6625546
+     state13 {\VBAR}  -.4167691   .4172631    -1.00   0.318     -1.23459    .4010516
+     state14 {\VBAR}  -.4855251   .4188318    -1.16   0.246     -1.30642    .3353701
+     state15 {\VBAR}  -.3650011   .4310475    -0.85   0.397    -1.209839    .4798366
+     state16 {\VBAR}  -.3406308   .4216656    -0.81   0.419     -1.16708    .4858187
+     state17 {\VBAR}  -.3274136   .4183715    -0.78   0.434    -1.147407    .4925794
+     state18 {\VBAR}  -.3979638   .4187727    -0.95   0.342    -1.218743    .4228156
+     state19 {\VBAR}  -.6263275   .5258592    -1.19   0.234    -1.656993    .4043376
+     state20 {\VBAR}  -.3474991   .4175783    -0.83   0.405    -1.165938    .4709392
+     state21 {\VBAR}  -.2559801   .4231587    -0.60   0.545    -1.085356    .5733958
+     state22 {\VBAR}  -.3596302   .4177801    -0.86   0.389    -1.178464    .4592038
+     state23 {\VBAR}  -.3341247   .4445558    -0.75   0.452    -1.205438    .5371888
+     state24 {\VBAR}  -.4287864   .4197938    -1.02   0.307    -1.251567    .3939942
+     state25 {\VBAR}  -.4082151   .4181127    -0.98   0.329    -1.227701    .4112706
+     state26 {\VBAR}  -.0600358   .5256928    -0.11   0.909    -1.090375    .9703033
+     state27 {\VBAR}  -.6777239   .4336705    -1.56   0.118    -1.527702    .1722546
+     state28 {\VBAR}  -.3420042   .6574246    -0.52   0.603    -1.630533    .9465243
+     state29 {\VBAR}  -.0746515   .5503554    -0.14   0.892    -1.153328    1.004025
+     state30 {\VBAR}  -.4207764   .4178429    -1.01   0.314    -1.239733    .3981807
+     state31 {\VBAR}  -.2714464    .497252    -0.55   0.585    -1.246042    .7031496
+     state32 {\VBAR}  -.3674339   .4166469    -0.88   0.378    -1.184047     .449179
+     state33 {\VBAR}   -.454713   .4176203    -1.09   0.276    -1.273234    .3638078
+     state34 {\VBAR}   -.376066   .4967603    -0.76   0.449    -1.349698    .5975663
+     state35 {\VBAR}  -.4265973   .4172237    -1.02   0.307    -1.244341    .3911461
+     state36 {\VBAR}  -.4376002   .4178494    -1.05   0.295     -1.25657    .3813696
+     state37 {\VBAR}  -.5683746   .5102503    -1.11   0.265    -1.568447    .4316976
+     state38 {\VBAR}   -.355464   .4166461    -0.85   0.394    -1.172075    .4611473
+     state39 {\VBAR}  -.3530722   .4391464    -0.80   0.421    -1.213783     .507639
+     state40 {\VBAR}  -.4890396   .4190275    -1.17   0.243    -1.310318    .3322392
+     state41 {\VBAR}  -.2498405   .5262693    -0.47   0.635    -1.281309    .7816284
+     state42 {\VBAR}  -.3606498   .4174231    -0.86   0.388    -1.178784    .4574845
+     state43 {\VBAR}  -.4253502   .4170076    -1.02   0.308     -1.24267    .3919697
+     state44 {\VBAR}  -.2214779   .5262165    -0.42   0.674    -1.252843    .8098874
+     state45 {\VBAR}  -.6523559   .5502632    -1.19   0.236    -1.730852    .4261401
+     state46 {\VBAR}  -.3747007   .4179475    -0.90   0.370    -1.193863    .4444614
+     state47 {\VBAR}  -.4593918   .4318059    -1.06   0.287    -1.305716    .3869321
+     state48 {\VBAR}  -.4097297   .4182986    -0.98   0.327     -1.22958    .4101204
+     state49 {\VBAR}  -.3916962   .4290819    -0.91   0.361    -1.232681    .4492889
+     state50 {\VBAR}          0  (omitted)
+       _cons {\VBAR}   12.93901   5.647901     2.29   0.022     1.869328    24.00869
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 MARRIED SMSA NEWENG
+               MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT AGEQ AGEQSQ
+               state1 state2 state3 state4 state5 state6 state7 state8
+               state9 state10 state11 state12 state13 state14 state15
+               state16 state17 state18 state19 state20 state21 state22
+               state23 state24 state25 state26 state27 state28 state29
+               state30 state31 state32 state33 state34 state35 state36
+               state37 state38 state39 state40 state41 state42 state43
+               state44 state45 state46 state47 state48 state49 QTR1YR0
+               QTR1YR1 QTR1YR2 QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7
+               QTR1YR8 QTR1YR9 QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4
+               QTR2YR5 QTR2YR6 QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1
+               QTR3YR2 QTR3YR3 QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR8 QTR1state1
+               QTR1state2 QTR1state3 QTR1state4 QTR1state5 QTR1state6
+               QTR1state7 QTR1state8 QTR1state9 QTR1state10 QTR1state11
+               QTR1state12 QTR1state13 QTR1state14 QTR1state15 QTR1state16
+               QTR1state17 QTR1state18 QTR1state19 QTR1state20 QTR1state21
+               QTR1state22 QTR1state23 QTR1state24 QTR1state25 QTR1state26
+               QTR1state27 QTR1state30 QTR1state31 QTR1state32 QTR1state33
+               QTR1state34 QTR1state35 QTR1state36 QTR1state38 QTR1state39
+               QTR1state40 QTR1state41 QTR1state42 QTR1state43 QTR1state44
+               QTR1state46 QTR1state47 QTR1state48 QTR2state1 QTR2state2
+               QTR2state3 QTR2state4 QTR2state5 QTR2state6 QTR2state7
+               QTR2state8 QTR2state9 QTR2state10 QTR2state11 QTR2state13
+               QTR2state14 QTR2state15 QTR2state16 QTR2state17 QTR2state18
+               QTR2state19 QTR2state20 QTR2state21 QTR2state22 QTR2state23
+               QTR2state24 QTR2state25 QTR2state27 QTR2state30 QTR2state31
+               QTR2state32 QTR2state33 QTR2state34 QTR2state35 QTR2state36
+               QTR2state37 QTR2state38 QTR2state39 QTR2state40 QTR2state41
+               QTR2state42 QTR2state43 QTR2state45 QTR2state46 QTR2state47
+               QTR2state48 QTR3state1 QTR3state2 QTR3state3 QTR3state4
+               QTR3state5 QTR3state6 QTR3state7 QTR3state8 QTR3state9
+               QTR3state10 QTR3state11 QTR3state12 QTR3state13 QTR3state14
+               QTR3state15 QTR3state16 QTR3state17 QTR3state18 QTR3state19
+               QTR3state20 QTR3state21 QTR3state22 QTR3state23 QTR3state24
+               QTR3state25 QTR3state26 QTR3state27 QTR3state29 QTR3state30
+               QTR3state31 QTR3state32 QTR3state33 QTR3state34 QTR3state35
+               QTR3state36 QTR3state37 QTR3state38 QTR3state39 QTR3state40
+               QTR3state42 QTR3state43 QTR3state44 QTR3state46 QTR3state47
+               QTR3state48
+{\smallskip}
+. eststo model8
+{\smallskip}
+. 
+. **********  Table Decoration ********
+. 
+. label variable EDUC   "Years of education"
+{\smallskip}
+. label variable RACE   "Race(1 = black)"
+{\smallskip}
+. label variable SMSA   "SMSA (1 = center city)"
+{\smallskip}
+. label variable MARRIED   "Married (1 = married)"
+{\smallskip}
+. label variable AGEQ   "Age"
+{\smallskip}
+. label variable AGEQSQ   "Age-squared"
+{\smallskip}
+. 
+. /* esttab using "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\01_paper\\tables\\table8.tex", se varwidth(25) label keep(EDUC SMSA MARRIED AGEQ AGEQSQ) 
+> order(EDUC RACE SMSA MARRIED AGEQ AGEQSQ) title("TABLE VIII") nonumbers mtitles("(1) OLS" "(2) TSLS" "(3) OLS" "(4) TSLS" "(5) OLS" "(6) TSLS" "(7) OLS" "(8) TSLS") */
+. 
+. /* log close */
+. 
+end of do-file
+{\smallskip}
+. 

@@ -3,10 +3,11 @@
 
 \title{Microeconometrics:  Replication Paper}
 \author{Win Supanwanid}
-\date{April 2020}
+\date{May 2020}
 \usepackage{amssymb} % Square item
 \usepackage{xcolor} % color eq
 \usepackage[hidelinks]{hyperref} % for link
+\usepackage{tcolorbox} % for color box
 \usepackage{booktabs}
 \usepackage{appendix}
 \usepackage{lscape}
@@ -59,8 +60,50 @@ The data have 27 variables explaining the personal characteristics of 30-40 and 
 The data of men born 1920-1929 are selected from the 1 percent sample of the 1970 census with the sample size of 247,199. The data of men born 1930-1939 , however, are selected from the 5 percent sample of the 1980 census with the sample size of 329,509. The data of men born 1940-1949 are similarly selected from the 5 percent sample of the 1980 census with the sample size of 486,926.
 
 \subsection{Model}
+\subsubsection{Table I}
+The following model is used in Table I (same notation as in the paper),
+\begin{eqnarray}
+ \label{eq1_1}
+  MA_{cj} &=& \frac{E_{-2}+E_{-1}+E_{+1}+E_{+2}}{4}\\
+  \label{eq1_2}
+  E_{icj} - MA_{cj} &=&  \alpha +  \displaystyle\sum_{j}^3 \beta_j Q_{icj} + \epsilon_{icj}
+\end{eqnarray}
 
-Several equations are used to produce Table I - III. The crux of this paper, however, are Table IV - VIII which adopted the following model (same notation as in the paper).
+for $i = 1, 2,..., N_c; c = 1, 2, ..., 10; j = 1, 2, 3 $ 
+\begin{itemize}
+\item $E_{icj}$ : the educational outcome variable listed in Table I: total years of education, high school graduate, years of education for high school graduates, college graduates, completed master's degree
+, completed doctoral degree.
+
+\item  $MA_{cj}$ : the moving average of educational outcome variable for men born in the surrounding quarters. It's purpose is to detrend the series.
+\end{itemize}
+
+The paper then proceed to use OLS in model (\ref{eq1_2}) to estimate the effect of quarter-of-birth ($Q_{icj}$) on the preceding list of educational outcome variables.
+
+\subsubsection{Table III}
+For Table III, the authors use OLS and Wald estimates to calculate the preliminary results of return to education.
+
+\begin{eqnarray}
+ \label{eq3_1}
+  ln W_i  &=&  \alpha_1 + \beta_1 Q_{1i} +\epsilon_{1i}\\
+  \label{eq3_2}
+  EDUC_i &=&  \alpha_2 + \beta_2 Q_{1i} +\epsilon_{2i}
+\end{eqnarray}
+
+\begin{itemize}
+\item $W_i$ : Weekly wage
+\item $EDUC_i$ : Years of Education
+\item $Q_1$ : Born in first quarter of the year
+\end{itemize}
+The Wald Estimates is equal to $\frac{\beta_1}{\beta_2}$ with the following command in STATA for determining the standard error.
+
+\begin{tcolorbox}
+sureg (eq1:  LWKLYWGE QTR1 ) (eq2:  EDUC QTR1 ) if COHORT==3039
+
+nlcom ratio: [eq1]\_b[QTR1]/[eq2]\_b[QTR1]
+\end{tcolorbox}
+
+\subsubsection{Table IV-VIII}
+The crux of this paper, however, are Table IV - VIII which adopted the following model (same notation as in the paper).
 
 \begin{eqnarray}
  \label{main1}

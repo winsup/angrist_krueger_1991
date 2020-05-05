@@ -1,0 +1,3117 @@
+. do "Table I"
+{\smallskip}
+. clear
+{\smallskip}
+. /* log using "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\02_logfile\\Table_I.log", replace  */
+. 
+. use "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\raw_data.dta"
+{\smallskip}
+. rename v1 AGE
+{\smallskip}
+. rename v2 AGEQ
+{\smallskip}
+. rename v4 EDUC
+{\smallskip}
+. rename v5 ENOCENT
+{\smallskip}
+. rename v6 ESOCENT
+{\smallskip}
+. rename v9 LWKLYWGE
+{\smallskip}
+. rename v10 MARRIED
+{\smallskip}
+. rename v11 MIDATL
+{\smallskip}
+. rename v12 MT
+{\smallskip}
+. rename v13 NEWENG
+{\smallskip}
+. rename v16 CENSUS
+{\smallskip}
+. rename v18 QOB
+{\smallskip}
+. rename v19 RACE
+{\smallskip}
+. rename v20 SMSA
+{\smallskip}
+. rename v21 SOATL
+{\smallskip}
+. rename v24 WNOCENT
+{\smallskip}
+. rename v25 WSOCENT
+{\smallskip}
+. rename v27 YOB
+{\smallskip}
+. 
+. **********  YOB dummies **********
+. replace YOB=YOB-1900 if YOB >=1900
+(247,199 real changes made)
+{\smallskip}
+. 
+. foreach i of numlist 0/9 {\lbr}
+  2.         gen YR`i'=0
+  3.         replace YR`i'=1 if YOB==20+`i' | YOB==30+`i' | YOB==40+`i' 
+  4. {\rbr}
+(95,545 real changes made)
+(93,948 real changes made)
+(101,493 real changes made)
+(101,445 real changes made)
+(101,851 real changes made)
+(102,153 real changes made)
+(111,229 real changes made)
+(120,407 real changes made)
+(117,529 real changes made)
+(118,034 real changes made)
+{\smallskip}
+. **********  QOB dummies ***********
+. foreach i of numlist 1/4 {\lbr}
+  2.         gen QTR`i'=0
+  3.         replace QTR`i'=1 if QOB==`i'
+  4. {\rbr}
+(262,019 real changes made)
+(255,733 real changes made)
+(280,749 real changes made)
+(265,133 real changes made)
+{\smallskip}
+. **********  QOB*YOB dummies  1/4 Not same as 4-8 ********
+. foreach k of numlist 1/4 {\lbr}
+  2. foreach j in 00 25 50 75 {\lbr}
+  3.         if `k'-1==`j'/25{\lbr}
+  4.         foreach i of numlist 0/9 {\lbr}
+  5.                 gen YQ`i'`j'=QTR`k'*YR`i'
+  6.         {\rbr}
+  7.         {\rbr}
+  8. {\rbr}
+  9. {\rbr}
+{\smallskip}
+. **********  Gen Other Variables ********
+. gen COHORT=2029
+{\smallskip}
+. replace COHORT=3039 if YOB<=39 \& YOB >=30
+(329,509 real changes made)
+{\smallskip}
+. replace COHORT=4049 if YOB<=49 \& YOB >=40
+(486,926 real changes made)
+{\smallskip}
+. replace AGEQ=AGEQ-1900 if CENSUS==80
+(816,435 real changes made)
+{\smallskip}
+. gen AGEQSQ= AGEQ*AGEQ
+{\smallskip}
+. 
+. **********  Gen Table 1 helper Variables ********
+. // drop YQ
+. gen YQ=0
+{\smallskip}
+. foreach j of numlist 1/4 {\lbr}
+  2. foreach i of numlist 20/49 {\lbr}
+  3. replace YQ=100*(`i')+25*(`j'-1) if (YOB==`i' \& QOB ==`j')
+  4. {\rbr}
+  5. {\rbr}
+(6,434 real changes made)
+(6,298 real changes made)
+(6,104 real changes made)
+(6,159 real changes made)
+(6,382 real changes made)
+(6,342 real changes made)
+(6,113 real changes made)
+(6,511 real changes made)
+(6,293 real changes made)
+(5,992 real changes made)
+(8,395 real changes made)
+(7,642 real changes made)
+(8,252 real changes made)
+(7,818 real changes made)
+(7,782 real changes made)
+(7,995 real changes made)
+(8,192 real changes made)
+(8,187 real changes made)
+(8,708 real changes made)
+(8,700 real changes made)
+(9,336 real changes made)
+(9,333 real changes made)
+(10,358 real changes made)
+(11,760 real changes made)
+(10,898 real changes made)
+(10,935 real changes made)
+(10,792 real changes made)
+(15,921 real changes made)
+(14,348 real changes made)
+(14,039 real changes made)
+(5,813 real changes made)
+(6,271 real changes made)
+(5,874 real changes made)
+(6,101 real changes made)
+(6,330 real changes made)
+(6,052 real changes made)
+(6,035 real changes made)
+(6,184 real changes made)
+(6,104 real changes made)
+(6,124 real changes made)
+(8,396 real changes made)
+(7,634 real changes made)
+(7,751 real changes made)
+(7,572 real changes made)
+(7,591 real changes made)
+(8,002 real changes made)
+(7,945 real changes made)
+(8,182 real changes made)
+(8,482 real changes made)
+(8,583 real changes made)
+(9,338 real changes made)
+(9,150 real changes made)
+(10,338 real changes made)
+(11,284 real changes made)
+(10,521 real changes made)
+(10,720 real changes made)
+(11,391 real changes made)
+(14,914 real changes made)
+(13,416 real changes made)
+(13,635 real changes made)
+(6,070 real changes made)
+(6,291 real changes made)
+(6,418 real changes made)
+(6,191 real changes made)
+(6,616 real changes made)
+(6,502 real changes made)
+(6,448 real changes made)
+(6,719 real changes made)
+(6,365 real changes made)
+(6,468 real changes made)
+(8,722 real changes made)
+(7,980 real changes made)
+(8,311 real changes made)
+(7,718 real changes made)
+(8,474 real changes made)
+(8,792 real changes made)
+(8,579 real changes made)
+(9,226 real changes made)
+(9,371 real changes made)
+(9,683 real changes made)
+(10,235 real changes made)
+(10,314 real changes made)
+(11,950 real changes made)
+(12,155 real changes made)
+(11,742 real changes made)
+(11,787 real changes made)
+(15,332 real changes made)
+(15,662 real changes made)
+(15,403 real changes made)
+(15,225 real changes made)
+(5,408 real changes made)
+(6,118 real changes made)
+(5,868 real changes made)
+(5,894 real changes made)
+(6,220 real changes made)
+(5,938 real changes made)
+(5,835 real changes made)
+(6,236 real changes made)
+(5,852 real changes made)
+(6,226 real changes made)
+(8,089 real changes made)
+(7,327 real changes made)
+(7,897 real changes made)
+(7,643 real changes made)
+(8,069 real changes made)
+(7,984 real changes made)
+(7,960 real changes made)
+(8,374 real changes made)
+(8,662 real changes made)
+(8,839 real changes made)
+(9,309 real changes made)
+(9,590 real changes made)
+(12,372 real changes made)
+(11,150 real changes made)
+(11,226 real changes made)
+(11,104 real changes made)
+(16,607 real changes made)
+(14,291 real changes made)
+(14,525 real changes made)
+(14,520 real changes made)
+{\smallskip}
+. **************************************************
+. **********  Start Total years of Education ********
+. 
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum EDUC if (COHORT>3000 \& COHORT <3040 \& `j'==1)
+  3.                 scalar mean_3039_`j' = r(mean)
+  4. {\rbr}       
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,395    12.28041    3.446516          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,642    12.54043    3.412833          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,252    12.53393    3.436765          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,818    12.67319    3.396866          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,782    12.64726    3.333896          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,995    12.65091    3.311164          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,192    12.74304    3.198746          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,187     12.8323    3.203817          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,708    12.93868    3.189243          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,700    13.00299    3.114918          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,396    12.42842    3.477349          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,634    12.53105    3.418477          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,751     12.6096    3.457216          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,572    12.63471    3.354493          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,591    12.72797    3.356178          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,002    12.79693    3.296933          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,945    12.81108    3.250715          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,182    12.84405     3.27083          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,482    13.00766    3.175236          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,583     13.0134    3.192048          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,722    12.49186    3.400863          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,980    12.68672    3.383067          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,311    12.66045    3.336589          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,718    12.75395    3.316561          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,474    12.70805    3.325628          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,792    12.86135    3.209125          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,579    12.88623     3.22479          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,226    12.96217    3.098593          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,371    12.98655    3.112551          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,683    12.98926    3.089936          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,089    12.62468    3.410479          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,327    12.61212    3.300486          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,897    12.72711    3.359892          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,643    12.69227    3.343233          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,069    12.79787    3.247159          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,984    12.81964     3.23187          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      7,960    12.92802    3.110152          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,374    12.97098      3.1073          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,662    13.03013    3.116584          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      8,839    13.11653    3.112545          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}          0
+{\smallskip}
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum EDUC if (COHORT>4000 \& `j'==1)
+  3.                 scalar mean_4049_`j' = r(mean)
+  4. {\rbr}
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,336    13.01939    3.122246          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,333     13.0975    3.154326          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,358    13.22977    3.108124          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,760    13.42211    3.064084          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,898     13.4387    3.075889          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,935    13.53233    3.099743          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,792    13.61694      3.0464          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     15,921    13.79662    2.902514          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,348    13.74185    2.856599          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,039    13.77805    2.803591          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,338    13.05558    3.183613          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,150    13.22874    3.118953          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,338    13.39321    3.084452          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,284    13.39649    3.065304          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,521    13.43884    3.113397          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,720    13.66623    3.050127          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,391    13.68905    3.023244          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,914    13.88481    2.906649          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     13,416    13.81075    2.841869          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     13,635     13.7491    2.781921          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,235    13.15916    3.094431          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,314    13.26808    3.081078          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,950    13.37498    3.051716          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     12,155    13.46475    3.035439          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,742    13.47786    3.062222          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,787    13.65072    3.042699          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     15,332    13.78789    2.925691          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     15,662    13.79671    2.832473          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     15,403    13.76381    2.807053          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     15,225     13.7598    2.740898          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,309    13.26555    3.063424          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}      9,590    13.28728    3.090216          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     12,372    13.55456    3.040643          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,150    13.48206    2.970297          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,226    13.54784    3.026958          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     11,104    13.60735    3.068406          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     16,607    13.85952    2.883265          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,291    13.77293    2.823848          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,525    13.77301    2.768899          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     14,520    13.74463    2.713963          0         20
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}          0
+{\smallskip}
+. **********  30-39 **********
+. drop MA
+{\smallskip}
+. gen MA=0
+{\smallskip}
+. replace MA = (mean_3039_YQ000+mean_3039_YQ025+mean_3039_YQ075+mean_3039_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,722 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ025+mean_3039_YQ050+mean_3039_YQ100+mean_3039_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,089 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ050+mean_3039_YQ075+mean_3039_YQ125+mean_3039_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,642 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ075+mean_3039_YQ100+mean_3039_YQ150+mean_3039_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,634 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_3039_YQ`pm2'+mean_3039_YQ`pm1'+mean_3039_YQ`pn1'+mean_3039_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=30 \& YQ/100<=39.75)
+  8. {\rbr}
+(7,980 real changes made)
+(7,327 real changes made)
+(8,252 real changes made)
+(7,751 real changes made)
+(8,311 real changes made)
+(7,897 real changes made)
+(7,818 real changes made)
+(7,572 real changes made)
+(7,718 real changes made)
+(7,643 real changes made)
+(7,782 real changes made)
+(7,591 real changes made)
+(8,474 real changes made)
+(8,069 real changes made)
+(7,995 real changes made)
+(8,002 real changes made)
+(8,792 real changes made)
+(7,984 real changes made)
+(8,192 real changes made)
+(7,945 real changes made)
+(8,579 real changes made)
+(7,960 real changes made)
+(8,187 real changes made)
+(8,182 real changes made)
+(9,226 real changes made)
+(8,374 real changes made)
+(8,708 real changes made)
+(8,482 real changes made)
+(9,371 real changes made)
+(8,662 real changes made)
+(8,700 real changes made)
+(8,583 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ900+mean_3039_YQ925+mean_3039_YQ975+mean_4049_YQ000)/4 if (mod(YQ,1000)==950 \& YQ/100>=30 \& YQ/100<=39.75)
+(9,683 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ925+mean_3039_YQ950+mean_4049_YQ000+mean_4049_YQ025)/4 if (mod(YQ,1000)==975 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,839 real changes made)
+{\smallskip}
+. 
+. **********  40-49 **********
+. // drop MA
+. replace MA = (mean_4049_YQ000+mean_4049_YQ025+mean_4049_YQ075+mean_4049_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=40 \& YQ/100<=49.75)
+(10,235 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ025+mean_4049_YQ050+mean_4049_YQ100+mean_4049_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,309 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ050+mean_4049_YQ075+mean_4049_YQ125+mean_4049_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,333 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ075+mean_4049_YQ100+mean_4049_YQ150+mean_4049_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,150 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_4049_YQ`pm2'+mean_4049_YQ`pm1'+mean_4049_YQ`pn1'+mean_4049_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=40 \& YQ/100<=49.75)
+  8. {\rbr}
+(10,314 real changes made)
+(9,590 real changes made)
+(10,358 real changes made)
+(10,338 real changes made)
+(11,950 real changes made)
+(12,372 real changes made)
+(11,760 real changes made)
+(11,284 real changes made)
+(12,155 real changes made)
+(11,150 real changes made)
+(10,898 real changes made)
+(10,521 real changes made)
+(11,742 real changes made)
+(11,226 real changes made)
+(10,935 real changes made)
+(10,720 real changes made)
+(11,787 real changes made)
+(11,104 real changes made)
+(10,792 real changes made)
+(11,391 real changes made)
+(15,332 real changes made)
+(16,607 real changes made)
+(15,921 real changes made)
+(14,914 real changes made)
+(15,662 real changes made)
+(14,291 real changes made)
+(14,348 real changes made)
+(13,416 real changes made)
+(15,403 real changes made)
+(14,525 real changes made)
+(14,039 real changes made)
+(13,635 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ950+mean_3039_YQ975+mean_4049_YQ025+mean_4049_YQ050)/4 if (mod(YQ,1000)==0 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,336 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ975+mean_4049_YQ000+mean_4049_YQ050+mean_4049_YQ175)/4 if (mod(YQ,1000)==25 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,338 real changes made)
+{\smallskip}
+. 
+. **********  Regression Year EDUC **********
+. gen EDUC_s = EDUC-MA
+{\smallskip}
+. 
+. **********  Total years of Education **********
+. sum EDUC if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    312,718    12.79222    3.269731          0         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    457,181    13.56001    2.995541          0         20
+{\smallskip}
+. eststo clear
+{\smallskip}
+. reg EDUC_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   312,718
+\HLI{13}{\PLUS}\HLI{34}   F(3, 312714)    =     25.12
+       Model {\VBAR}  803.733413         3  267.911138   Prob > F        =    0.0000
+    Residual {\VBAR}  3335397.99   312,714  10.6659695   R-squared       =    0.0002
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0002
+       Total {\VBAR}  3336201.72   312,717  10.6684373   Root MSE        =    3.2659
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+      EDUC_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.1242856   .0166581    -7.46   0.000     -.156935   -.0916363
+        QTR2 {\VBAR}  -.0859973   .0167512    -5.13   0.000    -.1188292   -.0531653
+        QTR3 {\VBAR}  -.0148872   .0159604    -0.93   0.351     -.046169    .0163947
+       _cons {\VBAR}   .0574542   .0114862     5.00   0.000     .0349416    .0799669
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model1
+{\smallskip}
+. reg EDUC_s QTR1-QTR3  if (COHORT>4000 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   457,181
+\HLI{13}{\PLUS}\HLI{34}   F(3, 457177)    =     17.36
+       Model {\VBAR}  464.448901         3    154.8163   Prob > F        =    0.0000
+    Residual {\VBAR}  4077943.09   457,177   8.9198343   R-squared       =    0.0001
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0001
+       Total {\VBAR}  4078407.54   457,180  8.92079167   Root MSE        =    2.9866
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+      EDUC_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0854568   .0125193    -6.83   0.000    -.1099943   -.0609194
+        QTR2 {\VBAR}  -.0352745   .0125985    -2.80   0.005    -.0599673   -.0105818
+        QTR3 {\VBAR}  -.0188388    .012602    -1.49   0.135    -.0435383    .0058607
+       _cons {\VBAR}   .0368347   .0089979     4.09   0.000     .0191992    .0544703
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model2
+{\smallskip}
+. 
+. 
+. 
+. 
+. **************************************************
+. **********  Regression Year High School **********
+. gen hs_grad=0
+{\smallskip}
+. replace hs_grad=1 if EDUC>=12
+(821,663 real changes made)
+{\smallskip}
+. sum hs_grad if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}    312,718     .774068    .4181953          0          1
+{\smallskip}
+. sum hs_grad if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}    457,181    .8636907     .343117          0          1
+{\smallskip}
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975 \& hs_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    242,065    14.00601    2.453309         12         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925 \& hs_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    394,863    14.28134     2.44578         12         20
+{\smallskip}
+. 
+. **********  Years of educ. for high school graduates **********
+. reg EDUC_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0 \& hs_grad==1)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   242,065
+\HLI{13}{\PLUS}\HLI{34}   F(3, 242061)    =      3.79
+       Model {\VBAR}  68.7635442         3  22.9211814   Prob > F        =    0.0099
+    Residual {\VBAR}  1463383.04   242,061  6.04551348   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}   1463451.8   242,064  6.04572262   Root MSE        =    2.4588
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+      EDUC_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0296008   .0142548    -2.08   0.038    -.0575399   -.0016617
+        QTR2 {\VBAR}   .0050956   .0143257     0.36   0.722    -.0229823    .0331735
+        QTR3 {\VBAR}   .0165048   .0136098     1.21   0.225    -.0101701    .0431797
+       _cons {\VBAR}   1.214717   .0097795   124.21   0.000     1.195549    1.233885
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model3
+{\smallskip}
+. reg EDUC_s QTR1-QTR3  if (COHORT>4000 \& MA !=0 \& hs_grad==1)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   394,863
+\HLI{13}{\PLUS}\HLI{34}   F(3, 394859)    =      2.58
+       Model {\VBAR}  46.3958152         3  15.4652717   Prob > F        =    0.0515
+    Residual {\VBAR}  2364685.91   394,859  5.98868434   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  2364732.31   394,862  5.98875634   Root MSE        =    2.4472
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+      EDUC_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0093476   .0110349    -0.85   0.397    -.0309756    .0122804
+        QTR2 {\VBAR}   .0200636   .0110922     1.81   0.070    -.0016768     .041804
+        QTR3 {\VBAR}   .0079357   .0110816     0.72   0.474     -.013784    .0296553
+       _cons {\VBAR}   .7109541   .0079014    89.98   0.000     .6954676    .7264405
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model4
+{\smallskip}
+. 
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum hs_grad if (COHORT>3000 \& COHORT <3040 \& `j'==1)
+  3.                 scalar mean_3039_`j' = r(mean)
+  4. {\rbr}       
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,395    .7161406    .4508963          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,642    .7427375    .4371539          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,252    .7398206    .4387589          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,818    .7513431    .4322622          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,782    .7492932    .4334478          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,995    .7572233     .428788          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,192    .7728271    .4190308          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,187    .7873458      .40921          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,708    .7970831    .4021942          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,700    .7985057    .4011394          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,396    .7170081    .4504794          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,634     .740896    .4381715          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,751    .7413237    .4379356          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,572         .75    .4330413          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,591    .7576077    .4285586          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,002    .7700575    .4208219          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,945    .7755821    .4172246          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,182    .7796382    .4145159          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,482    .7996935    .4002533          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,583    .7979727    .4015358          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,722    .7315983    .4431532          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,980    .7592732    .4275515          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,311    .7535796    .4309521          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,718     .760171    .4270066          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,474    .7619778    .4258979          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,792    .7861692    .4100321          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,579    .7865719    .4097513          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,226    .8052244    .3960494          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,371    .8074912    .3942915          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,683    .8053289    .3959677          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,089      .74966    .4332356          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,327    .7502388    .4329043          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,897    .7559833    .4295299          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,643    .7557242    .4296851          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,069     .771595    .4198309          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,984    .7849449    .4108863          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      7,960    .8075377    .3942589          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,374    .8063052    .3952161          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,662    .8098592    .3924348          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      8,839    .8164951    .3871018          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}          0
+{\smallskip}
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum hs_grad if (COHORT>4000 \& `j'==1)
+  3.                 scalar mean_4049_`j' = r(mean)
+  4. {\rbr}
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,336     .801521    .3988761          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,333     .811529    .3911088          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,358    .8231319    .3815755          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,760    .8493197    .3577522          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,898    .8474032    .3596149          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,935    .8562414    .3508608          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,792    .8598036    .3472068          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     15,921    .8917782    .3106701          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,348    .8875105    .3159788          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,039    .8937246    .3082007          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,338    .8065967    .3949876          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,150    .8240437    .3808038          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,338    .8355581     .370694          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,284     .842609    .3641852          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,521    .8450718    .3618535          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,720    .8648321    .3419188          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,391    .8748134    .3309448          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,914    .8952662    .3062204          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     13,416    .8894603    .3135729          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     13,635    .8935827    .3083823          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,235    .8249145    .3800588          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     10,314    .8303277    .3753628          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,950    .8461088    .3608595          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     12,155    .8526532    .3544658          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,742    .8548799    .3522369          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,787    .8702808    .3360085          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     15,332    .8895121    .3135071          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     15,662    .8947772    .3068501          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     15,403    .8938518    .3080371          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     15,225    .8967488    .3042967          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,309    .8332796    .3727461          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}      9,590    .8347237    .3714491          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     12,372    .8606531    .3463222          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,150    .8587444    .3483006          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,226    .8610369    .3459234          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     11,104    .8612212    .3457311          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     16,607    .8959475    .3053378          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,291    .8950388    .3065141          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,525    .8977625    .3029708          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}     14,520    .9002755    .2996427          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     hs_grad {\VBAR}          0
+{\smallskip}
+. **********  30-39 **********
+. drop MA
+{\smallskip}
+. gen MA=0
+{\smallskip}
+. replace MA = (mean_3039_YQ000+mean_3039_YQ025+mean_3039_YQ075+mean_3039_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,722 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ025+mean_3039_YQ050+mean_3039_YQ100+mean_3039_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,089 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ050+mean_3039_YQ075+mean_3039_YQ125+mean_3039_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,642 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ075+mean_3039_YQ100+mean_3039_YQ150+mean_3039_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,634 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_3039_YQ`pm2'+mean_3039_YQ`pm1'+mean_3039_YQ`pn1'+mean_3039_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=30 \& YQ/100<=39.75)
+  8. {\rbr}
+(7,980 real changes made)
+(7,327 real changes made)
+(8,252 real changes made)
+(7,751 real changes made)
+(8,311 real changes made)
+(7,897 real changes made)
+(7,818 real changes made)
+(7,572 real changes made)
+(7,718 real changes made)
+(7,643 real changes made)
+(7,782 real changes made)
+(7,591 real changes made)
+(8,474 real changes made)
+(8,069 real changes made)
+(7,995 real changes made)
+(8,002 real changes made)
+(8,792 real changes made)
+(7,984 real changes made)
+(8,192 real changes made)
+(7,945 real changes made)
+(8,579 real changes made)
+(7,960 real changes made)
+(8,187 real changes made)
+(8,182 real changes made)
+(9,226 real changes made)
+(8,374 real changes made)
+(8,708 real changes made)
+(8,482 real changes made)
+(9,371 real changes made)
+(8,662 real changes made)
+(8,700 real changes made)
+(8,583 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ900+mean_3039_YQ925+mean_3039_YQ975+mean_4049_YQ000)/4 if (mod(YQ,1000)==950 \& YQ/100>=30 \& YQ/100<=39.75)
+(9,683 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ925+mean_3039_YQ950+mean_4049_YQ000+mean_4049_YQ025)/4 if (mod(YQ,1000)==975 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,839 real changes made)
+{\smallskip}
+. 
+. **********  40-49 **********
+. // drop MA
+. replace MA = (mean_4049_YQ000+mean_4049_YQ025+mean_4049_YQ075+mean_4049_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=40 \& YQ/100<=49.75)
+(10,235 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ025+mean_4049_YQ050+mean_4049_YQ100+mean_4049_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,309 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ050+mean_4049_YQ075+mean_4049_YQ125+mean_4049_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,333 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ075+mean_4049_YQ100+mean_4049_YQ150+mean_4049_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,150 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_4049_YQ`pm2'+mean_4049_YQ`pm1'+mean_4049_YQ`pn1'+mean_4049_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=40 \& YQ/100<=49.75)
+  8. {\rbr}
+(10,314 real changes made)
+(9,590 real changes made)
+(10,358 real changes made)
+(10,338 real changes made)
+(11,950 real changes made)
+(12,372 real changes made)
+(11,760 real changes made)
+(11,284 real changes made)
+(12,155 real changes made)
+(11,150 real changes made)
+(10,898 real changes made)
+(10,521 real changes made)
+(11,742 real changes made)
+(11,226 real changes made)
+(10,935 real changes made)
+(10,720 real changes made)
+(11,787 real changes made)
+(11,104 real changes made)
+(10,792 real changes made)
+(11,391 real changes made)
+(15,332 real changes made)
+(16,607 real changes made)
+(15,921 real changes made)
+(14,914 real changes made)
+(15,662 real changes made)
+(14,291 real changes made)
+(14,348 real changes made)
+(13,416 real changes made)
+(15,403 real changes made)
+(14,525 real changes made)
+(14,039 real changes made)
+(13,635 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ950+mean_3039_YQ975+mean_4049_YQ025+mean_4049_YQ050)/4 if (mod(YQ,1000)==0 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,336 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ975+mean_4049_YQ000+mean_4049_YQ050+mean_4049_YQ175)/4 if (mod(YQ,1000)==25 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,338 real changes made)
+{\smallskip}
+. 
+. **********  Regression**********
+. gen hs_grad_s = hs_grad-MA
+{\smallskip}
+. 
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    312,718    12.79222    3.269731          0         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    457,181    13.56001    2.995541          0         20
+{\smallskip}
+. 
+. reg hs_grad_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   312,718
+\HLI{13}{\PLUS}\HLI{34}   F(3, 312714)    =     46.60
+       Model {\VBAR}  24.3681612         3  8.12272041   Prob > F        =    0.0000
+    Residual {\VBAR}  54510.5749   312,714  .174314469   R-squared       =    0.0004
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0004
+       Total {\VBAR}   54534.943   312,717  .174390721   Root MSE        =    .41751
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+   hs_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0191356   .0021296    -8.99   0.000    -.0233095   -.0149617
+        QTR2 {\VBAR}  -.0198344   .0021415    -9.26   0.000    -.0240316   -.0156372
+        QTR3 {\VBAR}  -.0038982   .0020404    -1.91   0.056    -.0078972    .0001009
+       _cons {\VBAR}    .010838   .0014684     7.38   0.000       .00796    .0137161
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model5
+{\smallskip}
+. reg hs_grad_s QTR1-QTR3  if (COHORT>4000 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   457,181
+\HLI{13}{\PLUS}\HLI{34}   F(3, 457177)    =     51.26
+       Model {\VBAR}   17.988658         3  5.99621933   Prob > F        =    0.0000
+    Residual {\VBAR}  53480.4021   457,177  .116979643   R-squared       =    0.0003
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0003
+       Total {\VBAR}  53498.3908   457,180  .117018222   Root MSE        =    .34202
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+   hs_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0145416   .0014337   -10.14   0.000    -.0173516   -.0117316
+        QTR2 {\VBAR}  -.0121225   .0014428    -8.40   0.000    -.0149503   -.0092947
+        QTR3 {\VBAR}  -.0019522   .0014432    -1.35   0.176    -.0047808    .0008763
+       _cons {\VBAR}    .007374   .0010304     7.16   0.000     .0053544    .0093936
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model6
+{\smallskip}
+. 
+. **************************************************
+. **********  Regression Year Bachelor **********
+. // drop bach_grad
+. gen bach_grad=0
+{\smallskip}
+. replace bach_grad=1 if EDUC>=16
+(262,809 real changes made)
+{\smallskip}
+. sum bach_grad if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}    312,718    .2356244    .4243891          0          1
+{\smallskip}
+. sum bach_grad if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}    457,181    .2995881    .4580781          0          1
+{\smallskip}
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975 \& bach_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     73,684    17.29811    1.478809         16         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925 \& bach_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    136,966    17.22905    1.419707         16         20
+{\smallskip}
+. 
+. 
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum bach_grad if (COHORT>3000 \& COHORT <3040 \& `j'==1)
+  3.                 scalar mean_3039_`j' = r(mean)
+  4. {\rbr}       
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,395    .2015485    .4011806          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,642    .2274274    .4191982          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,252    .2253999    .4178707          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,818    .2391916    .4266172          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,782     .227191    .4190439          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,995     .227142    .4190113          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,192    .2230225    .4162987          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,187    .2278002    .4194386          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,708    .2379421     .425848          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,700    .2481609    .4319705          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,396    .2234397    .4165754          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,634    .2291066    .4202855          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,751    .2375177    .4255895          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,572    .2333597    .4229972          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,591    .2394941    .4268029          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,002    .2363159     .424845          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,945     .234613    .4237833          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,182    .2379614    .4258614          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,482    .2459326    .4306641          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,583    .2472329    .4314284          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,722    .2262096    .4184004          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,980    .2368421    .4251712          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,311    .2329443    .4227325          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,718    .2441047    .4295829          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,474    .2333019    .4229577          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,792    .2397634    .4269633          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,579    .2403544    .4273236          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,226    .2308693    .4214118          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,371    .2407427    .4275572          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,683    .2351544    .4241172          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,089     .228582    .4199453          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,327    .2201447    .4143723          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,897    .2376852    .4256922          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,643    .2356405    .4244262          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,069    .2419135    .4282687          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,984    .2305862    .4212344          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      7,960    .2345477    .4237424          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,374    .2401481    .4271987          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,662     .241861    .4282352          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      8,839    .2517253    .4340288          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}          0
+{\smallskip}
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum bach_grad if (COHORT>4000 \& `j'==1)
+  3.                 scalar mean_4049_`j' = r(mean)
+  4. {\rbr}
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,336    .2481791    .4319794          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,333    .2537233    .4351645          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,358    .2651091    .4414126          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,760    .2816327    .4498143          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,898    .2889521    .4532964          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,935    .3042524    .4601111          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,792    .3179207      .46569          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     15,921    .3254821    .4685694          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,348    .3151659    .4645981          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,039    .3153359     .464666          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,338    .2525166    .4344792          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,150    .2679781    .4429304          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,338    .2830335    .4504943          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,284    .2821694    .4500753          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,521     .297025    .4569694          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,720    .3185634     .465941          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,391    .3186726    .4659822          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,914    .3363283    .4724686          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     13,416    .3249106    .4683589          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     13,635    .3121379    .4633827          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,235    .2522716    .4343375          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     10,314    .2681792    .4430329          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,950    .2779079    .4479865          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     12,155    .2862197    .4520119          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,742    .2910066    .4542459          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,787    .3144142    .4643018          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     15,332    .3259849    .4687569          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     15,662    .3220534    .4672782          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     15,403    .3177303    .4656091          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     15,225    .3115271    .4631329          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,309    .2628639    .4402128          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}      9,590    .2673618    .4426058          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     12,372    .2935661    .4554139          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,150    .2870852     .452422          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,226    .2983253    .4575434          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     11,104    .3129503    .4637152          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     16,607    .3305835    .4704374          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,291    .3176825    .4655915          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,525    .3138726    .4640813          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}     14,520    .3067493    .4611603          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+   bach_grad {\VBAR}          0
+{\smallskip}
+. **********  30-39 **********
+. drop MA
+{\smallskip}
+. gen MA=0
+{\smallskip}
+. replace MA = (mean_3039_YQ000+mean_3039_YQ025+mean_3039_YQ075+mean_3039_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,722 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ025+mean_3039_YQ050+mean_3039_YQ100+mean_3039_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,089 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ050+mean_3039_YQ075+mean_3039_YQ125+mean_3039_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,642 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ075+mean_3039_YQ100+mean_3039_YQ150+mean_3039_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,634 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_3039_YQ`pm2'+mean_3039_YQ`pm1'+mean_3039_YQ`pn1'+mean_3039_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=30 \& YQ/100<=39.75)
+  8. {\rbr}
+(7,980 real changes made)
+(7,327 real changes made)
+(8,252 real changes made)
+(7,751 real changes made)
+(8,311 real changes made)
+(7,897 real changes made)
+(7,818 real changes made)
+(7,572 real changes made)
+(7,718 real changes made)
+(7,643 real changes made)
+(7,782 real changes made)
+(7,591 real changes made)
+(8,474 real changes made)
+(8,069 real changes made)
+(7,995 real changes made)
+(8,002 real changes made)
+(8,792 real changes made)
+(7,984 real changes made)
+(8,192 real changes made)
+(7,945 real changes made)
+(8,579 real changes made)
+(7,960 real changes made)
+(8,187 real changes made)
+(8,182 real changes made)
+(9,226 real changes made)
+(8,374 real changes made)
+(8,708 real changes made)
+(8,482 real changes made)
+(9,371 real changes made)
+(8,662 real changes made)
+(8,700 real changes made)
+(8,583 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ900+mean_3039_YQ925+mean_3039_YQ975+mean_4049_YQ000)/4 if (mod(YQ,1000)==950 \& YQ/100>=30 \& YQ/100<=39.75)
+(9,683 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ925+mean_3039_YQ950+mean_4049_YQ000+mean_4049_YQ025)/4 if (mod(YQ,1000)==975 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,839 real changes made)
+{\smallskip}
+. 
+. **********  40-49 **********
+. // drop MA
+. replace MA = (mean_4049_YQ000+mean_4049_YQ025+mean_4049_YQ075+mean_4049_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=40 \& YQ/100<=49.75)
+(10,235 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ025+mean_4049_YQ050+mean_4049_YQ100+mean_4049_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,309 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ050+mean_4049_YQ075+mean_4049_YQ125+mean_4049_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,333 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ075+mean_4049_YQ100+mean_4049_YQ150+mean_4049_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,150 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_4049_YQ`pm2'+mean_4049_YQ`pm1'+mean_4049_YQ`pn1'+mean_4049_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=40 \& YQ/100<=49.75)
+  8. {\rbr}
+(10,314 real changes made)
+(9,590 real changes made)
+(10,358 real changes made)
+(10,338 real changes made)
+(11,950 real changes made)
+(12,372 real changes made)
+(11,760 real changes made)
+(11,284 real changes made)
+(12,155 real changes made)
+(11,150 real changes made)
+(10,898 real changes made)
+(10,521 real changes made)
+(11,742 real changes made)
+(11,226 real changes made)
+(10,935 real changes made)
+(10,720 real changes made)
+(11,787 real changes made)
+(11,104 real changes made)
+(10,792 real changes made)
+(11,391 real changes made)
+(15,332 real changes made)
+(16,607 real changes made)
+(15,921 real changes made)
+(14,914 real changes made)
+(15,662 real changes made)
+(14,291 real changes made)
+(14,348 real changes made)
+(13,416 real changes made)
+(15,403 real changes made)
+(14,525 real changes made)
+(14,039 real changes made)
+(13,635 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ950+mean_3039_YQ975+mean_4049_YQ025+mean_4049_YQ050)/4 if (mod(YQ,1000)==0 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,336 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ975+mean_4049_YQ000+mean_4049_YQ050+mean_4049_YQ175)/4 if (mod(YQ,1000)==25 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,338 real changes made)
+{\smallskip}
+. 
+. **********  Regression **********
+. // drop EDUC_s
+. gen bach_grad_s = bach_grad-MA
+{\smallskip}
+. 
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    312,718    12.79222    3.269731          0         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    457,181    13.56001    2.995541          0         20
+{\smallskip}
+. 
+. reg bach_grad_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   312,718
+\HLI{13}{\PLUS}\HLI{34}   F(3, 312714)    =      5.00
+       Model {\VBAR}  2.70012278         3  .900040925   Prob > F        =    0.0018
+    Residual {\VBAR}  56318.0031   312,714  .180094282   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  56320.7033   312,717  .180101188   Root MSE        =    .42438
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+ bach_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}   -.005028   .0021646    -2.32   0.020    -.0092705   -.0007855
+        QTR2 {\VBAR}   .0027638   .0021767     1.27   0.204    -.0015024    .0070301
+        QTR3 {\VBAR}   .0018581   .0020739     0.90   0.370    -.0022067    .0059229
+       _cons {\VBAR}   .0001647   .0014925     0.11   0.912    -.0027607      .00309
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model7
+{\smallskip}
+. reg bach_grad_s QTR1-QTR3  if (COHORT>4000 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   457,181
+\HLI{13}{\PLUS}\HLI{34}   F(3, 457177)    =      5.01
+       Model {\VBAR}  3.14425922         3  1.04808641   Prob > F        =    0.0018
+    Residual {\VBAR}   95666.531   457,177  .209254908   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  95669.6752   457,180  .209260412   Root MSE        =    .45744
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+ bach_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0027701   .0019175    -1.44   0.149    -.0065283    .0009882
+        QTR2 {\VBAR}   .0044954   .0019297     2.33   0.020     .0007133    .0082775
+        QTR3 {\VBAR}  -.0000155   .0019302    -0.01   0.994    -.0037986    .0037675
+       _cons {\VBAR}   -.000236   .0013782    -0.17   0.864    -.0029372    .0024651
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model8
+{\smallskip}
+. 
+. 
+. 
+. **************************************************
+. **********  Regression Year Master **********
+. // drop bach_grad
+. gen ms_grad=0
+{\smallskip}
+. replace ms_grad=1 if EDUC>=18
+(94,222 real changes made)
+{\smallskip}
+. sum ms_grad if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}    312,718    .0898285    .2859364          0          1
+{\smallskip}
+. sum ms_grad if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}    457,181    .1101511    .3130784          0          1
+{\smallskip}
+. 
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975 \& ms_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     28,091    18.99302    .8866446         18         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925 \& ms_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     50,359    18.89835    .8634092         18         20
+{\smallskip}
+. 
+. 
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum ms_grad if (COHORT>3000 \& COHORT <3040 \& `j'==1)
+  3.                 scalar mean_3039_`j' = r(mean)
+  4. {\rbr}       
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,395    .0759976    .2650101          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,642    .0837477    .2770272          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,252     .084222    .2777373          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,818    .0911998    .2879114          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,782    .0841686    .2776583          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,995    .0841776    .2776714          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,192    .0863037    .2808291          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,187    .0896543    .2857033          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,708    .0963482    .2950851          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,700     .096092    .2947342          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,396    .0849214    .2787813          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,634    .0842285    .2777483          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,751    .0882467    .2836716          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,572    .0829371    .2758054          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,591    .0872085     .282159          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,002    .0909773    .2875947          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,945    .0910006    .2876281          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,182    .0942312     .292168          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,482    .0999764    .2999862          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,583    .1021787    .3029008          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,722    .0827792     .275564          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,980     .087218     .282172          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,311    .0842257    .2777427          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,718    .0857735    .2800475          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,474    .0860278    .2804217          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,792    .0882621    .2836918          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,579    .0906866    .2871796          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,226    .0937568    .2915058          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,371    .0925195    .2897733          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,683    .0951152    .2933891          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,089    .0893806      .28531          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,327    .0821619    .2746299          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,897    .0925668    .2898428          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,643    .0876619    .2828211          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,069    .0861321    .2805764          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,984    .0889279    .2846574          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      7,960    .0856784    .2799061          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,374    .0886076    .2841935          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,662    .0995151    .2993697          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      8,839    .1020477    .3027282          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}          0
+{\smallskip}
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum ms_grad if (COHORT>4000 \& `j'==1)
+  3.                 scalar mean_4049_`j' = r(mean)
+  4. {\rbr}
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,336    .0970437    .2960331          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,333    .1059681    .3078132          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,358    .1090944    .3117727          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,760       .1125    .3159941          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,898    .1124977    .3159923          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,935    .1183356    .3230199          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,792    .1144366    .3183556          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     15,921    .1110483    .3142018          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,348    .1039866    .3052538          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,039    .1006482     .300873          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,338    .1005569    .3007572          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,150    .1102732    .3132471          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,338    .1163668    .3206798          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,284    .1133463    .3170297          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,521    .1132972    .3169708          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,720    .1213619    .3265627          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,391    .1185146    .3232307          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,914    .1205579    .3256237          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     13,416    .1045021    .3059222          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     13,635    .0940227     .291871          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,235    .1030777    .3040752          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     10,314    .1095598    .3123554          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,950    .1097908    .3126419          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     12,155    .1132867     .316956          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,742     .117101    .3215543          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,787    .1226775    .3280806          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     15,332    .1151839    .3192542          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     15,662    .1070744    .3092177          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     15,403    .0993962     .299203          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     15,225    .0924138    .2896187          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,309     .105167     .306785          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}      9,590    .1072993    .3095095          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     12,372     .121484    .3267021          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,150    .1082511    .3107112          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,226    .1165152     .320856          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     11,104    .1186059    .3233388          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     16,607     .117601    .3221448          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,291     .102652    .3035145          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,525    .0961102    .2947524          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}     14,520    .0889807    .2847257          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+     ms_grad {\VBAR}          0
+{\smallskip}
+. **********  30-39 **********
+. drop MA
+{\smallskip}
+. gen MA=0
+{\smallskip}
+. replace MA = (mean_3039_YQ000+mean_3039_YQ025+mean_3039_YQ075+mean_3039_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,722 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ025+mean_3039_YQ050+mean_3039_YQ100+mean_3039_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,089 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ050+mean_3039_YQ075+mean_3039_YQ125+mean_3039_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,642 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ075+mean_3039_YQ100+mean_3039_YQ150+mean_3039_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,634 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_3039_YQ`pm2'+mean_3039_YQ`pm1'+mean_3039_YQ`pn1'+mean_3039_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=30 \& YQ/100<=39.75)
+  8. {\rbr}
+(7,980 real changes made)
+(7,327 real changes made)
+(8,252 real changes made)
+(7,751 real changes made)
+(8,311 real changes made)
+(7,897 real changes made)
+(7,818 real changes made)
+(7,572 real changes made)
+(7,718 real changes made)
+(7,643 real changes made)
+(7,782 real changes made)
+(7,591 real changes made)
+(8,474 real changes made)
+(8,069 real changes made)
+(7,995 real changes made)
+(8,002 real changes made)
+(8,792 real changes made)
+(7,984 real changes made)
+(8,192 real changes made)
+(7,945 real changes made)
+(8,579 real changes made)
+(7,960 real changes made)
+(8,187 real changes made)
+(8,182 real changes made)
+(9,226 real changes made)
+(8,374 real changes made)
+(8,708 real changes made)
+(8,482 real changes made)
+(9,371 real changes made)
+(8,662 real changes made)
+(8,700 real changes made)
+(8,583 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ900+mean_3039_YQ925+mean_3039_YQ975+mean_4049_YQ000)/4 if (mod(YQ,1000)==950 \& YQ/100>=30 \& YQ/100<=39.75)
+(9,683 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ925+mean_3039_YQ950+mean_4049_YQ000+mean_4049_YQ025)/4 if (mod(YQ,1000)==975 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,839 real changes made)
+{\smallskip}
+. 
+. **********  40-49 **********
+. // drop MA
+. replace MA = (mean_4049_YQ000+mean_4049_YQ025+mean_4049_YQ075+mean_4049_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=40 \& YQ/100<=49.75)
+(10,235 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ025+mean_4049_YQ050+mean_4049_YQ100+mean_4049_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,309 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ050+mean_4049_YQ075+mean_4049_YQ125+mean_4049_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,333 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ075+mean_4049_YQ100+mean_4049_YQ150+mean_4049_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,150 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_4049_YQ`pm2'+mean_4049_YQ`pm1'+mean_4049_YQ`pn1'+mean_4049_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=40 \& YQ/100<=49.75)
+  8. {\rbr}
+(10,314 real changes made)
+(9,590 real changes made)
+(10,358 real changes made)
+(10,338 real changes made)
+(11,950 real changes made)
+(12,372 real changes made)
+(11,760 real changes made)
+(11,284 real changes made)
+(12,155 real changes made)
+(11,150 real changes made)
+(10,898 real changes made)
+(10,521 real changes made)
+(11,742 real changes made)
+(11,226 real changes made)
+(10,935 real changes made)
+(10,720 real changes made)
+(11,787 real changes made)
+(11,104 real changes made)
+(10,792 real changes made)
+(11,391 real changes made)
+(15,332 real changes made)
+(16,607 real changes made)
+(15,921 real changes made)
+(14,914 real changes made)
+(15,662 real changes made)
+(14,291 real changes made)
+(14,348 real changes made)
+(13,416 real changes made)
+(15,403 real changes made)
+(14,525 real changes made)
+(14,039 real changes made)
+(13,635 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ950+mean_3039_YQ975+mean_4049_YQ025+mean_4049_YQ050)/4 if (mod(YQ,1000)==0 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,336 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ975+mean_4049_YQ000+mean_4049_YQ050+mean_4049_YQ175)/4 if (mod(YQ,1000)==25 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,338 real changes made)
+{\smallskip}
+. 
+. **********  Regression **********
+. // drop EDUC_s
+. gen ms_grad_s = ms_grad-MA
+{\smallskip}
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    312,718    12.79222    3.269731          0         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    457,181    13.56001    2.995541          0         20
+{\smallskip}
+. 
+. reg ms_grad_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   312,718
+\HLI{13}{\PLUS}\HLI{34}   F(3, 312714)    =      1.72
+       Model {\VBAR}  .420582784         3  .140194261   Prob > F        =    0.1615
+    Residual {\VBAR}  25562.0133   312,714  .081742465   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  25562.4339   312,717  .081743026   Root MSE        =    .28591
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+   ms_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0010254   .0014583    -0.70   0.482    -.0038837    .0018328
+        QTR2 {\VBAR}   .0019429   .0014665     1.32   0.185    -.0009313    .0048171
+        QTR3 {\VBAR}  -.0009199   .0013972    -0.66   0.510    -.0036584    .0018186
+       _cons {\VBAR}   .0001332   .0010055     0.13   0.895    -.0018376    .0021041
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model9
+{\smallskip}
+. reg ms_grad_s QTR1-QTR3  if (COHORT>4000 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   457,181
+\HLI{13}{\PLUS}\HLI{34}   F(3, 457177)    =      3.76
+       Model {\VBAR}  1.10533933         3  .368446443   Prob > F        =    0.0103
+    Residual {\VBAR}  44790.1745   457,177   .09797119   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  44791.2799   457,180  .097972964   Root MSE        =      .313
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+   ms_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}   .0000612   .0013121     0.05   0.963    -.0025104    .0026328
+        QTR2 {\VBAR}   .0038261   .0013204     2.90   0.004     .0012382    .0064139
+        QTR3 {\VBAR}   .0010261   .0013207     0.78   0.437    -.0015624    .0036147
+       _cons {\VBAR}  -.0011407    .000943    -1.21   0.226    -.0029889    .0007075
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model10
+{\smallskip}
+. 
+. 
+. 
+. 
+. 
+. **************************************************
+. **********  Regression Year Doctoral **********
+. // drop bach_grad
+. gen doc_grad=0
+{\smallskip}
+. replace doc_grad=1 if EDUC>=20
+(28,671 real changes made)
+{\smallskip}
+. sum doc_grad if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}    312,718    .0349964    .1837709          0          1
+{\smallskip}
+. sum doc_grad if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}    457,181    .0360273    .1863583          0          1
+{\smallskip}
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975 \& doc_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     10,944          20           0         20         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925 \& doc_grad==1)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}     16,471          20           0         20         20
+{\smallskip}
+. 
+. 
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum doc_grad if (COHORT>3000 \& COHORT <3040 \& `j'==1)
+  3.                 scalar mean_3039_`j' = r(mean)
+  4. {\rbr}       
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,395    .0275164    .1635922          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,642    .0336299    .1802865          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,252    .0353854     .184763          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,818    .0356869    .1855201          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,782    .0359805    .1862534          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,995      .03202    .1760642          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,192    .0318604    .1756389          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,187    .0373763    .1896938          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,708    .0418006    .2001448          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,700    .0332184    .1792167          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,396    .0363268    .1871132          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,634    .0317003    .1752124          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,751    .0344472    .1823865          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,572    .0314316    .1744926          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,591    .0359636    .1862118          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,002    .0364909    .1875198          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,945     .037382     .189708          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,182    .0372769    .1894512          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,482    .0383164    .1919704          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,583    .0400792    .1961565          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,722    .0309562     .173209          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,980    .0347118    .1830603          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,311    .0302009    .1711501          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,718    .0323918    .1770498          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,474    .0351664    .1842111          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,792    .0340082    .1812605          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,579    .0359016    .1860557          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,226    .0366356    .1878756          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,371    .0369224    .1885814          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,683    .0365589    .1876859          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,089    .0368402    .1883808          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,327    .0312543     .174016          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,897    .0336837    .1804251          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,643    .0323172    .1768526          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,069    .0330896    .1788817          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,984    .0341934     .181737          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      7,960    .0330402    .1787528          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,374    .0349893    .1837635          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,662    .0363657    .1872093          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      8,839    .0379002    .1909657          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}          0
+{\smallskip}
+. foreach j of varlist YQ* {\lbr}
+  2.                 sum doc_grad if (COHORT>4000 \& `j'==1)
+  3.                 scalar mean_4049_`j' = r(mean)
+  4. {\rbr}
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,336    .0347044    .1830398          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,333    .0366442    .1878967          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,358     .038714    .1929219          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,760     .042432    .2015811          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,898    .0398238    .1955541          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,935    .0399634    .1958822          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,792    .0346553    .1829137          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     15,921    .0312166    .1739082          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,348    .0282966    .1658247          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,039    .0262839    .1599841          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,338    .0394089    .1945761          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,150    .0403279    .1967378          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,338    .0414007    .1992247          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,284    .0412088    .1987816          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,521    .0393499    .1944352          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,720    .0411381    .1986187          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,391      .03573    .1856242          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,914    .0356712    .1854752          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     13,416    .0301133    .1709054          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     13,635    .0278695    .1646048          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,235     .041915    .2004047          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     10,314    .0396548    .1951564          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,950    .0413389    .1990812          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     12,155    .0415467    .1995591          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,742    .0385795    .1925987          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,787    .0366505    .1879103          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     15,332    .0350248    .1838485          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     15,662    .0302005    .1711441          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     15,403    .0264883    .1605876          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     15,225    .0238424    .1525629          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,309    .0416801    .1998678          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}      9,590    .0386861    .1928559          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     12,372    .0471225    .2119095          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,150      .03713    .1890889          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,226    .0392838     .194278          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     11,104    .0357529    .1856818          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     16,607    .0356476    .1854156          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,291    .0316283    .1750145          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,525    .0276764    .1640497          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}     14,520    .0245868    .1548674          0          1
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+    doc_grad {\VBAR}          0
+{\smallskip}
+. **********  30-39 **********
+. drop MA
+{\smallskip}
+. gen MA=0
+{\smallskip}
+. replace MA = (mean_3039_YQ000+mean_3039_YQ025+mean_3039_YQ075+mean_3039_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,722 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ025+mean_3039_YQ050+mean_3039_YQ100+mean_3039_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,089 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ050+mean_3039_YQ075+mean_3039_YQ125+mean_3039_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,642 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ075+mean_3039_YQ100+mean_3039_YQ150+mean_3039_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=30 \& YQ/100<=39.75)
+(7,634 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_3039_YQ`pm2'+mean_3039_YQ`pm1'+mean_3039_YQ`pn1'+mean_3039_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=30 \& YQ/100<=39.75)
+  8. {\rbr}
+(7,980 real changes made)
+(7,327 real changes made)
+(8,252 real changes made)
+(7,751 real changes made)
+(8,311 real changes made)
+(7,897 real changes made)
+(7,818 real changes made)
+(7,572 real changes made)
+(7,718 real changes made)
+(7,643 real changes made)
+(7,782 real changes made)
+(7,591 real changes made)
+(8,474 real changes made)
+(8,069 real changes made)
+(7,995 real changes made)
+(8,002 real changes made)
+(8,792 real changes made)
+(7,984 real changes made)
+(8,192 real changes made)
+(7,945 real changes made)
+(8,579 real changes made)
+(7,960 real changes made)
+(8,187 real changes made)
+(8,182 real changes made)
+(9,226 real changes made)
+(8,374 real changes made)
+(8,708 real changes made)
+(8,482 real changes made)
+(9,371 real changes made)
+(8,662 real changes made)
+(8,700 real changes made)
+(8,583 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ900+mean_3039_YQ925+mean_3039_YQ975+mean_4049_YQ000)/4 if (mod(YQ,1000)==950 \& YQ/100>=30 \& YQ/100<=39.75)
+(9,683 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ925+mean_3039_YQ950+mean_4049_YQ000+mean_4049_YQ025)/4 if (mod(YQ,1000)==975 \& YQ/100>=30 \& YQ/100<=39.75)
+(8,839 real changes made)
+{\smallskip}
+. 
+. **********  40-49 **********
+. // drop MA
+. replace MA = (mean_4049_YQ000+mean_4049_YQ025+mean_4049_YQ075+mean_4049_YQ100)/4 if (mod(YQ,1000)==50 \& YQ/100>=40 \& YQ/100<=49.75)
+(10,235 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ025+mean_4049_YQ050+mean_4049_YQ100+mean_4049_YQ125)/4 if (mod(YQ,1000)==75 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,309 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ050+mean_4049_YQ075+mean_4049_YQ125+mean_4049_YQ150)/4 if (mod(YQ,1000)==100 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,333 real changes made)
+{\smallskip}
+. replace MA = (mean_4049_YQ075+mean_4049_YQ100+mean_4049_YQ150+mean_4049_YQ175)/4 if (mod(YQ,1000)==125 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,150 real changes made)
+{\smallskip}
+. 
+. foreach j of numlist 6/37{\lbr}
+  2.         // 150->6 925-> 37
+.         local pm2 = 25*(`j'-2)
+  3.         local pm1 = 25*(`j'-1)
+  4.         local p0 = 25*(`j')
+  5.         local pn1 = 25*(`j'+1)
+  6.         local pn2 = 25*(`j'+2)
+  7. 
+.         replace MA = (mean_4049_YQ`pm2'+mean_4049_YQ`pm1'+mean_4049_YQ`pn1'+mean_4049_YQ`pn2')/4 if (mod(YQ,1000)==`p0' \& YQ/100>=40 \& YQ/100<=49.75)
+  8. {\rbr}
+(10,314 real changes made)
+(9,590 real changes made)
+(10,358 real changes made)
+(10,338 real changes made)
+(11,950 real changes made)
+(12,372 real changes made)
+(11,760 real changes made)
+(11,284 real changes made)
+(12,155 real changes made)
+(11,150 real changes made)
+(10,898 real changes made)
+(10,521 real changes made)
+(11,742 real changes made)
+(11,226 real changes made)
+(10,935 real changes made)
+(10,720 real changes made)
+(11,787 real changes made)
+(11,104 real changes made)
+(10,792 real changes made)
+(11,391 real changes made)
+(15,332 real changes made)
+(16,607 real changes made)
+(15,921 real changes made)
+(14,914 real changes made)
+(15,662 real changes made)
+(14,291 real changes made)
+(14,348 real changes made)
+(13,416 real changes made)
+(15,403 real changes made)
+(14,525 real changes made)
+(14,039 real changes made)
+(13,635 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ950+mean_3039_YQ975+mean_4049_YQ025+mean_4049_YQ050)/4 if (mod(YQ,1000)==0 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,336 real changes made)
+{\smallskip}
+. replace MA = (mean_3039_YQ975+mean_4049_YQ000+mean_4049_YQ050+mean_4049_YQ175)/4 if (mod(YQ,1000)==25 \& YQ/100>=40 \& YQ/100<=49.75)
+(9,338 real changes made)
+{\smallskip}
+. 
+. **********  Regression **********
+. // drop EDUC_s
+. gen doc_grad_s = doc_grad-MA
+{\smallskip}
+. 
+. sum EDUC if (YQ>=3050 \& YQ<=3975)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    312,718    12.79222    3.269731          0         20
+{\smallskip}
+. sum EDUC if (YQ>=4000 \& YQ<=4925)
+{\smallskip}
+    Variable {\VBAR}        Obs        Mean    Std. Dev.       Min        Max
+\HLI{13}{\PLUS}\HLI{57}
+        EDUC {\VBAR}    457,181    13.56001    2.995541          0         20
+{\smallskip}
+. 
+. reg doc_grad_s QTR1-QTR3  if (COHORT>3000 \& COHORT <3040 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   312,718
+\HLI{13}{\PLUS}\HLI{34}   F(3, 312714)    =      2.88
+       Model {\VBAR}   .29209508         3  .097365027   Prob > F        =    0.0343
+    Residual {\VBAR}  10560.6217   312,714  .033770863   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  10560.9138   312,717  .033771473   Root MSE        =    .18377
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+  doc_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}   .0015652   .0009373     1.67   0.095     -.000272    .0034023
+        QTR2 {\VBAR}   .0024837   .0009426     2.63   0.008     .0006362    .0043311
+        QTR3 {\VBAR}   .0004057   .0008981     0.45   0.651    -.0013545    .0021659
+       _cons {\VBAR}  -.0010335   .0006463    -1.60   0.110    -.0023002    .0002333
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model11
+{\smallskip}
+. reg doc_grad_s QTR1-QTR3  if (COHORT>4000 \& MA !=0)
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   457,181
+\HLI{13}{\PLUS}\HLI{34}   F(3, 457177)    =      4.48
+       Model {\VBAR}  .466063301         3  .155354434   Prob > F        =    0.0038
+    Residual {\VBAR}  15866.3631   457,177  .034705077   R-squared       =    0.0000
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.0000
+       Total {\VBAR}  15866.8292   457,180  .034705869   Root MSE        =    .18629
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+  doc_grad_s {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        QTR1 {\VBAR}  -.0017901   .0007809    -2.29   0.022    -.0033206   -.0002595
+        QTR2 {\VBAR}   .0009889   .0007858     1.26   0.208    -.0005513    .0025292
+        QTR3 {\VBAR}  -.0005075   .0007861    -0.65   0.519    -.0020481    .0010332
+       _cons {\VBAR}   .0004218   .0005613     0.75   0.452    -.0006783    .0015218
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model12
+{\smallskip}
+. 
+. ********** Table **********
+. esttab , se r2 drop(_cons) 
+{\smallskip}
+\HLI{198}
+\HLI{6}
+                      (1)             (2)             (3)             (4)             (5)             (6)             (7)             (8)             (9)            (10)            (11)            (
+> 12)   
+                   EDUC_s          EDUC_s          EDUC_s          EDUC_s       hs_grad_s       hs_grad_s     bach_grad_s     bach_grad_s       ms_grad_s       ms_grad_s      doc_grad_s      doc_gra
+> d_s   
+\HLI{198}
+\HLI{6}
+QTR1               -0.124***      -0.0855***      -0.0296*       -0.00935         -0.0191***      -0.0145***     -0.00503*       -0.00277        -0.00103       0.0000612         0.00157        -0.00
+> 179*  
+                 (0.0167)        (0.0125)        (0.0143)        (0.0110)       (0.00213)       (0.00143)       (0.00216)       (0.00192)       (0.00146)       (0.00131)      (0.000937)      (0.0007
+> 81)   
+{\smallskip}
+QTR2              -0.0860***      -0.0353**       0.00510          0.0201         -0.0198***      -0.0121***      0.00276         0.00450*        0.00194         0.00383**       0.00248**      0.000
+> 989   
+                 (0.0168)        (0.0126)        (0.0143)        (0.0111)       (0.00214)       (0.00144)       (0.00218)       (0.00193)       (0.00147)       (0.00132)      (0.000943)      (0.0007
+> 86)   
+{\smallskip}
+QTR3              -0.0149         -0.0188          0.0165         0.00794        -0.00390        -0.00195         0.00186      -0.0000155       -0.000920         0.00103        0.000406       -0.000
+> 507   
+                 (0.0160)        (0.0126)        (0.0136)        (0.0111)       (0.00204)       (0.00144)       (0.00207)       (0.00193)       (0.00140)       (0.00132)      (0.000898)      (0.0007
+> 86)   
+\HLI{198}
+\HLI{6}
+N                  312718          457181          242065          394863          312718          457181          312718          457181          312718          457181          312718          457
+> 181   
+R-sq                0.000           0.000           0.000           0.000           0.000           0.000           0.000           0.000           0.000           0.000           0.000           0.
+> 000   
+\HLI{198}
+\HLI{6}
+Standard errors in parentheses
+* p<0.05, ** p<0.01, *** p<0.001
+{\smallskip}
+. 
+. /* log close */
+. 
+end of do-file
+{\smallskip}

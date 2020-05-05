@@ -1,0 +1,429 @@
+. do "Table IV"
+{\smallskip}
+. clear
+{\smallskip}
+. /* log using "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\02_logfile\\Table_IV.log", replace  */
+. 
+. use "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\raw_data.dta"
+{\smallskip}
+. rename v1 AGE
+{\smallskip}
+. rename v2 AGEQ
+{\smallskip}
+. rename v4 EDUC
+{\smallskip}
+. rename v5 ENOCENT
+{\smallskip}
+. rename v6 ESOCENT
+{\smallskip}
+. rename v9 LWKLYWGE
+{\smallskip}
+. rename v10 MARRIED
+{\smallskip}
+. rename v11 MIDATL
+{\smallskip}
+. rename v12 MT
+{\smallskip}
+. rename v13 NEWENG
+{\smallskip}
+. rename v16 CENSUS
+{\smallskip}
+. rename v18 QOB
+{\smallskip}
+. rename v19 RACE
+{\smallskip}
+. rename v20 SMSA
+{\smallskip}
+. rename v21 SOATL
+{\smallskip}
+. rename v24 WNOCENT
+{\smallskip}
+. rename v25 WSOCENT
+{\smallskip}
+. rename v27 YOB
+{\smallskip}
+. 
+. **********  YOB dummies **********
+. replace YOB=YOB-1900 if YOB >=1900
+(247,199 real changes made)
+{\smallskip}
+. 
+. foreach i of numlist 0/9 {\lbr}
+  2. gen YR`i'=0
+  3. replace YR`i'=1 if YOB==20+`i' | YOB==30+`i' | YOB==40+`i' 
+  4. {\rbr}
+(95,545 real changes made)
+(93,948 real changes made)
+(101,493 real changes made)
+(101,445 real changes made)
+(101,851 real changes made)
+(102,153 real changes made)
+(111,229 real changes made)
+(120,407 real changes made)
+(117,529 real changes made)
+(118,034 real changes made)
+{\smallskip}
+. **********  QOB dummies ***********
+. foreach i of numlist 1/4 {\lbr}
+  2. gen QTR`i'=0
+  3. replace QTR`i'=1 if QOB==`i'
+  4. {\rbr}
+(262,019 real changes made)
+(255,733 real changes made)
+(280,749 real changes made)
+(265,133 real changes made)
+{\smallskip}
+. **********  QOB*YOB dummies ********
+. foreach j of numlist 1/3 {\lbr}
+  2. foreach i of numlist 0/9 {\lbr}
+  3. gen QTR`j'YR`i'=QTR`j'*YR`i'
+  4. {\rbr}
+  5. {\rbr}
+{\smallskip}
+. **********  Select Particular Men Born ********
+. gen COHORT=2029
+{\smallskip}
+. replace COHORT=3039 if YOB<=39 \& YOB >=30
+(329,509 real changes made)
+{\smallskip}
+. replace COHORT=4049 if YOB<=49 \& YOB >=40
+(486,926 real changes made)
+{\smallskip}
+. replace AGEQ=AGEQ-1900 if CENSUS==80
+(816,435 real changes made)
+{\smallskip}
+. gen AGEQSQ= AGEQ*AGEQ
+{\smallskip}
+. *************************************
+. keep if COHORT < 2030
+(816,435 observations deleted)
+{\smallskip}
+. **********  Start Regression ********
+. eststo clear
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC  YR0-YR8 
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   247,199
+\HLI{13}{\PLUS}\HLI{34}   F(10, 247188)   =   5100.52
+       Model {\VBAR}  17934.8419        10  1793.48419   Prob > F        =    0.0000
+    Residual {\VBAR}  86918.1779   247,188  .351627821   R-squared       =    0.1710
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1710
+       Total {\VBAR}   104853.02   247,198  .424166133   Root MSE        =    .59298
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0801595   .0003552   225.67   0.000     .0794633    .0808557
+         YR0 {\VBAR}    .023484   .0053878     4.36   0.000     .0129241    .0340439
+         YR1 {\VBAR}     .02899   .0053167     5.45   0.000     .0185693    .0394107
+         YR2 {\VBAR}   .0232415   .0053556     4.34   0.000     .0127447    .0337383
+         YR3 {\VBAR}   .0255564   .0053503     4.78   0.000     .0150699    .0360429
+         YR4 {\VBAR}   .0264291    .005286     5.00   0.000     .0160686    .0367896
+         YR5 {\VBAR}   .0308406   .0053234     5.79   0.000     .0204069    .0412743
+         YR6 {\VBAR}   .0291043   .0053449     5.45   0.000     .0186284    .0395802
+         YR7 {\VBAR}   .0271039   .0052807     5.13   0.000     .0167538     .037454
+         YR8 {\VBAR}   .0242569   .0053348     4.55   0.000     .0138009     .034713
+       _cons {\VBAR}    4.20996   .0056167   749.54   0.000     4.198951    4.220968
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model1
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8)
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =    247,199
+                                                  Wald chi2(10)   =     104.35
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1708
+                                                  Root MSE        =     .59307
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0768557   .0150413     5.11   0.000     .0473752    .1063361
+         YR0 {\VBAR}   .0217599   .0095191     2.29   0.022     .0031028     .040417
+         YR1 {\VBAR}     .02776   .0077213     3.60   0.000     .0126265    .0428935
+         YR2 {\VBAR}   .0220058    .007767     2.83   0.005     .0067827    .0372288
+         YR3 {\VBAR}   .0246441   .0067731     3.64   0.000      .011369    .0379192
+         YR4 {\VBAR}   .0257169   .0062014     4.15   0.000     .0135624    .0378715
+         YR5 {\VBAR}   .0300778   .0063561     4.73   0.000     .0176201    .0425356
+         YR6 {\VBAR}   .0286313   .0057629     4.97   0.000     .0173363    .0399264
+         YR7 {\VBAR}   .0264814   .0059936     4.42   0.000     .0147342    .0382286
+         YR8 {\VBAR}   .0239047   .0055712     4.29   0.000     .0129854    .0348241
+       _cons {\VBAR}   4.248729   .1765461    24.07   0.000     3.902705    4.594753
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 QTR1YR0 QTR1YR1 QTR1YR2
+               QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7 QTR1YR8 QTR1YR9
+               QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4 QTR2YR5 QTR2YR6
+               QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1 QTR3YR2 QTR3YR3
+               QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR7 QTR3YR8 QTR3YR9
+{\smallskip}
+. eststo model2
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC  YR0-YR8 AGEQ AGEQSQ 
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   247,199
+\HLI{13}{\PLUS}\HLI{34}   F(12, 247186)   =   4250.99
+       Model {\VBAR}  17936.8995        12  1494.74162   Prob > F        =    0.0000
+    Residual {\VBAR}  86916.1203   247,186  .351622342   R-squared       =    0.1711
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.1710
+       Total {\VBAR}   104853.02   247,198  .424166133   Root MSE        =    .59298
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0801676   .0003553   225.65   0.000     .0794712    .0808639
+         YR0 {\VBAR}  -.0247372   .0390484    -0.63   0.526    -.1012711    .0517967
+         YR1 {\VBAR}  -.0263221   .0352192    -0.75   0.455    -.0953509    .0427067
+         YR2 {\VBAR}  -.0359758   .0322031    -1.12   0.264     -.099093    .0271414
+         YR3 {\VBAR}  -.0344738    .029489    -1.17   0.242    -.0922716    .0233239
+         YR4 {\VBAR}  -.0313263    .026628    -1.18   0.239    -.0835164    .0208639
+         YR5 {\VBAR}  -.0215758   .0233483    -0.92   0.355     -.067338    .0241863
+         YR6 {\VBAR}   -.014863   .0193589    -0.77   0.443    -.0528059    .0230798
+         YR7 {\VBAR}  -.0053281   .0145304    -0.37   0.714    -.0338072    .0231511
+         YR8 {\VBAR}   .0063699   .0091343     0.70   0.486    -.0115331    .0242729
+        AGEQ {\VBAR}   .1445517   .0675997     2.14   0.032      .012058    .2770454
+      AGEQSQ {\VBAR}  -.0015423   .0007478    -2.06   0.039     -.003008   -.0000765
+       _cons {\VBAR}   .8830288   1.516431     0.58   0.560    -2.089136    3.855193
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model3
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 AGEQ AGEQSQ (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8)
+note: QTR3YR7 dropped due to collinearity
+note: QTR3YR9 dropped due to collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =    247,199
+                                                  Wald chi2(12)   =     104.08
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.1023
+                                                  Root MSE        =     .61707
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .1310424    .033356     3.93   0.000     .0656659    .1964189
+         YR0 {\VBAR}  -.1134064   .0709262    -1.60   0.110    -.2524193    .0256065
+         YR1 {\VBAR}  -.1081954   .0649955    -1.66   0.096    -.2355842    .0191934
+         YR2 {\VBAR}   -.103873    .055718    -1.86   0.062    -.2130781    .0053322
+         YR3 {\VBAR}  -.0938903   .0495892    -1.89   0.058    -.1910834    .0033029
+         YR4 {\VBAR}   -.080653   .0425868    -1.89   0.058    -.1641216    .0028156
+         YR5 {\VBAR}  -.0573874   .0337871    -1.70   0.089     -.123609    .0088341
+         YR6 {\VBAR}  -.0427072   .0271859    -1.57   0.116    -.0959905    .0105761
+         YR7 {\VBAR}  -.0188154   .0175163    -1.07   0.283    -.0531468     .015516
+         YR8 {\VBAR}   .0003555   .0102907     0.03   0.972     -.019814     .020525
+        AGEQ {\VBAR}   .1409151   .0703863     2.00   0.045     .0029605    .2788697
+      AGEQSQ {\VBAR}  -.0013605   .0007873    -1.73   0.084    -.0029035    .0001826
+       _cons {\VBAR}   .1337519   1.652725     0.08   0.935    -3.105529    3.373033
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 AGEQ AGEQSQ QTR1YR0
+               QTR1YR1 QTR1YR2 QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7
+               QTR1YR8 QTR1YR9 QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4
+               QTR2YR5 QTR2YR6 QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1
+               QTR3YR2 QTR3YR3 QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR8
+{\smallskip}
+. eststo model4
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC  RACE MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT YR0-YR8  
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   247,199
+\HLI{13}{\PLUS}\HLI{34}   F(21, 247177)   =   3508.40
+       Model {\VBAR}  24077.0055        21  1146.52407   Prob > F        =    0.0000
+    Residual {\VBAR}  80776.0143   247,177  .326794217   R-squared       =    0.2296
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.2296
+       Total {\VBAR}   104853.02   247,198  .424166133   Root MSE        =    .57166
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0701188   .0003546   197.71   0.000     .0694237    .0708139
+        RACE {\VBAR}  -.2979509   .0043445   -68.58   0.000     -.306466   -.2894358
+     MARRIED {\VBAR}   .2928024   .0037449    78.19   0.000     .2854625    .3001423
+        SMSA {\VBAR}  -.1343181   .0025648   -52.37   0.000    -.1393451   -.1292912
+      NEWENG {\VBAR}  -.0327304   .0059551    -5.50   0.000    -.0444023   -.0210586
+      MIDATL {\VBAR}  -.0131068   .0041124    -3.19   0.001    -.0211669   -.0050467
+     ENOCENT {\VBAR}    .019752   .0040477     4.88   0.000     .0118187    .0276854
+     WNOCENT {\VBAR}  -.1414501   .0054026   -26.18   0.000    -.1520391   -.1308612
+       SOATL {\VBAR}  -.1037871   .0044282   -23.44   0.000    -.1124663   -.0951078
+     ESOCENT {\VBAR}  -.2077824   .0058935   -35.26   0.000    -.2193334   -.1962313
+     WSOCENT {\VBAR}  -.1514476   .0050699   -29.87   0.000    -.1613844   -.1415107
+          MT {\VBAR}  -.1268479   .0067059   -18.92   0.000    -.1399914   -.1137044
+         YR0 {\VBAR}   .0122181    .005195     2.35   0.019     .0020359    .0224002
+         YR1 {\VBAR}   .0161059   .0051267     3.14   0.002     .0060578     .026154
+         YR2 {\VBAR}   .0139765   .0051637     2.71   0.007     .0038559    .0240972
+         YR3 {\VBAR}   .0166631   .0051587     3.23   0.001     .0065523     .026774
+         YR4 {\VBAR}   .0173557   .0050966     3.41   0.001     .0073665    .0273448
+         YR5 {\VBAR}   .0251024   .0051323     4.89   0.000     .0150431    .0351616
+         YR6 {\VBAR}   .0238508    .005153     4.63   0.000      .013751    .0339506
+         YR7 {\VBAR}   .0226915   .0050911     4.46   0.000     .0127132    .0326699
+         YR8 {\VBAR}    .019031   .0051432     3.70   0.000     .0089505    .0291116
+       _cons {\VBAR}   4.191501   .0072429   578.71   0.000     4.177305    4.205697
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model5
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 RACE MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT  (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8)
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =    247,199
+                                                  Wald chi2(21)   =   34596.79
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.2294
+                                                  Root MSE        =     .57173
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0668509   .0150912     4.43   0.000     .0372727    .0964291
+         YR0 {\VBAR}   .0103977   .0098807     1.05   0.293    -.0089682    .0297636
+         YR1 {\VBAR}   .0147392   .0081301     1.81   0.070    -.0011954    .0306738
+         YR2 {\VBAR}    .012674   .0079265     1.60   0.110    -.0028617    .0282098
+         YR3 {\VBAR}    .015665   .0069177     2.26   0.024     .0021064    .0292235
+         YR4 {\VBAR}   .0165313   .0063613     2.60   0.009     .0040635    .0289992
+         YR5 {\VBAR}   .0243016   .0063259     3.84   0.000      .011903    .0367001
+         YR6 {\VBAR}   .0233091   .0057284     4.07   0.000     .0120817    .0345365
+         YR7 {\VBAR}   .0220532    .005883     3.75   0.000     .0105227    .0335837
+         YR8 {\VBAR}   .0186236    .005477     3.40   0.001     .0078888    .0293583
+        RACE {\VBAR}  -.3055315    .035266    -8.66   0.000    -.3746516   -.2364114
+     MARRIED {\VBAR}   .2941322   .0071915    40.90   0.000     .2800372    .3082272
+        SMSA {\VBAR}  -.1362415   .0092426   -14.74   0.000    -.1543565   -.1181264
+      NEWENG {\VBAR}  -.0340735   .0085978    -3.96   0.000     -.050925   -.0172221
+      MIDATL {\VBAR}  -.0145956   .0080099    -1.82   0.068    -.0302948    .0011036
+     ENOCENT {\VBAR}   .0173361   .0118655     1.46   0.144    -.0059199    .0405922
+     WNOCENT {\VBAR}   -.143347   .0102902   -13.93   0.000    -.1635153   -.1231787
+       SOATL {\VBAR}  -.1073946   .0172338    -6.23   0.000    -.1411723    -.073617
+     ESOCENT {\VBAR}  -.2131811   .0256118    -8.32   0.000    -.2633794   -.1629828
+     WSOCENT {\VBAR}  -.1551598   .0178727    -8.68   0.000    -.1901898   -.1201299
+          MT {\VBAR}  -.1273555   .0071044   -17.93   0.000    -.1412798   -.1134311
+       _cons {\VBAR}   4.232152   .1878152    22.53   0.000     3.864041    4.600263
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 RACE MARRIED SMSA NEWENG
+               MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT QTR1YR0
+               QTR1YR1 QTR1YR2 QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6 QTR1YR7
+               QTR1YR8 QTR1YR9 QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3 QTR2YR4
+               QTR2YR5 QTR2YR6 QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0 QTR3YR1
+               QTR3YR2 QTR3YR3 QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR7 QTR3YR8
+               QTR3YR9
+{\smallskip}
+. eststo model6
+{\smallskip}
+. 
+. reg  LWKLYWGE EDUC  RACE MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT YR0-YR8 AGEQ AGEQSQ 
+{\smallskip}
+      Source {\VBAR}       SS           df       MS      Number of obs   =   247,199
+\HLI{13}{\PLUS}\HLI{34}   F(23, 247175)   =   3203.50
+       Model {\VBAR}  24078.2095        23  1046.87868   Prob > F        =    0.0000
+    Residual {\VBAR}  80774.8103   247,175  .326791991   R-squared       =    0.2296
+\HLI{13}{\PLUS}\HLI{34}   Adj R-squared   =    0.2296
+       Total {\VBAR}   104853.02   247,198  .424166133   Root MSE        =    .57166
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      t    P>|t|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .0701242   .0003547   197.69   0.000     .0694289    .0708194
+        RACE {\VBAR}  -.2979528   .0043445   -68.58   0.000    -.3064679   -.2894376
+     MARRIED {\VBAR}   .2927938   .0037449    78.18   0.000     .2854539    .3001337
+        SMSA {\VBAR}  -.1343204   .0025648   -52.37   0.000    -.1393473   -.1292935
+      NEWENG {\VBAR}  -.0327575   .0059551    -5.50   0.000    -.0444293   -.0210856
+      MIDATL {\VBAR}  -.0131056   .0041123    -3.19   0.001    -.0211657   -.0050456
+     ENOCENT {\VBAR}    .019735   .0040477     4.88   0.000     .0118016    .0276683
+     WNOCENT {\VBAR}  -.1414505   .0054026   -26.18   0.000    -.1520395   -.1308615
+       SOATL {\VBAR}  -.1037686   .0044283   -23.43   0.000     -.112448   -.0950893
+     ESOCENT {\VBAR}  -.2077598   .0058935   -35.25   0.000     -.219311   -.1962087
+     WSOCENT {\VBAR}  -.1513879   .0050702   -29.86   0.000    -.1613254   -.1414505
+          MT {\VBAR}  -.1268288   .0067059   -18.91   0.000    -.1399723   -.1136853
+         YR0 {\VBAR}  -.0178908    .037649    -0.48   0.635    -.0916818    .0559002
+         YR1 {\VBAR}  -.0207608    .033957    -0.61   0.541    -.0873157    .0457941
+         YR2 {\VBAR}   -.027055   .0310488    -0.87   0.384    -.0879098    .0337997
+         YR3 {\VBAR}  -.0260209   .0284315    -0.92   0.360    -.0817458     .029704
+         YR4 {\VBAR}  -.0244832   .0256729    -0.95   0.340    -.0748014    .0258349
+         YR5 {\VBAR}  -.0134015   .0225105    -0.60   0.552    -.0575216    .0307185
+         YR6 {\VBAR}  -.0088009   .0186642    -0.47   0.637    -.0453823    .0277804
+         YR7 {\VBAR}  -.0016045   .0140087    -0.11   0.909    -.0290612    .0258521
+         YR8 {\VBAR}   .0055357   .0088062     0.63   0.530    -.0117241    .0227955
+        AGEQ {\VBAR}   .1162067   .0651707     1.78   0.075    -.0115261    .2439395
+      AGEQSQ {\VBAR}  -.0012505    .000721    -1.73   0.083    -.0026636    .0001626
+       _cons {\VBAR}   1.534505   1.461947     1.05   0.294    -1.330872    4.399882
+\HLI{13}{\BOTT}\HLI{64}
+{\smallskip}
+. eststo model7
+{\smallskip}
+. 
+. ivregress 2sls LWKLYWGE YR0-YR8 RACE MARRIED SMSA NEWENG MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT AGEQ AGEQSQ (EDUC = QTR1YR0-QTR1YR9 QTR2YR0-QTR2YR9 QTR3YR0-QTR3YR9 YR0-YR8)
+note: QTR3YR7 dropped due to collinearity
+note: QTR3YR9 dropped due to collinearity
+{\smallskip}
+Instrumental variables (2SLS) regression          Number of obs   =    247,199
+                                                  Wald chi2(23)   =   33602.63
+                                                  Prob > chi2     =     0.0000
+                                                  R-squared       =     0.2065
+                                                  Root MSE        =     .58017
+{\smallskip}
+\HLI{13}{\TOPT}\HLI{64}
+    LWKLYWGE {\VBAR}      Coef.   Std. Err.      z    P>|z|     [95\% Conf. Interval]
+\HLI{13}{\PLUS}\HLI{64}
+        EDUC {\VBAR}   .1007154    .033412     3.01   0.003     .0352291    .1662017
+         YR0 {\VBAR}  -.0679552   .0667052    -1.02   0.308     -.198695    .0627846
+         YR1 {\VBAR}  -.0669484   .0610922    -1.10   0.273    -.1866869    .0527901
+         YR2 {\VBAR}  -.0659501   .0528911    -1.25   0.212    -.1696148    .0377145
+         YR3 {\VBAR}  -.0600534   .0470548    -1.28   0.202     -.152279    .0321723
+         YR4 {\VBAR}  -.0525377   .0402207    -1.31   0.191    -.1313688    .0262935
+         YR5 {\VBAR}  -.0342578   .0322615    -1.06   0.288    -.0974891    .0289736
+         YR6 {\VBAR}  -.0247789   .0257554    -0.96   0.336    -.0752585    .0257007
+         YR7 {\VBAR}  -.0095263    .016643    -0.57   0.567    -.0421461    .0230935
+         YR8 {\VBAR}   .0024244   .0095615     0.25   0.800    -.0163158    .0211646
+        RACE {\VBAR}  -.2270549   .0775561    -2.93   0.003     -.379062   -.0750478
+     MARRIED {\VBAR}   .2803621   .0140991    19.89   0.000     .2527282    .3079959
+        SMSA {\VBAR}  -.1163199   .0198307    -5.87   0.000    -.1551874   -.0774524
+      NEWENG {\VBAR}  -.0201886   .0149986    -1.35   0.178    -.0495853     .009208
+      MIDATL {\VBAR}   .0008336   .0157854     0.05   0.958    -.0301051    .0317723
+     ENOCENT {\VBAR}   .0423374   .0250246     1.69   0.091    -.0067099    .0913846
+     WNOCENT {\VBAR}  -.1236592   .0201894    -6.12   0.000    -.1632297   -.0840886
+       SOATL {\VBAR}  -.0699707   .0371848    -1.88   0.060    -.1428515    .0029102
+     ESOCENT {\VBAR}  -.1571901   .0555524    -2.83   0.005    -.2660707   -.0483095
+     WSOCENT {\VBAR}  -.1165472   .0383975    -3.04   0.002    -.1918048   -.0412895
+          MT {\VBAR}  -.1220908   .0085495   -14.28   0.000    -.1388476   -.1053341
+        AGEQ {\VBAR}   .1170303   .0661453     1.77   0.077    -.0126122    .2466728
+      AGEQSQ {\VBAR}  -.0011772    .000736    -1.60   0.110    -.0026198    .0002654
+       _cons {\VBAR}    .999542   1.594612     0.63   0.531    -2.125839    4.124923
+\HLI{13}{\BOTT}\HLI{64}
+Instrumented:  EDUC
+Instruments:   YR0 YR1 YR2 YR3 YR4 YR5 YR6 YR7 YR8 RACE MARRIED SMSA NEWENG
+               MIDATL ENOCENT WNOCENT SOATL ESOCENT WSOCENT MT AGEQ AGEQSQ
+               QTR1YR0 QTR1YR1 QTR1YR2 QTR1YR3 QTR1YR4 QTR1YR5 QTR1YR6
+               QTR1YR7 QTR1YR8 QTR1YR9 QTR2YR0 QTR2YR1 QTR2YR2 QTR2YR3
+               QTR2YR4 QTR2YR5 QTR2YR6 QTR2YR7 QTR2YR8 QTR2YR9 QTR3YR0
+               QTR3YR1 QTR3YR2 QTR3YR3 QTR3YR4 QTR3YR5 QTR3YR6 QTR3YR8
+{\smallskip}
+. eststo model8
+{\smallskip}
+. 
+. **********  Table Decoration ********
+. 
+. label variable EDUC   "Years of education"
+{\smallskip}
+. label variable RACE   "Race(1 = black)"
+{\smallskip}
+. label variable SMSA   "SMSA (1 = center city)"
+{\smallskip}
+. label variable MARRIED   "Married (1 = married)"
+{\smallskip}
+. label variable AGEQ   "Age"
+{\smallskip}
+. label variable AGEQSQ   "Age-squared"
+{\smallskip}
+. 
+. /* esttab using "C:\\Users\\Win\\OneDrive - Chulalongkorn University\\Chula\\junior2\\Microecono\\reproduce_project\\01_paper\\tables\\table4.tex", se varwidth(25) label keep(EDUC RACE SMSA MARRIED AGEQ AGE
+> QSQ) order(EDUC RACE SMSA MARRIED AGEQ AGEQSQ) title("TABLE V") nonumbers mtitles("(1) OLS" "(2) TSLS" "(3) OLS" "(4) TSLS" "(5) OLS" "(6) TSLS" "(7) OLS" "(8) TSLS") */
+. 
+. /* log close */
+. 
+end of do-file
+{\smallskip}
